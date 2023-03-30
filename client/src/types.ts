@@ -8,7 +8,7 @@ export interface SquareState {
 
 export interface BoardObject {
   primary: string;
-  updateF: Function;
+  tag: string;
 }
 
 export type UpdateFunction = (obj: BoardObject, state: BoardState) => void;

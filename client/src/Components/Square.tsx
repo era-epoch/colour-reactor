@@ -4,43 +4,44 @@ import Color from 'colorjs.io';
 import { useDispatch, useSelector } from 'react-redux';
 import { BoardState, spawnVPong } from '../State/Slices/boardSlice';
 import { SquareState } from '../types';
+import { createVPong, VPong } from '../State/BoardObjects/VPong';
+import { RootState } from '../State/rootReducer';
 
 interface Props {
-  squareState: SquareState;
-  pxHeight: number;
-  pxWidth: number;
+  x: number;
+  y: number;
 }
 
 const Square = (props: Props): JSX.Element => {
+  const squareState = useSelector((state: RootState) => state.board.squares[props.y][props.x]);
+  const pixelSize = useSelector((state: RootState) => state.board.pixelSquareSize);
   const defaultColour = new Color('white');
-  // const hoverColourString = useSelector((state: BoardState) => state.cursorColour);
-  // const hoverColour = new Color(hoverColourString);
   const hoverColour = new Color('blue');
   const outlineColour = new Color('rgb(235, 235, 235)');
-  const hoverFadeTime = 2000; // in ms
-  const [objLastTick, setObjLastTick] = useState(false);
+  const hoverFadeTime = 1000; // in ms
   const [bgColour, setBgColour] = useState<Color>(defaultColour);
-  const [transitionDuration, setTransitionDuration] = useState(0);
+  const [transitionDuration, setTransitionDuration] = useState(hoverFadeTime);
   const dispatch = useDispatch();
 
   const style: CSS.Properties = {
     // cursor: 'none',
     outline: `1px solid ${outlineColour}`,
-    height: `${props.pxHeight}px`,
-    width: `${props.pxWidth}px`,
+    height: `${pixelSize}px`,
+    width: `${pixelSize}px`,
     backgroundColor: bgColour.toString(),
-    transition: `background-color ${transitionDuration}ms ease`,
+    transitionProperty: `background-color`,
+    transitionDuration: `${transitionDuration}ms`,
+    transitionTimingFunction: `ease`,
   };
 
-  for (const object of props.squareState.content) {
-    setBgColour(new Color(object.primary));
-    setObjLastTick(true);
+  for (const object of squareState.content) {
+    style.backgroundColor = object.primary;
+    style.transitionDuration = `0ms`;
   }
 
-  if (props.squareState.content.length === 0 && objLastTick) {
-    setTransitionDuration(hoverFadeTime);
-    setBgColour(defaultColour);
-    setObjLastTick(false);
+  if (squareState.content.length === 0) {
+    style.backgroundColor = bgColour.toString();
+    // style.transitionDuration = `${hoverFadeTime}ms`;
   }
 
   const handleMouseOver = () => {
@@ -54,7 +55,9 @@ const Square = (props: Props): JSX.Element => {
   };
 
   const handleOnClick = () => {
-    dispatch(spawnVPong({ x: props.squareState.x, y: props.squareState.y }));
+    console.log(`Mouse Click on ${squareState.y}:${squareState.x}`);
+    const vpong: VPong = createVPong('red', squareState.x, squareState.y, 1);
+    dispatch(spawnVPong({ vpong: vpong }));
   };
 
   const handleMouseDown = () => {};

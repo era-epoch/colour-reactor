@@ -9,7 +9,7 @@ export interface VPong extends BoardObject {
   tickDelay: number; // Number of ticks (global time units)
   ticksSinceUpdate: number;
   polarity: boolean;
-  updateF: Function;
+  tag: string;
 }
 
 export const createVPong = (primary: string, x: number, y: number, tickDelay: number) => {
@@ -20,7 +20,7 @@ export const createVPong = (primary: string, x: number, y: number, tickDelay: nu
     tickDelay: tickDelay,
     ticksSinceUpdate: 0,
     polarity: true,
-    updateF: advanceVPong,
+    tag: 'VPong',
   };
   return VPong;
 };
@@ -35,15 +35,19 @@ export const advanceVPong: UpdateFunction = (obj: BoardObject, state: BoardState
         vpong.posY++;
       } else {
         vpong.posY--;
+        vpong.polarity = !vpong.polarity;
       }
     } else {
       if (vpong.posY > 0) {
         vpong.posY--;
       } else {
         vpong.posY++;
+        vpong.polarity = !vpong.polarity;
       }
     }
     vpong.ticksSinceUpdate = 0;
     addObjectToSquare(vpong, state.squares[vpong.posY][vpong.posX]);
   }
 };
+
+export const UpdateMap = new Map<string, UpdateFunction>([['VPong', advanceVPong]]);

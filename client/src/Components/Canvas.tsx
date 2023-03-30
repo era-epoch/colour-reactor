@@ -3,16 +3,16 @@ import CSS from 'csstype';
 import { uid } from 'react-uid';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../State/rootReducer';
-import { useInterval } from 'usehooks-ts';
-import { update } from '../State/Slices/boardSlice';
 
 const Canvas = (): JSX.Element => {
-  const boardState = useSelector((state: RootState) => state.board);
-  const dispatch = useDispatch();
+  const boardSizeY = useSelector((state: RootState) => state.board.squares.length);
+  const boardSizeX = useSelector((state: RootState) => state.board.squares[0].length);
+  const width = useSelector((state: RootState) => state.board.pixelBoardWidth);
+  const height = useSelector((state: RootState) => state.board.pixelBoardHeight);
 
   const canvasStyle: CSS.Properties = {
-    width: `${boardState.pixelBoardWidth}px`,
-    height: `${boardState.pixelBoardHeight}px`,
+    width: `${width}px`,
+    height: `${height}px`,
     display: 'flex',
     flexDirection: 'column',
   };
@@ -21,24 +21,21 @@ const Canvas = (): JSX.Element => {
     display: 'flex',
   };
 
-  useInterval(() => {
-    dispatch(update());
-  }, boardState.timeDelta);
+  const squares: number[][] = [];
+  for (let i = 0; i < boardSizeY; i++) {
+    squares.push([]);
+    for (let j = 0; j < boardSizeX; j++) {
+      squares[i].push(j);
+    }
+  }
 
   return (
     <div className="canvas" style={canvasStyle}>
-      {boardState.squares.map((row, i) => {
+      {squares.map((row, i) => {
         return (
           <div className="row" style={rowStyle} key={uid(row)}>
             {row.map((square, j) => {
-              return (
-                <Square
-                  squareState={square}
-                  pxHeight={boardState.pixelSquareSize}
-                  pxWidth={boardState.pixelSquareSize}
-                  key={uid(square)}
-                />
-              );
+              return <Square key={uid(j)} x={j} y={i} />;
             })}
           </div>
         );
