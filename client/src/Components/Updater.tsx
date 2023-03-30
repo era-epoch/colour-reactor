@@ -11,8 +11,6 @@ const Updater = (): JSX.Element => {
     dispatch(update());
   }, timeDelta);
 
-  console.log('test');
-
   return <div className="updater"></div>;
 };
 

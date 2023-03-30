@@ -1,9 +1,8 @@
 import CSS from 'csstype';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import Color from 'colorjs.io';
 import { useDispatch, useSelector } from 'react-redux';
-import { BoardState, spawnVPong } from '../State/Slices/boardSlice';
-import { SquareState } from '../types';
+import { spawnVPong } from '../State/Slices/boardSlice';
 import { createVPong, VPong } from '../State/BoardObjects/VPong';
 import { RootState } from '../State/rootReducer';
 
@@ -16,7 +15,7 @@ const Square = (props: Props): JSX.Element => {
   const squareState = useSelector((state: RootState) => state.board.squares[props.y][props.x]);
   const pixelSize = useSelector((state: RootState) => state.board.pixelSquareSize);
   const defaultColour = new Color('white');
-  const hoverColour = new Color('blue');
+  const hoverColour = new Color('rebeccapurple');
   const outlineColour = new Color('rgb(235, 235, 235)');
   const hoverFadeTime = 1000; // in ms
   const [bgColour, setBgColour] = useState<Color>(defaultColour);
@@ -41,7 +40,6 @@ const Square = (props: Props): JSX.Element => {
 
   if (squareState.content.length === 0) {
     style.backgroundColor = bgColour.toString();
-    // style.transitionDuration = `${hoverFadeTime}ms`;
   }
 
   const handleMouseOver = () => {
@@ -54,13 +52,19 @@ const Square = (props: Props): JSX.Element => {
     setBgColour(defaultColour);
   };
 
-  const handleOnClick = () => {
+  const handleOnClick = (e: MouseEvent) => {
+    e.preventDefault();
+    if (e.button === 0) {
+      const vpong: VPong = createVPong('red', squareState.x, squareState.y, 1);
+      dispatch(spawnVPong({ vpong: vpong }));
+    } else {
+      const vpong: VPong = createVPong('green', squareState.x, squareState.y, 1);
+      dispatch(spawnVPong({ vpong: vpong }));
+    }
     console.log(`Mouse Click on ${squareState.y}:${squareState.x}`);
-    const vpong: VPong = createVPong('red', squareState.x, squareState.y, 1);
-    dispatch(spawnVPong({ vpong: vpong }));
   };
 
-  const handleMouseDown = () => {};
+  const handleMouseDown = (event: MouseEvent) => {};
 
   const handleMouseUp = () => {};
 
@@ -68,11 +72,12 @@ const Square = (props: Props): JSX.Element => {
     <div
       className="square"
       style={style}
-      onClick={handleOnClick}
+      // onClick={handleOnClick}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
-      onMouseDown={handleMouseDown}
+      onMouseDown={handleOnClick}
       onMouseUp={handleMouseUp}
+      onContextMenu={(e) => e.preventDefault()}
     ></div>
   );
 };

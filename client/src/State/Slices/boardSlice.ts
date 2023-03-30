@@ -12,7 +12,7 @@ export interface BoardState {
   timeDelta: number; // # of miliseconds between updates
 }
 
-const numSquaresInColumn = 16;
+const numSquaresInColumn = 32;
 const width = window.innerWidth;
 const height = window.innerHeight;
 const squareSizePixels = Math.floor(height / numSquaresInColumn);
