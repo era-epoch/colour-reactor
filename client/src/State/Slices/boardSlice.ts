@@ -1,6 +1,6 @@
 import { BoardObject, SquareState } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createVPong, UpdateMap, VPong } from '../BoardObjects/VPong';
+import { UpdateMap, VPong } from '../BoardObjects/VPong';
 
 export interface BoardState {
   squares: SquareState[][];

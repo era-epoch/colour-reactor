@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
+import appReducer from './Slices/appSlices';
 import boardReducer from './Slices/boardSlice';
 
 const rootReducer = combineReducers({
+  app: appReducer,
   board: boardReducer,
 });
 

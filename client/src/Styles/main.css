@@ -1,0 +1,15 @@
+.toolbar {
+  pointer-events: none;
+}
+
+.toolbar > * {
+  pointer-events: auto;
+}
+
+.toolbar-container {
+  pointer-events: none;
+}
+
+.toolbar-container > *:not(.toolbar) {
+  pointer-events: auto;
+}

@@ -52,7 +52,7 @@ const Square = (props: Props): JSX.Element => {
     setBgColour(defaultColour);
   };
 
-  const handleOnClick = (e: MouseEvent) => {
+  const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
     if (e.button === 0) {
       const vpong: VPong = createVPong('red', squareState.x, squareState.y, 1);
@@ -64,8 +64,6 @@ const Square = (props: Props): JSX.Element => {
     console.log(`Mouse Click on ${squareState.y}:${squareState.x}`);
   };
 
-  const handleMouseDown = (event: MouseEvent) => {};
-
   const handleMouseUp = () => {};
 
   return (
@@ -75,7 +73,7 @@ const Square = (props: Props): JSX.Element => {
       // onClick={handleOnClick}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
-      onMouseDown={handleOnClick}
+      onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onContextMenu={(e) => e.preventDefault()}
     ></div>

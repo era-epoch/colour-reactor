@@ -1,8 +1,8 @@
-import Square from './Square';
 import CSS from 'csstype';
+import { useSelector } from 'react-redux';
 import { uid } from 'react-uid';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../State/rootReducer';
+import Square from './Square';
 
 const Canvas = (): JSX.Element => {
   const boardSizeY = useSelector((state: RootState) => state.board.squares.length);
