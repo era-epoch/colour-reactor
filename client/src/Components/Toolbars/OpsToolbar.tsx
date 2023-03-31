@@ -11,7 +11,7 @@ export const toolbarStyle: CSS.Properties = {
   zIndex: '1',
 };
 
-export const widgetStyle: CSS.Properties = {
+export const defaultWidgetStyle: CSS.Properties = {
   position: 'absolute',
   bottom: '0',
   width: '4rem',
@@ -33,7 +33,12 @@ const OpsToolbar = (): JSX.Element => {
   const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
   const dispatch = useDispatch();
 
-  const widgetStyles = [{ ...widgetStyle }, { ...widgetStyle }, { ...widgetStyle }, { ...widgetStyle }];
+  const widgetStyles = [
+    { ...defaultWidgetStyle },
+    { ...defaultWidgetStyle },
+    { ...defaultWidgetStyle },
+    { ...defaultWidgetStyle },
+  ];
   for (let i = 0; i < widgetStyles.length; i++) {
     open ? (widgetStyles[i].right = `${(i + 1) * 5}rem`) : (widgetStyles[i].right = '0');
     widgetStyles[i].transitionDuration = `${300 + 50 * i * i}ms`;

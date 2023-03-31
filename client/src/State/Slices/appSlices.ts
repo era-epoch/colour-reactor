@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AppState {
+  colorScheme: string[];
   opsToolbarOpen: boolean;
   brushToolbarOpen: boolean;
+  bigHLineColor: string;
+  waveColor: string;
 }
 
 const initialAppState: AppState = {
+  colorScheme: ['rebeccapurple', '#93E9BE', '#FAFA33', '#FF007F'],
   opsToolbarOpen: false,
   brushToolbarOpen: false,
+  bigHLineColor: '#93E9BE',
+  waveColor: '#FF007F',
 };
 
 const appSlice = createSlice({
@@ -34,8 +40,21 @@ const appSlice = createSlice({
         state.opsToolbarOpen = false;
       }
     },
+    setWaveColor: (state: AppState, action: PayloadAction<string>) => {
+      state.waveColor = action.payload;
+    },
+    setBigHLineColor: (state: AppState, action: PayloadAction<string>) => {
+      state.bigHLineColor = action.payload;
+    },
   },
 });
 
 export default appSlice.reducer;
-export const { setOpsToolBarOpen, setBrushToolBarOpen, toggleBrushToolbar, toggleOpsToolbar } = appSlice.actions;
+export const {
+  setOpsToolBarOpen,
+  setBrushToolBarOpen,
+  toggleBrushToolbar,
+  toggleOpsToolbar,
+  setBigHLineColor,
+  setWaveColor,
+} = appSlice.actions;
