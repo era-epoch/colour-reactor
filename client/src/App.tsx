@@ -1,6 +1,6 @@
 import './App.css';
 import Canvas from './Components/Canvas';
-import ToolbarContainer from './Components/Toolbar/ToolbarContainer';
+import ToolbarContainer from './Components/Toolbars/ToolbarContainer';
 import Updater from './Components/Updater';
 
 function App() {

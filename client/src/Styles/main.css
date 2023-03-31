@@ -13,3 +13,18 @@
 .toolbar-container > *:not(.toolbar) {
   pointer-events: auto;
 }
+
+@keyframes wobble {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(30deg);
+  }
+  75% {
+    transform: rotate(-30deg);
+  }
+  0% {
+    transform: rotate(0);
+  }
+}

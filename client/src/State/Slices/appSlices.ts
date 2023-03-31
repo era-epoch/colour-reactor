@@ -1,22 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AppState {
-  toolbarOpen: boolean;
+  opsToolbarOpen: boolean;
+  brushToolbarOpen: boolean;
 }
 
 const initialAppState: AppState = {
-  toolbarOpen: false,
+  opsToolbarOpen: false,
+  brushToolbarOpen: false,
 };
 
 const appSlice = createSlice({
   name: 'app',
   initialState: initialAppState,
   reducers: {
-    setToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
-      state.toolbarOpen = action.payload;
+    setOpsToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
+      state.opsToolbarOpen = action.payload;
+    },
+    toggleOpsToolbar: (state: AppState) => {
+      state.opsToolbarOpen = !state.opsToolbarOpen;
+      if (state.opsToolbarOpen) {
+        // Close all other toolbars
+        state.brushToolbarOpen = false;
+      }
+    },
+    setBrushToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
+      state.brushToolbarOpen = action.payload;
+    },
+    toggleBrushToolbar: (state: AppState) => {
+      state.brushToolbarOpen = !state.brushToolbarOpen;
+      if (state.brushToolbarOpen) {
+        // Close all other toolbars
+        state.opsToolbarOpen = false;
+      }
     },
   },
 });
 
 export default appSlice.reducer;
-export const { setToolBarOpen } = appSlice.actions;
+export const { setOpsToolBarOpen, setBrushToolBarOpen, toggleBrushToolbar, toggleOpsToolbar } = appSlice.actions;

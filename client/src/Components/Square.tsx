@@ -1,9 +1,9 @@
+import Color from 'colorjs.io';
 import CSS from 'csstype';
 import { MouseEvent, useState } from 'react';
-import Color from 'colorjs.io';
 import { useDispatch, useSelector } from 'react-redux';
+import { VPong, createVPong } from '../State/BoardObjects/VPong';
 import { spawnVPong } from '../State/Slices/boardSlice';
-import { createVPong, VPong } from '../State/BoardObjects/VPong';
 import { RootState } from '../State/rootReducer';
 
 interface Props {
@@ -26,7 +26,7 @@ const Square = (props: Props): JSX.Element => {
     // cursor: 'none',
     outline: `1px solid ${outlineColour}`,
     height: `${pixelSize}px`,
-    width: `${pixelSize}px`,
+    minWidth: `${pixelSize}px`,
     backgroundColor: bgColour.toString(),
     transitionProperty: `background-color`,
     transitionDuration: `${transitionDuration}ms`,
@@ -55,13 +55,15 @@ const Square = (props: Props): JSX.Element => {
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
     if (e.button === 0) {
-      const vpong: VPong = createVPong('red', squareState.x, squareState.y, 1);
+      const vpong: VPong = createVPong('rebeccapurple', squareState.x, squareState.y, 1);
+      dispatch(spawnVPong({ vpong: vpong }));
+    } else if (e.button === 2) {
+      const vpong: VPong = createVPong('#93E9BE', squareState.x, squareState.y, 1);
       dispatch(spawnVPong({ vpong: vpong }));
     } else {
-      const vpong: VPong = createVPong('green', squareState.x, squareState.y, 1);
+      const vpong: VPong = createVPong('#FAFA33', squareState.x, squareState.y, 1);
       dispatch(spawnVPong({ vpong: vpong }));
     }
-    console.log(`Mouse Click on ${squareState.y}:${squareState.x}`);
   };
 
   const handleMouseUp = () => {};

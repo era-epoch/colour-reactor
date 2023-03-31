@@ -1,5 +1,5 @@
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { BoardObject, SquareState } from '../../types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UpdateMap, VPong } from '../BoardObjects/VPong';
 
 export interface BoardState {
@@ -12,7 +12,7 @@ export interface BoardState {
   timeDelta: number; // # of miliseconds between updates
 }
 
-const numSquaresInColumn = 32;
+const numSquaresInColumn = 16;
 const width = window.innerWidth;
 const height = window.innerHeight;
 const squareSizePixels = Math.floor(height / numSquaresInColumn);
@@ -52,8 +52,21 @@ const boardSlice = createSlice({
       console.log('Spawning VPong');
       state.objects.push(action.payload.vpong);
     },
+    deleteAllObjects: (state: BoardState) => {
+      state.objects = [];
+      for (const row of state.squares) {
+        for (const square of row) {
+          square.content = [];
+        }
+      }
+    },
+    loadObjects: (state: BoardState, action: PayloadAction<BoardObject[]>) => {
+      for (const obj of action.payload) {
+        state.objects.push(obj);
+      }
+    },
   },
 });
 
 export default boardSlice.reducer;
-export const { update, spawnVPong } = boardSlice.actions;
+export const { update, spawnVPong, deleteAllObjects, loadObjects } = boardSlice.actions;
