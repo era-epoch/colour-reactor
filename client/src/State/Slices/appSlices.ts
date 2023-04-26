@@ -6,14 +6,16 @@ export interface AppState {
   brushToolbarOpen: boolean;
   bigHLineColor: string;
   waveColor: string;
+  defaultColor: string;
 }
 
 const initialAppState: AppState = {
-  colorScheme: ['rebeccapurple', '#93E9BE', '#FAFA33', '#FF007F'],
+  colorScheme: ['rebeccapurple', '#93E9BE', '#FAFA33', '#FF007F', '#ffffff'],
   opsToolbarOpen: false,
   brushToolbarOpen: false,
   bigHLineColor: '#93E9BE',
   waveColor: '#FF007F',
+  defaultColor: 'white',
 };
 
 const appSlice = createSlice({

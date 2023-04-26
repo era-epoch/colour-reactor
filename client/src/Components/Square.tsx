@@ -14,11 +14,12 @@ interface Props {
 const Square = (props: Props): JSX.Element => {
   const squareState = useSelector((state: RootState) => state.board.squares[props.y][props.x]);
   const pixelSize = useSelector((state: RootState) => state.board.pixelSquareSize);
-  const defaultColour = new Color('white');
+  const defaultColorString = useSelector((state: RootState) => state.app.defaultColor);
+  const defaultColor = new Color(defaultColorString);
   const hoverColour = new Color('rebeccapurple');
   const outlineColour = new Color('rgb(235, 235, 235)');
   const hoverFadeTime = 1000; // in ms
-  const [bgColour, setBgColour] = useState<Color>(defaultColour);
+  const [bgColour, setBgColour] = useState<Color>(defaultColor);
   const [transitionDuration, setTransitionDuration] = useState(hoverFadeTime);
   const dispatch = useDispatch();
 
@@ -49,7 +50,7 @@ const Square = (props: Props): JSX.Element => {
 
   const handleMouseOut = () => {
     setTransitionDuration(hoverFadeTime);
-    setBgColour(defaultColour);
+    setBgColour(defaultColor);
   };
 
   const handleMouseDown = (e: MouseEvent) => {

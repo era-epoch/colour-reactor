@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteAllObjects } from '../../../State/Slices/boardSlice';
+import { deleteAllObjects } from '../../State/Slices/boardSlice';
 
 interface Props {
   widgetStyle: CSS.Properties;

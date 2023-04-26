@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../State/rootReducer';
+import { RootState } from '../../State/rootReducer';
 
 interface Props {
   widgetStyle: CSS.Properties;

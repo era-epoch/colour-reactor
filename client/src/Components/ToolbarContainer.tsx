@@ -2,9 +2,9 @@ import { faPaintBrush, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { toggleBrushToolbar, toggleOpsToolbar } from '../../State/Slices/appSlices';
-import BrushToolbar from './BrushToolbar';
-import OpsToolbar from './OpsToolbar';
+import { toggleBrushToolbar, toggleOpsToolbar } from '../State/Slices/appSlices';
+import BrushToolbar from './Toolbars/BrushToolbar';
+import OpsToolbar from './Toolbars/OpsToolbar';
 
 const toolbarWrapperStyle: CSS.Properties = {
   position: 'relative',

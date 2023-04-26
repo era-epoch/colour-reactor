@@ -1,33 +1,11 @@
 import { faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
-import BigHLineWidget from './Widgets/BigHLineWidget';
-import EraseWidget from './Widgets/EraseWidget';
-import WaveWidget from './Widgets/WaveWidget';
-
-export const toolbarStyle: CSS.Properties = {
-  zIndex: '1',
-};
-
-export const defaultWidgetStyle: CSS.Properties = {
-  position: 'absolute',
-  bottom: '0',
-  width: '4rem',
-  height: '4rem',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '1.5rem',
-  backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  borderRadius: '50% 50%',
-  transitionProperty: 'all',
-  transitionTimingFunction: 'ease',
-  transitionDuration: '300ms',
-  border: '2px solid rgb(235, 235, 235)',
-  cursor: 'pointer',
-};
+import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
+import BigHLineWidget from '../Widgets/BigHLineWidget';
+import EraseWidget from '../Widgets/EraseWidget';
+import WaveWidget from '../Widgets/WaveWidget';
 
 const OpsToolbar = (): JSX.Element => {
   const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
@@ -51,8 +29,8 @@ const OpsToolbar = (): JSX.Element => {
         <FontAwesomeIcon icon={faHourglassHalf} />
       </div>
       <EraseWidget widgetStyle={widgetStyles[1]} />
-      <BigHLineWidget widgetStyle={widgetStyles[2]} />
-      <WaveWidget widgetStyle={widgetStyles[3]} />
+      <BigHLineWidget widgetWrapperStyle={widgetStyles[2]} />
+      <WaveWidget widgetWrapperStyle={widgetStyles[3]} />
     </div>
   );
 };

@@ -3,25 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createVPong } from '../../../State/BoardObjects/VPong';
-import { setWaveColor } from '../../../State/Slices/appSlices';
-import { loadObjects } from '../../../State/Slices/boardSlice';
-import { RootState } from '../../../State/rootReducer';
-import { BoardObject } from '../../../types';
-import { defaultWidgetStyle } from '../OpsToolbar';
-import ColorWidget from './ColorWidget';
-
-const widgetWrapperStyle: CSS.Properties = {
-  // position: ''
-};
-
-const subtoolbarWrapperStyle: CSS.Properties = {
-  position: 'relative',
-  zIndex: '1',
-};
+import { createVPong } from '../../State/BoardObjects/VPong';
+import { setWaveColor } from '../../State/Slices/appSlices';
+import { loadObjects } from '../../State/Slices/boardSlice';
+import { RootState } from '../../State/rootReducer';
+import { BoardObject } from '../../types';
+import Subtoolbar from '../Subtoolbar';
 
 interface Props {
-  widgetStyle: CSS.Properties;
+  widgetWrapperStyle: CSS.Properties;
 }
 
 const WaveWidget = (props: Props): JSX.Element => {
@@ -30,9 +20,12 @@ const WaveWidget = (props: Props): JSX.Element => {
   const boardHeight = useSelector((state: RootState) => state.board.squares.length);
   const widgetColor = useSelector((state: RootState) => state.app.waveColor);
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
-  const widgetStyle = { ...props.widgetStyle };
+  const backgroundColor = useSelector((state: RootState) => state.app.defaultColor);
+
+  const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
-  widgetStyle.color = widgetColor;
+  widgetWrapperStyle.color = widgetColor;
+
   const iconStyle: CSS.Properties = {};
   if (hover) {
     iconStyle.animationName = `wobble`;
@@ -40,6 +33,11 @@ const WaveWidget = (props: Props): JSX.Element => {
     iconStyle.animationDuration = '400ms';
     iconStyle.animationIterationCount = '1';
   }
+
+  const widgetStyle: CSS.Properties = {
+    backgroundColor: widgetWrapperStyle.backgroundColor,
+    borderRadius: widgetWrapperStyle.borderRadius,
+  };
 
   const handleMouseOver = () => {
     setHover(true);
@@ -78,36 +76,19 @@ const WaveWidget = (props: Props): JSX.Element => {
     dispatch(setWaveColor(color));
   };
 
-  const subwidgetStyles = [
-    { ...defaultWidgetStyle },
-    { ...defaultWidgetStyle },
-    { ...defaultWidgetStyle },
-    { ...defaultWidgetStyle },
-  ];
-  for (let i = 0; i < subwidgetStyles.length; i++) {
-    hover ? (subwidgetStyles[i].top = `${(i + 1) * 5}rem`) : (subwidgetStyles[i].top = '0');
-    subwidgetStyles[i].transitionDuration = `${300 + 50 * i * i}ms`;
-    subwidgetStyles[i].zIndex = `-${100 + i}`;
-    subwidgetStyles[i].left = '0';
-  }
-
   return (
-    <div className="widget-wrapper">
-      <div
-        className="toolbar-widget"
-        style={widgetStyle}
-        onClick={handleClick}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
-      >
-        <FontAwesomeIcon icon={faWater} style={iconStyle} />
-      </div>
-      <div className="subtoolbar-wrapper" style={subtoolbarWrapperStyle}>
-        {colorScheme.map((color, i) => {
-          return (
-            <ColorWidget widgetStyle={subwidgetStyles[i]} clickCallback={() => setWidgetColor(color)} color={color} />
-          );
-        })}
+    <div className="widget-wrapper" style={widgetWrapperStyle}>
+      <div className="relative-parent">
+        <div
+          className="toolbar-widget"
+          style={widgetStyle}
+          onClick={handleClick}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+        >
+          <FontAwesomeIcon icon={faWater} style={iconStyle} />
+        </div>
+        <Subtoolbar setColorCallback={setWidgetColor} initColor={widgetColor} />
       </div>
     </div>
   );

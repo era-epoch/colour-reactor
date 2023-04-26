@@ -34,7 +34,7 @@ const initialBoardstate: BoardState = {
   pixelBoardHeight: height,
   pixelBoardWidth: width,
   pixelSquareSize: squareSizePixels,
-  timeDelta: 50,
+  timeDelta: 25,
 };
 
 const boardSlice = createSlice({
