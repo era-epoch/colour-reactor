@@ -1,6 +1,7 @@
 import { BoardObject, UpdateFunction } from '../../types';
 import { BoardState } from '../Slices/boardSlice';
-import { removeObjectFromSquare, addObjectToSquare } from '../Slices/helpers';
+import { addObjectToSquare, removeObjectFromSquare } from '../Slices/helpers';
+import { UpdateMap } from './Maps';
 
 export interface VPong extends BoardObject {
   primary: string;
@@ -50,4 +51,4 @@ export const advanceVPong: UpdateFunction = (obj: BoardObject, state: BoardState
   }
 };
 
-export const UpdateMap = new Map<string, UpdateFunction>([['VPong', advanceVPong]]);
+UpdateMap.set('VPong', advanceVPong);

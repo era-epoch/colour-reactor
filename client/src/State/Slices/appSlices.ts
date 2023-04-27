@@ -5,16 +5,18 @@ export interface AppState {
   opsToolbarOpen: boolean;
   brushToolbarOpen: boolean;
   bigHLineColor: string;
+  bigVLineColor: string;
   waveColor: string;
   defaultColor: string;
 }
 
 const initialAppState: AppState = {
-  colorScheme: ['rebeccapurple', '#93E9BE', '#FAFA33', '#FF007F', '#ffffff'],
+  colorScheme: ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'],
   opsToolbarOpen: false,
   brushToolbarOpen: false,
-  bigHLineColor: '#93E9BE',
-  waveColor: '#FF007F',
+  bigHLineColor: 'red',
+  bigVLineColor: 'indigo',
+  waveColor: 'blue',
   defaultColor: 'white',
 };
 
@@ -48,6 +50,9 @@ const appSlice = createSlice({
     setBigHLineColor: (state: AppState, action: PayloadAction<string>) => {
       state.bigHLineColor = action.payload;
     },
+    setBigVLineColor: (state: AppState, action: PayloadAction<string>) => {
+      state.bigVLineColor = action.payload;
+    },
   },
 });
 
@@ -59,4 +64,5 @@ export const {
   toggleOpsToolbar,
   setBigHLineColor,
   setWaveColor,
+  setBigVLineColor,
 } = appSlice.actions;

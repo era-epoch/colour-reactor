@@ -1,6 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { BoardObject, SquareState } from '../../types';
-import { UpdateMap, VPong } from '../BoardObjects/VPong';
+import { HPong } from '../BoardObjects/HPong';
+import { UpdateMap } from '../BoardObjects/Maps';
+import { VPong } from '../BoardObjects/VPong';
 
 export interface BoardState {
   squares: SquareState[][];
@@ -25,16 +27,14 @@ for (let i = 0; i < numSquaresInColumn; i++) {
   }
 }
 
-// const defaultCursorColour = new Color('rebeccapurple');
-
 const initialBoardstate: BoardState = {
   squares: squares,
   objects: [],
-  cursorColour: 'rebeccapurple',
+  cursorColour: 'red',
   pixelBoardHeight: height,
   pixelBoardWidth: width,
   pixelSquareSize: squareSizePixels,
-  timeDelta: 25,
+  timeDelta: 40,
 };
 
 const boardSlice = createSlice({
@@ -42,7 +42,7 @@ const boardSlice = createSlice({
   initialState: initialBoardstate,
   reducers: {
     update: (state: BoardState) => {
-      console.log('Updating');
+      // console.log('Updating');
       for (const object of state.objects) {
         const updateF = UpdateMap.get(object.tag);
         if (updateF) updateF(object, state);
@@ -51,6 +51,10 @@ const boardSlice = createSlice({
     spawnVPong: (state: BoardState, action: PayloadAction<{ vpong: VPong }>) => {
       console.log('Spawning VPong');
       state.objects.push(action.payload.vpong);
+    },
+    spawnHPong: (state: BoardState, action: PayloadAction<{ hpong: HPong }>) => {
+      console.log('Spawning HPong');
+      state.objects.push(action.payload.hpong);
     },
     deleteAllObjects: (state: BoardState) => {
       state.objects = [];
@@ -69,4 +73,4 @@ const boardSlice = createSlice({
 });
 
 export default boardSlice.reducer;
-export const { update, spawnVPong, deleteAllObjects, loadObjects } = boardSlice.actions;
+export const { update, spawnVPong, spawnHPong, deleteAllObjects, loadObjects } = boardSlice.actions;

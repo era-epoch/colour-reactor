@@ -24,9 +24,9 @@
   border-radius: 0 0 10px 10px;
   outline-style: solid;
   outline-color: rgb(235, 235, 235);
-  outline-width: 2px;
+  outline-width: 0px;
   z-index: 1;
-  transition: all 400ms ease;
+  transition: max-height 400ms ease;
   cursor: auto;
   overflow: hidden;
   display: flex;
@@ -47,6 +47,7 @@
 .toolbar-widget:hover ~ .subtoolbar-wrapper,
 .subtoolbar-wrapper:hover {
   max-height: 200px;
+  outline-width: 2px;
 }
 
 .color-select-button {

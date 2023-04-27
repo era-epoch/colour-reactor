@@ -1,17 +1,19 @@
 import { faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import BigHLineWidget from '../Widgets/BigHLineWidget';
+import BigVLineWidget from '../Widgets/BigVLineWidget';
 import EraseWidget from '../Widgets/EraseWidget';
 import WaveWidget from '../Widgets/WaveWidget';
 
 const OpsToolbar = (): JSX.Element => {
   const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
-  const dispatch = useDispatch();
 
+  // TODO: change this
   const widgetStyles = [
+    { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
@@ -30,7 +32,8 @@ const OpsToolbar = (): JSX.Element => {
       </div>
       <EraseWidget widgetStyle={widgetStyles[1]} />
       <BigHLineWidget widgetWrapperStyle={widgetStyles[2]} />
-      <WaveWidget widgetWrapperStyle={widgetStyles[3]} />
+      <BigVLineWidget widgetWrapperStyle={widgetStyles[3]} />
+      <WaveWidget widgetWrapperStyle={widgetStyles[4]} />
     </div>
   );
 };

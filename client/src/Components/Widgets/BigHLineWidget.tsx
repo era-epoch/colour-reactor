@@ -22,6 +22,7 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
   widgetWrapperStyle.color = widgetColor;
+  widgetWrapperStyle.borderColor = widgetColor;
 
   const iconStyle: CSS.Properties = {};
   if (hover) {

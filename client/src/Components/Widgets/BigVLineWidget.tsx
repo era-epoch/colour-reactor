@@ -1,10 +1,10 @@
-import { faWater } from '@fortawesome/free-solid-svg-icons';
+import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createVPong } from '../../State/BoardObjects/VPong';
-import { setWaveColor } from '../../State/Slices/appSlices';
+import { createHPong } from '../../State/BoardObjects/HPong';
+import { setBigVLineColor } from '../../State/Slices/appSlices';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { BoardObject } from '../../types';
@@ -14,11 +14,10 @@ interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const WaveWidget = (props: Props): JSX.Element => {
+const BigVLineWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const boardWidth = useSelector((state: RootState) => state.board.squares[0].length);
   const boardHeight = useSelector((state: RootState) => state.board.squares.length);
-  const widgetColor = useSelector((state: RootState) => state.app.waveColor);
+  const widgetColor = useSelector((state: RootState) => state.app.bigVLineColor);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
@@ -48,31 +47,14 @@ const WaveWidget = (props: Props): JSX.Element => {
 
   const handleClick = () => {
     const objects: BoardObject[] = [];
-    let j = 0;
-    let j_direction = 'down';
-    for (let i = 0; i < boardWidth; i++) {
-      objects.push(createVPong(widgetColor, i, j, 1));
-      if (j_direction === 'down') {
-        if (j < boardHeight - 1) {
-          j++;
-        } else {
-          j--;
-          j_direction = 'up';
-        }
-      } else {
-        if (j > 0) {
-          j--;
-        } else {
-          j++;
-          j_direction = 'down';
-        }
-      }
+    for (let i = 0; i < boardHeight; i++) {
+      objects.push(createHPong(widgetColor, 0, i, 1));
     }
     dispatch(loadObjects(objects));
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setWaveColor(color));
+    dispatch(setBigVLineColor(color));
   };
 
   return (
@@ -85,7 +67,7 @@ const WaveWidget = (props: Props): JSX.Element => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <FontAwesomeIcon icon={faWater} style={iconStyle} />
+          <FontAwesomeIcon icon={faGripLinesVertical} style={iconStyle} />
         </div>
         <Subtoolbar setColorCallback={setWidgetColor} initColor={widgetColor} />
       </div>
@@ -93,4 +75,4 @@ const WaveWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default WaveWidget;
+export default BigVLineWidget;
