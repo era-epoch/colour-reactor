@@ -7,11 +7,9 @@ import { VPong } from '../BoardObjects/VPong';
 export interface BoardState {
   squares: SquareState[][];
   objects: BoardObject[];
-  cursorColour: string;
   pixelBoardHeight: number;
   pixelBoardWidth: number;
   pixelSquareSize: number;
-  timeDelta: number; // # of miliseconds between updates
 }
 
 const numSquaresInColumn = 16;
@@ -30,11 +28,9 @@ for (let i = 0; i < numSquaresInColumn; i++) {
 const initialBoardstate: BoardState = {
   squares: squares,
   objects: [],
-  cursorColour: 'red',
   pixelBoardHeight: height,
   pixelBoardWidth: width,
   pixelSquareSize: squareSizePixels,
-  timeDelta: 40,
 };
 
 const boardSlice = createSlice({

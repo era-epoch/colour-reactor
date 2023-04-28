@@ -21,7 +21,7 @@ const BrushToolbar = (): JSX.Element => {
 
   return (
     <div className="toolbar" style={toolbarStyle}>
-      <CursorWidget widgetStyle={widgetStyles[0]} />
+      <CursorWidget widgetWrapperStyle={widgetStyles[0]} />
     </div>
   );
 };

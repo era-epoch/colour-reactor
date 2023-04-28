@@ -48,10 +48,12 @@ const WaveWidget = (props: Props): JSX.Element => {
 
   const handleClick = () => {
     const objects: BoardObject[] = [];
+    const centerI = Math.floor(boardWidth / 2);
+    let i = 0;
     let j = 0;
     let j_direction = 'down';
-    for (let i = 0; i < boardWidth; i++) {
-      objects.push(createVPong(widgetColor, i, j, 1));
+    while (centerI - i >= 0) {
+      objects.push(createVPong(widgetColor, centerI - i, j, 1));
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
           j++;
@@ -67,7 +69,31 @@ const WaveWidget = (props: Props): JSX.Element => {
           j_direction = 'down';
         }
       }
+      i++;
     }
+    i = 1;
+    j = 1;
+    j_direction = 'down';
+    while (centerI + i < boardWidth) {
+      objects.push(createVPong(widgetColor, centerI + i, j, 1));
+      if (j_direction === 'down') {
+        if (j < boardHeight - 1) {
+          j++;
+        } else {
+          j--;
+          j_direction = 'up';
+        }
+      } else {
+        if (j > 0) {
+          j--;
+        } else {
+          j++;
+          j_direction = 'down';
+        }
+      }
+      i++;
+    }
+    console.log('Last row: ' + j);
     dispatch(loadObjects(objects));
   };
 

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useInterval } from 'usehooks-ts';
-import { RootState } from '../State/rootReducer';
 import { update } from '../State/Slices/boardSlice';
+import { RootState } from '../State/rootReducer';
 
 const Updater = (): JSX.Element => {
-  const timeDelta = useSelector((state: RootState) => state.board.timeDelta);
+  const timeDelta = useSelector((state: RootState) => state.app.timeDelta);
   const dispatch = useDispatch();
 
   useInterval(() => {

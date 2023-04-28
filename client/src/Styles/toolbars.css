@@ -46,8 +46,14 @@
 
 .toolbar-widget:hover ~ .subtoolbar-wrapper,
 .subtoolbar-wrapper:hover {
-  max-height: 200px;
+  max-height: 400px;
   outline-width: 2px;
+}
+
+.subtoolbar-separator {
+  border-bottom: 1px dashed lightgray;
+  width: 75%;
+  margin: 1rem 0rem;
 }
 
 .color-select-button {

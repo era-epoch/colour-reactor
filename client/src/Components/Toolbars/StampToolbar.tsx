@@ -1,16 +1,15 @@
-import { faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
-import EraseWidget from '../Widgets/EraseWidget';
+import BigHLineWidget from '../Widgets/BigHLineWidget';
+import BigVLineWidget from '../Widgets/BigVLineWidget';
+import WaveWidget from '../Widgets/WaveWidget';
 
-const OpsToolbar = (): JSX.Element => {
-  const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
+const StampToolbar = (): JSX.Element => {
+  const open = useSelector((state: RootState) => state.app.stampToolbarOpen);
+  const dispatch = useDispatch();
 
-  // TODO: change this
   const widgetStyles = [
-    { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
@@ -24,12 +23,11 @@ const OpsToolbar = (): JSX.Element => {
 
   return (
     <div className="toolbar" style={toolbarStyle}>
-      <div className="toolbar-widget" style={widgetStyles[0]}>
-        <FontAwesomeIcon icon={faHourglassHalf} />
-      </div>
-      <EraseWidget widgetStyle={widgetStyles[1]} />
+      <BigHLineWidget widgetWrapperStyle={widgetStyles[0]} />
+      <BigVLineWidget widgetWrapperStyle={widgetStyles[1]} />
+      <WaveWidget widgetWrapperStyle={widgetStyles[2]} />
     </div>
   );
 };
 
-export default OpsToolbar;
+export default StampToolbar;

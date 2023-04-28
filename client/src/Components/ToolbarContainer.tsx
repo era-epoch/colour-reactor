@@ -1,10 +1,11 @@
-import { faPaintBrush, faToolbox } from '@fortawesome/free-solid-svg-icons';
+import { faPaintBrush, faStamp, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { toggleBrushToolbar, toggleOpsToolbar } from '../State/Slices/appSlices';
+import { toggleBrushToolbar, toggleOpsToolbar, toggleStampToolbar } from '../State/Slices/appSlices';
 import BrushToolbar from './Toolbars/BrushToolbar';
 import OpsToolbar from './Toolbars/OpsToolbar';
+import StampToolbar from './Toolbars/StampToolbar';
 
 const toolbarWrapperStyle: CSS.Properties = {
   position: 'relative',
@@ -46,18 +47,27 @@ const ToolbarContainer = (): JSX.Element => {
   const handleToggleBrushToolbar = () => {
     dispatch(toggleBrushToolbar());
   };
+  const handleToggleStampToolbar = () => {
+    dispatch(toggleStampToolbar());
+  };
   return (
     <div className="toolbar-container" style={style}>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
-        <OpsToolbar />
-        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleOpsToolbar}>
-          <FontAwesomeIcon icon={faToolbox} />
+        <StampToolbar />
+        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleStampToolbar}>
+          <FontAwesomeIcon icon={faStamp} />
         </div>
       </div>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
         <BrushToolbar />
         <div className="toolbar-icon" style={iconStyle} onClick={handleToggleBrushToolbar}>
           <FontAwesomeIcon icon={faPaintBrush} />
+        </div>
+      </div>
+      <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
+        <OpsToolbar />
+        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleOpsToolbar}>
+          <FontAwesomeIcon icon={faToolbox} />
         </div>
       </div>
     </div>
