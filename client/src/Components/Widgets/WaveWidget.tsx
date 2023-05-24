@@ -53,7 +53,7 @@ const WaveWidget = (props: Props): JSX.Element => {
     let j = 0;
     let j_direction = 'down';
     while (centerI - i >= 0) {
-      objects.push(createVPong(widgetColor, centerI - i, j, 1));
+      objects.push(createVPong(widgetColor, centerI - i, j, 1, 3));
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
           j++;
@@ -75,7 +75,7 @@ const WaveWidget = (props: Props): JSX.Element => {
     j = 1;
     j_direction = 'down';
     while (centerI + i < boardWidth) {
-      objects.push(createVPong(widgetColor, centerI + i, j, 1));
+      objects.push(createVPong(widgetColor, centerI + i, j, 1, 3));
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
           j++;

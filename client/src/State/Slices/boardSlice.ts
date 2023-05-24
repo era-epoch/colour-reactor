@@ -7,12 +7,14 @@ import { VPong } from '../BoardObjects/VPong';
 export interface BoardState {
   squares: SquareState[][];
   objects: BoardObject[];
+  objectAdditionQueue: BoardObject[];
+  objectRemovalQueue: BoardObject[];
   pixelBoardHeight: number;
   pixelBoardWidth: number;
   pixelSquareSize: number;
 }
 
-const numSquaresInColumn = 16;
+const numSquaresInColumn = 8;
 const width = window.innerWidth;
 const height = window.innerHeight;
 const squareSizePixels = Math.floor(height / numSquaresInColumn);
@@ -28,6 +30,8 @@ for (let i = 0; i < numSquaresInColumn; i++) {
 const initialBoardstate: BoardState = {
   squares: squares,
   objects: [],
+  objectAdditionQueue: [],
+  objectRemovalQueue: [],
   pixelBoardHeight: height,
   pixelBoardWidth: width,
   pixelSquareSize: squareSizePixels,
@@ -38,11 +42,21 @@ const boardSlice = createSlice({
   initialState: initialBoardstate,
   reducers: {
     update: (state: BoardState) => {
-      // console.log('Updating');
+      console.log('Updating');
       for (const object of state.objects) {
         const updateF = UpdateMap.get(object.tag);
         if (updateF) updateF(object, state);
       }
+
+      // Add all objects in addition queue
+      for (const object of state.objectAdditionQueue) {
+        state.objects.push(object);
+      }
+      state.objectAdditionQueue = [];
+
+      // Remove all objects in removal queue
+      state.objects = state.objects.filter((obj) => !state.objectRemovalQueue.includes(obj));
+      state.objectRemovalQueue = [];
     },
     spawnVPong: (state: BoardState, action: PayloadAction<{ vpong: VPong }>) => {
       console.log('Spawning VPong');

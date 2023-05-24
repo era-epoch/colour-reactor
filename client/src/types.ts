@@ -7,6 +7,7 @@ export interface SquareState {
 }
 
 export interface BoardObject {
+  id: string;
   primary: string;
   tag: string;
 }

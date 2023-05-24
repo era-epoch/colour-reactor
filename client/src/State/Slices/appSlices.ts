@@ -14,7 +14,6 @@ export interface AppState {
   leftClickColor: string;
   rightClickColor: string;
   middleClickColor: string;
-  defaultFadeTime: number; // # of miliseconds it takes for objects to fade (css transition duration)
   timeDelta: number; // # of miliseconds between updates
 }
 
@@ -33,8 +32,7 @@ const initialAppState: AppState = {
   leftClickColor: fallbackColor,
   rightClickColor: fallbackColor,
   middleClickColor: fallbackColor,
-  defaultFadeTime: 2000,
-  timeDelta: 100,
+  timeDelta: 2000,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {

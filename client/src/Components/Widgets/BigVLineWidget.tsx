@@ -48,7 +48,7 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   const handleClick = () => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardHeight; i++) {
-      objects.push(createHPong(widgetColor, 0, i, 1));
+      objects.push(createHPong(widgetColor, 0, i, 1, 8));
     }
     dispatch(loadObjects(objects));
   };
