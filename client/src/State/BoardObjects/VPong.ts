@@ -1,8 +1,15 @@
+import Color from 'colorjs.io';
 import { v4 as uuidv4 } from 'uuid';
-import { BoardObject, UpdateFunction } from '../../types';
+import {
+  BoardObject,
+  BoardObjectRenderFunction,
+  BoardObjectRenderOptions,
+  BoardObjectRenderOutput,
+  UpdateFunction,
+} from '../../types';
 import { BoardState } from '../Slices/boardSlice';
 import { addObjectToSquare, removeObjectFromSquare } from '../Slices/helpers';
-import { UpdateMap } from './Maps';
+import { RenderMap, UpdateMap } from './Maps';
 
 export interface VPong extends BoardObject {
   primary: string;
@@ -89,5 +96,29 @@ export const advanceVPongGhost: UpdateFunction = (obj: BoardObject, state: Board
   }
 };
 
+export const renderVPong: BoardObjectRenderFunction = (ops: BoardObjectRenderOptions): BoardObjectRenderOutput => {
+  const vpong = ops.obj as VPong;
+  const combinedColor: Color = Color.mix(ops.backgroundColor, vpong.primary) as unknown as Color;
+  const output: BoardObjectRenderOutput = {
+    backgroundColor: combinedColor,
+    cssClasses: [{ uid: uuidv4(), className: 'rotate3d-x', duration: 800 }],
+  };
+  return output;
+};
+
+export const renderVPongGhost: BoardObjectRenderFunction = (ops: BoardObjectRenderOptions): BoardObjectRenderOutput => {
+  const ghost = ops.obj as VPongGhost;
+  const p_factor = 1 - (ghost.age + 1) / (ghost.lifespan + 2);
+  const p = 0.5 * p_factor;
+  const combinedColor: Color = Color.mix(ops.backgroundColor, ghost.primary, p) as unknown as Color;
+  const output: BoardObjectRenderOutput = {
+    backgroundColor: combinedColor,
+    cssClasses: [],
+  };
+  return output;
+};
+
 UpdateMap.set('VPong', advanceVPong);
 UpdateMap.set('VPongGhost', advanceVPongGhost);
+RenderMap.set('VPong', renderVPong);
+RenderMap.set('VPongGhost', renderVPongGhost);

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { pastelRainbow } from '../../ColorSchemes';
+import { basicRainbow } from '../../ColorSchemes';
 
 export interface AppState {
   colorScheme: string[];
@@ -20,7 +20,7 @@ export interface AppState {
 const fallbackColor = 'black';
 
 const initialAppState: AppState = {
-  colorScheme: pastelRainbow,
+  colorScheme: basicRainbow,
   opsToolbarOpen: false,
   brushToolbarOpen: false,
   stampToolbarOpen: false,
@@ -32,7 +32,7 @@ const initialAppState: AppState = {
   leftClickColor: fallbackColor,
   rightClickColor: fallbackColor,
   middleClickColor: fallbackColor,
-  timeDelta: 2000,
+  timeDelta: 500,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {

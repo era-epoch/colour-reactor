@@ -12,6 +12,7 @@ export interface BoardState {
   pixelBoardHeight: number;
   pixelBoardWidth: number;
   pixelSquareSize: number;
+  ticksElapsed: number;
 }
 
 const numSquaresInColumn = 8;
@@ -35,6 +36,7 @@ const initialBoardstate: BoardState = {
   pixelBoardHeight: height,
   pixelBoardWidth: width,
   pixelSquareSize: squareSizePixels,
+  ticksElapsed: 0,
 };
 
 const boardSlice = createSlice({
@@ -57,6 +59,7 @@ const boardSlice = createSlice({
       // Remove all objects in removal queue
       state.objects = state.objects.filter((obj) => !state.objectRemovalQueue.includes(obj));
       state.objectRemovalQueue = [];
+      state.ticksElapsed++;
     },
     spawnVPong: (state: BoardState, action: PayloadAction<{ vpong: VPong }>) => {
       console.log('Spawning VPong');
