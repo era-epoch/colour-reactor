@@ -38,10 +38,6 @@ const CursorWidget = (props: Props): JSX.Element => {
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
             <ColorSelector setColorCallback={handleSetCursorColor} initColor={cursorColor} />
-            {/* <div className="subtoolbar-separator"></div>
-            <ColorSelector setColorCallback={handleSetLeftClickColor} initColor={leftClickColor} />
-            <ColorSelector setColorCallback={handleSetMiddleClickColor} initColor={middleClickColor} />
-            <ColorSelector setColorCallback={handleSetRightClickColor} initColor={rightClickColor} /> */}
           </div>
         </div>
       </div>

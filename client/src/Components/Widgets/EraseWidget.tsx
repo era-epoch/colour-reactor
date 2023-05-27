@@ -5,20 +5,30 @@ import { useDispatch } from 'react-redux';
 import { deleteAllObjects } from '../../State/Slices/boardSlice';
 
 interface Props {
-  widgetStyle: CSS.Properties;
+  widgetWrapperStyle: CSS.Properties;
 }
 
 const EraseWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const widgetStyle = { ...props.widgetStyle };
+
+  const widgetWrapperStyle = { ...props.widgetWrapperStyle };
+
+  const widgetStyle: CSS.Properties = {
+    backgroundColor: widgetWrapperStyle.backgroundColor,
+    borderRadius: widgetWrapperStyle.borderRadius,
+  };
 
   const handleErase = () => {
     dispatch(deleteAllObjects());
   };
 
   return (
-    <div className="toolbar-widget" onClick={handleErase} style={widgetStyle}>
-      <FontAwesomeIcon icon={faEraser} />
+    <div className="widget-wrapper" style={widgetWrapperStyle}>
+      <div className="relative-parent">
+        <div className="toolbar-widget" onClick={handleErase} style={widgetStyle}>
+          <FontAwesomeIcon icon={faEraser} />
+        </div>
+      </div>
     </div>
   );
 };

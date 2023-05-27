@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import EraseWidget from '../Widgets/EraseWidget';
+import FullscreenWidget from '../Widgets/FullscreenWidget';
 import TimeWidget from '../Widgets/TimeWidget';
 
 const OpsToolbar = (): JSX.Element => {
@@ -29,8 +30,9 @@ const OpsToolbar = (): JSX.Element => {
 
   return (
     <div className="toolbar" style={toolbarStyle}>
-      <EraseWidget widgetStyle={widgetStyles[0]} />
+      <EraseWidget widgetWrapperStyle={widgetStyles[0]} />
       <TimeWidget widgetWrapperStyle={widgetStyles[1]} />
+      <FullscreenWidget widgetWrapperStyle={widgetStyles[2]} />
     </div>
   );
 };
