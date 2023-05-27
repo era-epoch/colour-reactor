@@ -14,7 +14,13 @@ const BrushToolbar = (): JSX.Element => {
     { ...defaultWidgetStyle },
   ];
   for (let i = 0; i < widgetStyles.length; i++) {
-    open ? (widgetStyles[i].right = `${(i + 1) * 5}rem`) : (widgetStyles[i].right = '0');
+    if (open) {
+      widgetStyles[i].left = `${(i + 1) * 5}rem`;
+      widgetStyles[i].scale = '1';
+    } else {
+      widgetStyles[i].left = '0';
+      widgetStyles[i].scale = '0.5';
+    }
     widgetStyles[i].transitionDuration = `${300 + 50 * i * i}ms`;
     widgetStyles[i].zIndex = `-${i}`;
   }

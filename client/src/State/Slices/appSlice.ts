@@ -17,6 +17,7 @@ export interface AppState {
   middleClickColor: string;
   timeDelta: number; // # of miliseconds between updates
   animations: string[];
+  paused: boolean;
 }
 
 const fallbackColor = 'black';
@@ -34,8 +35,9 @@ const initialAppState: AppState = {
   leftClickColor: fallbackColor,
   rightClickColor: fallbackColor,
   middleClickColor: fallbackColor,
-  timeDelta: 100,
+  timeDelta: 250,
   animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin', 'circularize'],
+  paused: false,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
@@ -45,6 +47,7 @@ const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
 initialAppState.bigHLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
+
 initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.leftClickColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.rightClickColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
@@ -159,6 +162,12 @@ const appSlice = createSlice({
     setMiddleClickColor: (state: AppState, action: PayloadAction<string>) => {
       state.middleClickColor = action.payload;
     },
+    setPause: (state: AppState, action: PayloadAction<boolean>) => {
+      state.paused = action.payload;
+    },
+    setTimeDelta: (state: AppState, action: PayloadAction<number>) => {
+      state.timeDelta = action.payload;
+    },
   },
 });
 
@@ -177,4 +186,6 @@ export const {
   setLeftClickColor,
   setMiddleClickColor,
   setRightClickColor,
+  setPause,
+  setTimeDelta,
 } = appSlice.actions;

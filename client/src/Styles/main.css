@@ -4,8 +4,21 @@
   height: 100vh;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .canvas {
   overflow: hidden;
+  background-color: white;
+}
+
+svg {
+  transition: all 200ms ease;
+}
+
+svg:active {
+  scale: 0.75;
 }
 
 .toolbar {
@@ -22,6 +35,10 @@
 
 .toolbar-container > *:not(.toolbar) {
   pointer-events: auto;
+}
+
+.pause-animations * {
+  animation-play-state: paused !important;
 }
 
 @keyframes wobble {
@@ -182,5 +199,31 @@
   }
   100% {
     border-radius: 0px;
+  }
+}
+
+.half-spin-up-once {
+  animation: half-spin-up 200ms ease 1 forwards;
+}
+
+.half-spin-down-once {
+  animation: half-spin-down 200ms ease 1 forwards;
+}
+
+@keyframes half-spin-up {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 180deg;
+  }
+}
+
+@keyframes half-spin-down {
+  0% {
+    rotate: 180deg;
+  }
+  100% {
+    rotate: 360deg;
   }
 }

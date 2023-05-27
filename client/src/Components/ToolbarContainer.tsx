@@ -17,7 +17,7 @@ const ToolbarContainer = (): JSX.Element => {
 
   const style: CSS.Properties = {
     position: 'absolute',
-    right: '2rem',
+    left: '2rem',
     top: '2rem',
     display: 'flex',
     flexDirection: 'column',

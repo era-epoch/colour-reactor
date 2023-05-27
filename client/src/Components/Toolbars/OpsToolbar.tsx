@@ -1,9 +1,8 @@
-import { faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import EraseWidget from '../Widgets/EraseWidget';
+import TimeWidget from '../Widgets/TimeWidget';
 
 const OpsToolbar = (): JSX.Element => {
   const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
@@ -17,17 +16,21 @@ const OpsToolbar = (): JSX.Element => {
     { ...defaultWidgetStyle },
   ];
   for (let i = 0; i < widgetStyles.length; i++) {
-    open ? (widgetStyles[i].right = `${(i + 1) * 5}rem`) : (widgetStyles[i].right = '0');
+    if (open) {
+      widgetStyles[i].left = `${(i + 1) * 5}rem`;
+      widgetStyles[i].scale = '1';
+    } else {
+      widgetStyles[i].left = '0';
+      widgetStyles[i].scale = '0.5';
+    }
     widgetStyles[i].transitionDuration = `${300 + 50 * i * i}ms`;
     widgetStyles[i].zIndex = `-${i}`;
   }
 
   return (
     <div className="toolbar" style={toolbarStyle}>
-      <div className="toolbar-widget" style={widgetStyles[0]}>
-        <FontAwesomeIcon icon={faHourglassHalf} />
-      </div>
-      <EraseWidget widgetStyle={widgetStyles[1]} />
+      <EraseWidget widgetStyle={widgetStyles[0]} />
+      <TimeWidget widgetWrapperStyle={widgetStyles[1]} />
     </div>
   );
 };
