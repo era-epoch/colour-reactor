@@ -1,13 +1,14 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   IconDefinition,
+  faBan,
+  faCircle,
   faEllipsisH,
   faEllipsisV,
   faIndustry,
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
   faRotate,
-  faSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
@@ -15,13 +16,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 
 export const AnimationIconMap = new Map<string, IconDefinition>([
-  ['no-animation', faSquare],
+  ['no-animation', faBan],
   ['rotate3d-y', faEllipsisV],
   ['rotate3d-x', faEllipsisH],
   ['tremble', faIndustry],
   ['scale-down', faMagnifyingGlassMinus],
   ['scale-up', faMagnifyingGlassPlus],
   ['spin', faRotate],
+  ['circularize', faCircle],
 ]);
 
 interface Props {

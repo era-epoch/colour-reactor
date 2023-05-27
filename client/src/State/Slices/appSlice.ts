@@ -34,8 +34,8 @@ const initialAppState: AppState = {
   leftClickColor: fallbackColor,
   rightClickColor: fallbackColor,
   middleClickColor: fallbackColor,
-  timeDelta: 1000,
-  animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin'],
+  timeDelta: 100,
+  animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin', 'circularize'],
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
