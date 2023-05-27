@@ -43,3 +43,8 @@ export interface BoardObjectSpawnOptionsInternal {
   liftoffAnimation: string;
   ghostAnimation: string;
 }
+
+export enum CursorMode {
+  default,
+  painting,
+}

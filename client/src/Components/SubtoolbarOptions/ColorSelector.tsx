@@ -12,16 +12,11 @@ export const colorSelectButtonStyle: CSS.Properties = {};
 
 const ColorSelector = (props: Props): JSX.Element => {
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
-  const [selectionActive, setSelectionActive] = useState(false);
   const [color, setColor] = useState(props.initColor);
   const [colorIndex, setColorIndex] = useState(colorScheme.findIndex((c) => c === color));
 
   const buttonStyle = { ...colorSelectButtonStyle };
   buttonStyle.backgroundColor = color;
-
-  const toggleSelectionMenu = () => {
-    setSelectionActive(!selectionActive);
-  };
 
   const toggleColor = () => {
     let newIndex = (colorIndex + 1) % colorScheme.length;

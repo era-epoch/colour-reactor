@@ -1,8 +1,8 @@
-import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
+import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorColor, setCursorMode } from '../../State/Slices/appSlice';
+import { setCursorMode, setPaintOps } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 import { CursorMode } from '../../types';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
@@ -11,11 +11,11 @@ interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const CursorWidget = (props: Props): JSX.Element => {
+const PaintWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
+  const paintColor = useSelector((state: RootState) => state.app.paintOps.primary);
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
-  const widgetColor = cursorColor;
+  const widgetColor = paintColor;
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
 
@@ -27,28 +27,32 @@ const CursorWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  if (cursorMode === CursorMode.default) {
+  if (cursorMode === CursorMode.painting) {
     widgetStyle.backgroundColor = widgetColor;
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
   }
 
-  const handleClick = () => {
-    dispatch(setCursorMode(CursorMode.default));
+  const handleSetPaintColor = (color: string) => {
+    dispatch(setPaintOps({ primary: color }));
   };
 
-  const handleSetCursorColor = (color: string) => {
-    dispatch(setCursorColor(color));
+  const handleClick = () => {
+    if (cursorMode !== CursorMode.painting) {
+      dispatch(setCursorMode(CursorMode.painting));
+    } else {
+      dispatch(setCursorMode(CursorMode.default));
+    }
   };
 
   return (
     <div className="widget-wrapper" style={widgetWrapperStyle}>
       <div className="relative-parent">
         <div className="toolbar-widget" style={widgetStyle} onClick={handleClick}>
-          <FontAwesomeIcon icon={faArrowPointer} />
+          <FontAwesomeIcon icon={faPaintBrush} />
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={handleSetCursorColor} initColor={cursorColor} />
+            <ColorSelector setColorCallback={handleSetPaintColor} initColor={paintColor} />
           </div>
         </div>
       </div>
@@ -56,4 +60,4 @@ const CursorWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default CursorWidget;
+export default PaintWidget;

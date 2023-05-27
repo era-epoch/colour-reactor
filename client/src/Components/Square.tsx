@@ -4,8 +4,10 @@ import { MouseEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { RenderMap } from '../State/BoardObjects/Maps';
+import { createPaint } from '../State/BoardObjects/Paint';
+import { loadObjects } from '../State/Slices/boardSlice';
 import { RootState } from '../State/rootReducer';
-import { BoardObjectCSSClass, BoardObjectRenderOptions, BoardObjectRenderOutput } from '../types';
+import { BoardObjectCSSClass, BoardObjectRenderOptions, BoardObjectRenderOutput, CursorMode } from '../types';
 
 interface Props {
   x: number;
@@ -21,27 +23,23 @@ const GlobalSquareRenderingInfo = new Map<string, SquareRenderInfoEntry>();
 
 const Square = (props: Props): JSX.Element => {
   const squareTag = `${props.x}-${props.y}`;
-  // console.log(squareTag);
   const dispatch = useDispatch();
 
   const squareState = useSelector((state: RootState) => state.board.squares[props.y][props.x]);
   const pixelSize = useSelector((state: RootState) => state.board.pixelSquareSize);
 
-  const leftClickColor = useSelector((state: RootState) => state.app.leftClickColor);
-  const rightClickColor = useSelector((state: RootState) => state.app.rightClickColor);
-  const middleClickColor = useSelector((state: RootState) => state.app.middleClickColor);
-
   const timeDelta = useSelector((state: RootState) => state.app.timeDelta);
   const ticksElapsed = useSelector((state: RootState) => state.board.ticksElapsed);
   const prevTickRef = useRef<number>(ticksElapsed);
 
+  const outlineColour = new Color('rgb(235, 235, 235)');
+
   const defaultColorString = useSelector((state: RootState) => state.app.defaultColor);
   const defaultColor = new Color(defaultColorString);
 
-  const hoverColorString = useSelector((state: RootState) => state.app.cursorColor);
-  const hoverColor = new Color(hoverColorString);
-
-  const outlineColour = new Color('rgb(235, 235, 235)');
+  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
+  const paintColor = useSelector((state: RootState) => state.app.paintOps.primary);
+  const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
 
   // This should only run on the very first render
   if (!GlobalSquareRenderingInfo.has(squareTag)) {
@@ -64,12 +62,8 @@ const Square = (props: Props): JSX.Element => {
     height: `${pixelSize}px`,
     minWidth: `${pixelSize}px`,
     backgroundColor: defaultColor.toString(),
-    transitionProperty: `all`,
-    transitionTimingFunction: `ease`,
-    transitionDuration: `${timeDelta}ms`,
+    transition: `background-color ${timeDelta}ms ease`,
   };
-
-  // if (squareTag === '0-0') console.log(renderingInfo);
 
   let combinedColor = defaultColor;
 
@@ -105,8 +99,19 @@ const Square = (props: Props): JSX.Element => {
     combinedColor = renderingInfo.backgroundColor;
   }
 
-  if (hovering) {
-    combinedColor = Color.mix(combinedColor, hoverColor) as unknown as Color;
+  // HOVER STYLE
+  switch (cursorMode) {
+    case CursorMode.default:
+      if (hovering) {
+        combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+      }
+      break;
+    case CursorMode.painting:
+      if (hovering) {
+        style.outline = `2px dashed ${paintColor}`;
+        style.zIndex = 2;
+      }
+      break;
   }
 
   style.backgroundColor = combinedColor.toString();
@@ -115,8 +120,6 @@ const Square = (props: Props): JSX.Element => {
   for (const objectCSSClass of renderingInfo.objectCSSClasses) {
     renderClassString += objectCSSClass.className + ' ';
   }
-
-  // console.log(renderClassString);
 
   // #region
   // EVENT FUNCTIONS
@@ -129,29 +132,33 @@ const Square = (props: Props): JSX.Element => {
     setHovering(false);
   };
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleClick = (e: MouseEvent) => {
     e.preventDefault();
-    if (e.ctrlKey) {
-      rotateSquareY();
-      return;
-    }
-    if (e.altKey) {
-      rotateSquareX();
-      return;
-    }
-    if (e.button === 0) {
-      // const vpong: VPong = createVPong(leftClickColor, squareState.x, squareState.y, 1, 8);
-      // dispatch(spawnVPong({ vpong: vpong }));
-    } else if (e.button === 2) {
-      // const vpong: VPong = createVPong(rightClickColor, squareState.x, squareState.y, 1, 8);
-      // dispatch(spawnVPong({ vpong: vpong }));
-    } else {
-      // const vpong: VPong = createVPong(middleClickColor, squareState.x, squareState.y, 1, 8);
-      // dispatch(spawnVPong({ vpong: vpong }));
+    switch (cursorMode) {
+      case CursorMode.default:
+        if (e.ctrlKey) {
+          rotateSquareY();
+          return;
+        }
+        if (e.altKey) {
+          rotateSquareX();
+          return;
+        }
+        break;
+      case CursorMode.painting:
+        console.log('Trying to paint');
+        if (e.button === 0) {
+          dispatch(loadObjects([createPaint({ primary: paintColor }, props.x, props.y)]));
+        } else if (e.button === 2) {
+        } else {
+        }
+        break;
     }
   };
 
   const handleMouseUp = () => {};
+
+  const handleMouseDown = () => {};
 
   const rotateSquareY = () => {
     setRotateY(!rotateY);
@@ -169,6 +176,7 @@ const Square = (props: Props): JSX.Element => {
       onMouseOut={handleMouseOut}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onClick={handleClick}
       onContextMenu={(e) => e.preventDefault()}
     ></div>
   );

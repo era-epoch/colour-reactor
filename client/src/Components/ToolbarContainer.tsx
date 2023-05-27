@@ -1,4 +1,4 @@
-import { faPaintBrush, faStamp, faToolbox } from '@fortawesome/free-solid-svg-icons';
+import { faMousePointer, faStamp, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
@@ -61,7 +61,7 @@ const ToolbarContainer = (): JSX.Element => {
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
         <BrushToolbar />
         <div className="toolbar-icon" style={iconStyle} onClick={handleToggleBrushToolbar}>
-          <FontAwesomeIcon icon={faPaintBrush} />
+          <FontAwesomeIcon icon={faMousePointer} />
         </div>
       </div>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>

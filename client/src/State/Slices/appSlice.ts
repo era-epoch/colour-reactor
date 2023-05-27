@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { cyberpunk } from '../../ColorSchemes';
-import { BoardObjectSpawnOptions } from '../../types';
+import { BoardObjectSpawnOptions, CursorMode } from '../../types';
 
 export interface AppState {
   colorScheme: string[];
@@ -10,6 +10,7 @@ export interface AppState {
   bigHLineOps: BoardObjectSpawnOptions;
   bigVLineOps: BoardObjectSpawnOptions;
   waveOps: BoardObjectSpawnOptions;
+  paintOps: BoardObjectSpawnOptions;
   defaultColor: string;
   cursorColor: string;
   leftClickColor: string;
@@ -18,9 +19,10 @@ export interface AppState {
   timeDelta: number; // # of miliseconds between updates
   animations: string[];
   paused: boolean;
+  cursorMode: CursorMode;
 }
 
-const fallbackColor = 'black';
+export const fallbackColor = 'black';
 
 const initialAppState: AppState = {
   colorScheme: cyberpunk,
@@ -30,6 +32,7 @@ const initialAppState: AppState = {
   bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'rotate3d-x' },
   bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'rotate3d-y' },
   waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down' },
+  paintOps: { primary: fallbackColor },
   defaultColor: 'white',
   cursorColor: fallbackColor,
   leftClickColor: fallbackColor,
@@ -38,6 +41,7 @@ const initialAppState: AppState = {
   timeDelta: 250,
   animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin', 'circularize'],
   paused: false,
+  cursorMode: CursorMode.default,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
@@ -47,11 +51,8 @@ const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
 initialAppState.bigHLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
-
+initialAppState.paintOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.leftClickColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.rightClickColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.middleClickColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
 
 const appSlice = createSlice({
   name: 'app',
@@ -150,6 +151,17 @@ const appSlice = createSlice({
         state.bigVLineOps.tertiary = action.payload.tertiary;
       }
     },
+    setPaintOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
+      if (action.payload.primary) {
+        state.paintOps.primary = action.payload.primary;
+      }
+      if (action.payload.secondary) {
+        state.paintOps.secondary = action.payload.secondary;
+      }
+      if (action.payload.tertiary) {
+        state.paintOps.tertiary = action.payload.tertiary;
+      }
+    },
     setCursorColor: (state: AppState, action: PayloadAction<string>) => {
       state.cursorColor = action.payload;
     },
@@ -167,6 +179,9 @@ const appSlice = createSlice({
     },
     setTimeDelta: (state: AppState, action: PayloadAction<number>) => {
       state.timeDelta = action.payload;
+    },
+    setCursorMode: (state: AppState, action: PayloadAction<CursorMode>) => {
+      state.cursorMode = action.payload;
     },
   },
 });
@@ -188,4 +203,6 @@ export const {
   setRightClickColor,
   setPause,
   setTimeDelta,
+  setPaintOps,
+  setCursorMode,
 } = appSlice.actions;

@@ -9,6 +9,7 @@ import {
   BoardObjectSpawnOptions,
   UpdateFunction,
 } from '../../types';
+import { fallbackColor } from '../Slices/appSlice';
 import { BoardState } from '../Slices/boardSlice';
 import { addObjectToSquare, removeObjectFromSquare } from '../Slices/helpers';
 import { RenderMap, UpdateMap } from './Maps';
@@ -42,7 +43,7 @@ export const createHPong = (
 ) => {
   const HPong: HPong = {
     id: uuidv4(),
-    primary: ops.primary as string,
+    primary: ops.primary !== undefined ? ops.primary : fallbackColor,
     posX: x,
     posY: y,
     tickDelay: tickDelay,

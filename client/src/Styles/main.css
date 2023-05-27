@@ -13,6 +13,10 @@
   background-color: white;
 }
 
+.square {
+  cursor: pointer;
+}
+
 svg {
   transition: all 200ms ease;
 }
