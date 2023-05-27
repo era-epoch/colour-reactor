@@ -1,8 +1,12 @@
 import ColorSelector from './SubtoolbarOptions/ColorSelector';
 
+// COMPONENT DEPRECATED
+
 interface Props {
   setColorCallback?: Function;
   initColor?: string;
+  setTouchdownAnimationCallback?: Function;
+  initTouchdownAnimation?: string;
 }
 
 const Subtoolbar = (props: Props): JSX.Element => {

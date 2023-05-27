@@ -4,8 +4,6 @@ import { MouseEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { RenderMap } from '../State/BoardObjects/Maps';
-import { VPong, createVPong } from '../State/BoardObjects/VPong';
-import { spawnVPong } from '../State/Slices/boardSlice';
 import { RootState } from '../State/rootReducer';
 import { BoardObjectCSSClass, BoardObjectRenderOptions, BoardObjectRenderOutput } from '../types';
 
@@ -56,6 +54,7 @@ const Square = (props: Props): JSX.Element => {
   const [hovering, setHovering] = useState(false);
   const [rotateY, setRotateY] = useState(false);
   const [rotateX, setRotateX] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [animTrigger, setAnimTrigger] = useState('');
 
   const renderingInfo: SquareRenderInfoEntry = GlobalSquareRenderingInfo.get(squareTag) as SquareRenderInfoEntry;
@@ -75,7 +74,6 @@ const Square = (props: Props): JSX.Element => {
   let combinedColor = defaultColor;
 
   // This should only run ONCE per tick
-  // eslint-disable-next-line no-lone-blocks
   if (ticksElapsed > prevTickRef.current) {
     for (const object of squareState.content) {
       const renderFunction = RenderMap.get(object.tag);
@@ -86,9 +84,11 @@ const Square = (props: Props): JSX.Element => {
         // Replace the current color with the one from this render pass
         combinedColor = renderOut.backgroundColor;
 
-        // Add the renderer classes to the global scope map
         for (const renderClass of renderOut.cssClasses) {
+          // Add the renderer classes to the global scope map
           renderingInfo.objectCSSClasses.push(renderClass);
+
+          // When the animation times out, remove it from the rendering classes and force a component re-render
           const timeout = setTimeout(() => {
             renderingInfo.objectCSSClasses = renderingInfo.objectCSSClasses.filter(
               (entry) => entry.uid !== renderClass.uid,
@@ -116,7 +116,7 @@ const Square = (props: Props): JSX.Element => {
     renderClassString += objectCSSClass.className + ' ';
   }
 
-  console.log(renderClassString);
+  // console.log(renderClassString);
 
   // #region
   // EVENT FUNCTIONS
@@ -140,14 +140,14 @@ const Square = (props: Props): JSX.Element => {
       return;
     }
     if (e.button === 0) {
-      const vpong: VPong = createVPong(leftClickColor, squareState.x, squareState.y, 1, 8);
-      dispatch(spawnVPong({ vpong: vpong }));
+      // const vpong: VPong = createVPong(leftClickColor, squareState.x, squareState.y, 1, 8);
+      // dispatch(spawnVPong({ vpong: vpong }));
     } else if (e.button === 2) {
-      const vpong: VPong = createVPong(rightClickColor, squareState.x, squareState.y, 1, 8);
-      dispatch(spawnVPong({ vpong: vpong }));
+      // const vpong: VPong = createVPong(rightClickColor, squareState.x, squareState.y, 1, 8);
+      // dispatch(spawnVPong({ vpong: vpong }));
     } else {
-      const vpong: VPong = createVPong(middleClickColor, squareState.x, squareState.y, 1, 8);
-      dispatch(spawnVPong({ vpong: vpong }));
+      // const vpong: VPong = createVPong(middleClickColor, squareState.x, squareState.y, 1, 8);
+      // dispatch(spawnVPong({ vpong: vpong }));
     }
   };
 

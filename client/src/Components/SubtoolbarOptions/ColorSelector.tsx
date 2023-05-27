@@ -5,7 +5,7 @@ import { RootState } from '../../State/rootReducer';
 
 interface Props {
   setColorCallback: Function;
-  initColor: string;
+  initColor?: string;
 }
 
 export const colorSelectButtonStyle: CSS.Properties = {};
@@ -31,9 +31,9 @@ const ColorSelector = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="color-selector-wrapper">
+    <div className="color-selector-wrapper subtoolbar-option-wrapper">
       <div className="relative-parent">
-        <div className="color-select-button" style={buttonStyle} onClick={toggleColor}></div>
+        <div className="color-select-button subtoolbar-button" style={buttonStyle} onClick={toggleColor}></div>
       </div>
     </div>
   );

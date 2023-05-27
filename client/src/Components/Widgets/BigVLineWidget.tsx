@@ -4,11 +4,12 @@ import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createHPong } from '../../State/BoardObjects/HPong';
-import { setBigVLineColor } from '../../State/Slices/appSlices';
+import { setBigVLineOps } from '../../State/Slices/appSlices';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { BoardObject } from '../../types';
-import Subtoolbar from '../Subtoolbar';
+import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -17,12 +18,12 @@ interface Props {
 const BigVLineWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const boardHeight = useSelector((state: RootState) => state.board.squares.length);
-  const widgetColor = useSelector((state: RootState) => state.app.bigVLineColor);
+  const bigVLineOps = useSelector((state: RootState) => state.app.bigVLineOps);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
-  widgetWrapperStyle.color = widgetColor;
-  widgetWrapperStyle.borderColor = widgetColor;
+  widgetWrapperStyle.color = bigVLineOps.primary;
+  widgetWrapperStyle.borderColor = bigVLineOps.primary;
 
   const iconStyle: CSS.Properties = {};
   if (hover) {
@@ -48,13 +49,19 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   const handleClick = () => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardHeight; i++) {
-      objects.push(createHPong(widgetColor, 0, i, 1, 8));
+      objects.push(
+        createHPong({ primary: bigVLineOps.primary, touchdownAnimation: bigVLineOps.touchdownAnimation }, 0, i, 1, 8),
+      );
     }
     dispatch(loadObjects(objects));
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setBigVLineColor(color));
+    dispatch(setBigVLineOps({ primary: color }));
+  };
+
+  const setTouchdownAnimation = (anim: string) => {
+    dispatch(setBigVLineOps({ touchdownAnimation: anim }));
   };
 
   return (
@@ -69,7 +76,15 @@ const BigVLineWidget = (props: Props): JSX.Element => {
         >
           <FontAwesomeIcon icon={faGripLinesVertical} style={iconStyle} />
         </div>
-        <Subtoolbar setColorCallback={setWidgetColor} initColor={widgetColor} />
+        <div className="subtoolbar-wrapper">
+          <div className="subtoolbar-container">
+            <ColorSelector setColorCallback={setWidgetColor} initColor={bigVLineOps.primary} />
+            <AnimationSelector
+              selectionCallback={setTouchdownAnimation}
+              initAnimation={bigVLineOps.touchdownAnimation as string}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

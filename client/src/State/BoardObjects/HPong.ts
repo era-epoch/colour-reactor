@@ -2,9 +2,11 @@ import Color from 'colorjs.io';
 import { v4 as uuidv4 } from 'uuid';
 import {
   BoardObject,
+  BoardObjectCSSClass,
   BoardObjectRenderFunction,
   BoardObjectRenderOptions,
   BoardObjectRenderOutput,
+  BoardObjectSpawnOptions,
   UpdateFunction,
 } from '../../types';
 import { BoardState } from '../Slices/boardSlice';
@@ -18,6 +20,9 @@ export interface HPong extends BoardObject {
   ticksSinceUpdate: number;
   polarity: boolean;
   ghostTicks: number;
+  touchdownAnimation: string;
+  liftoffAnimation: string;
+  ghostAnimation: string;
 }
 
 export interface HPongGhost extends BoardObject {
@@ -25,12 +30,19 @@ export interface HPongGhost extends BoardObject {
   posY: number;
   lifespan: number;
   age: number;
+  ghostAnimation: string;
 }
 
-export const createHPong = (primary: string, x: number, y: number, tickDelay: number, ghostTicks: number) => {
+export const createHPong = (
+  ops: BoardObjectSpawnOptions,
+  x: number,
+  y: number,
+  tickDelay: number,
+  ghostTicks: number,
+) => {
   const HPong: HPong = {
     id: uuidv4(),
-    primary: primary,
+    primary: ops.primary as string,
     posX: x,
     posY: y,
     tickDelay: tickDelay,
@@ -38,6 +50,9 @@ export const createHPong = (primary: string, x: number, y: number, tickDelay: nu
     polarity: true,
     tag: 'HPong',
     ghostTicks: ghostTicks,
+    touchdownAnimation: ops.touchdownAnimation !== undefined ? ops.touchdownAnimation : '',
+    liftoffAnimation: ops.liftoffAnimation !== undefined ? ops.liftoffAnimation : '',
+    ghostAnimation: ops.ghostAnimation !== undefined ? ops.ghostAnimation : '',
   };
   return HPong;
 };
@@ -51,6 +66,7 @@ export const createHPongGhost = (source: HPong) => {
     tag: 'HPongGhost',
     lifespan: source.ghostTicks,
     age: 1,
+    ghostAnimation: source.ghostAnimation,
   };
   return ghost;
 };
@@ -97,15 +113,19 @@ export const advanceHPongGhost: UpdateFunction = (obj: BoardObject, state: Board
 export const renderHPong: BoardObjectRenderFunction = (ops: BoardObjectRenderOptions): BoardObjectRenderOutput => {
   const hpong = ops.obj as HPong;
   const combinedColor: Color = Color.mix(ops.backgroundColor, hpong.primary) as unknown as Color;
+
+  const cssClasses: BoardObjectCSSClass[] = [];
+  if (hpong.touchdownAnimation !== '') {
+    cssClasses.push({
+      uid: uuidv4(),
+      className: hpong.touchdownAnimation,
+      duration: 800,
+    });
+  }
+
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
-    cssClasses: [
-      {
-        uid: uuidv4(),
-        className: 'rotate3d-y',
-        duration: 800,
-      },
-    ],
+    cssClasses: cssClasses,
   };
   return output;
 };
@@ -115,9 +135,19 @@ export const renderHPongGhost: BoardObjectRenderFunction = (ops: BoardObjectRend
   const p_factor = 1 - (ghost.age + 1) / (ghost.lifespan + 2);
   const p = 0.5 * p_factor;
   const combinedColor: Color = Color.mix(ops.backgroundColor, ghost.primary, p) as unknown as Color;
+
+  const cssClasses: BoardObjectCSSClass[] = [];
+  if (ghost.ghostAnimation !== '') {
+    cssClasses.push({
+      uid: uuidv4(),
+      className: ghost.ghostAnimation,
+      duration: 800,
+    });
+  }
+
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
-    cssClasses: [],
+    cssClasses: cssClasses,
   };
   return output;
 };

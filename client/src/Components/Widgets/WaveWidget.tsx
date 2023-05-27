@@ -4,11 +4,12 @@ import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createVPong } from '../../State/BoardObjects/VPong';
-import { setWaveColor } from '../../State/Slices/appSlices';
+import { setWaveOps } from '../../State/Slices/appSlices';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { BoardObject } from '../../types';
-import Subtoolbar from '../Subtoolbar';
+import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -18,12 +19,12 @@ const WaveWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const boardWidth = useSelector((state: RootState) => state.board.squares[0].length);
   const boardHeight = useSelector((state: RootState) => state.board.squares.length);
-  const widgetColor = useSelector((state: RootState) => state.app.waveColor);
+  const waveOps = useSelector((state: RootState) => state.app.waveOps);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
-  widgetWrapperStyle.color = widgetColor;
-  widgetWrapperStyle.borderColor = widgetColor;
+  widgetWrapperStyle.color = waveOps.primary;
+  widgetWrapperStyle.borderColor = waveOps.primary;
 
   const iconStyle: CSS.Properties = {};
   if (hover) {
@@ -53,7 +54,9 @@ const WaveWidget = (props: Props): JSX.Element => {
     let j = 0;
     let j_direction = 'down';
     while (centerI - i >= 0) {
-      objects.push(createVPong(widgetColor, centerI - i, j, 1, 3));
+      objects.push(
+        createVPong({ primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation }, centerI - i, j, 1, 3),
+      );
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
           j++;
@@ -75,7 +78,9 @@ const WaveWidget = (props: Props): JSX.Element => {
     j = 1;
     j_direction = 'down';
     while (centerI + i < boardWidth) {
-      objects.push(createVPong(widgetColor, centerI + i, j, 1, 3));
+      objects.push(
+        createVPong({ primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation }, centerI + i, j, 1, 3),
+      );
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
           j++;
@@ -98,7 +103,11 @@ const WaveWidget = (props: Props): JSX.Element => {
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setWaveColor(color));
+    dispatch(setWaveOps({ primary: color }));
+  };
+
+  const setTouchdownAnimation = (anim: string) => {
+    dispatch(setWaveOps({ touchdownAnimation: anim }));
   };
 
   return (
@@ -113,7 +122,15 @@ const WaveWidget = (props: Props): JSX.Element => {
         >
           <FontAwesomeIcon icon={faWater} style={iconStyle} />
         </div>
-        <Subtoolbar setColorCallback={setWidgetColor} initColor={widgetColor} />
+        <div className="subtoolbar-wrapper">
+          <div className="subtoolbar-container">
+            <ColorSelector setColorCallback={setWidgetColor} initColor={waveOps.primary} />
+            <AnimationSelector
+              selectionCallback={setTouchdownAnimation}
+              initAnimation={waveOps.touchdownAnimation as string}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

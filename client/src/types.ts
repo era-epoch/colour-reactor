@@ -32,3 +32,14 @@ export interface BoardObjectCSSClass {
   className: string;
   duration: number; // how long the class should stay on the square, in miliseconds
 }
+
+export type BoardObjectSpawnOptions = Partial<BoardObjectSpawnOptionsInternal>;
+
+export interface BoardObjectSpawnOptionsInternal {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  touchdownAnimation: string;
+  liftoffAnimation: string;
+  ghostAnimation: string;
+}

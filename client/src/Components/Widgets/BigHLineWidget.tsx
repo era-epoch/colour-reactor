@@ -4,11 +4,12 @@ import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createVPong } from '../../State/BoardObjects/VPong';
-import { setBigHLineColor } from '../../State/Slices/appSlices';
+import { setBigHLineOps } from '../../State/Slices/appSlices';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { BoardObject } from '../../types';
-import Subtoolbar from '../Subtoolbar';
+import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -17,12 +18,12 @@ interface Props {
 const BigHLineWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const boardWidth = useSelector((state: RootState) => state.board.squares[0].length);
-  const widgetColor = useSelector((state: RootState) => state.app.bigHLineColor);
+  const bigHLineOps = useSelector((state: RootState) => state.app.bigHLineOps);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
-  widgetWrapperStyle.color = widgetColor;
-  widgetWrapperStyle.borderColor = widgetColor;
+  widgetWrapperStyle.color = bigHLineOps.primary;
+  widgetWrapperStyle.borderColor = bigHLineOps.primary;
 
   const iconStyle: CSS.Properties = {};
   if (hover) {
@@ -48,13 +49,19 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   const handleClick = () => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardWidth; i++) {
-      objects.push(createVPong(widgetColor, i, 0, 1, 3));
+      objects.push(
+        createVPong({ primary: bigHLineOps.primary, touchdownAnimation: bigHLineOps.touchdownAnimation }, i, 0, 1, 3),
+      );
     }
     dispatch(loadObjects(objects));
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setBigHLineColor(color));
+    dispatch(setBigHLineOps({ primary: color }));
+  };
+
+  const setTouchdownAnimation = (anim: string) => {
+    dispatch(setBigHLineOps({ touchdownAnimation: anim }));
   };
 
   return (
@@ -69,7 +76,15 @@ const BigHLineWidget = (props: Props): JSX.Element => {
         >
           <FontAwesomeIcon icon={faGripLines} style={iconStyle} />
         </div>
-        <Subtoolbar setColorCallback={setWidgetColor} initColor={widgetColor} />
+        <div className="subtoolbar-wrapper">
+          <div className="subtoolbar-container">
+            <ColorSelector setColorCallback={setWidgetColor} initColor={bigHLineOps.primary} />
+            <AnimationSelector
+              selectionCallback={setTouchdownAnimation}
+              initAnimation={bigHLineOps.touchdownAnimation as string}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
