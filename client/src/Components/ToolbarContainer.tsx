@@ -2,7 +2,7 @@ import { faPaintBrush, faStamp, faToolbox } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { toggleBrushToolbar, toggleOpsToolbar, toggleStampToolbar } from '../State/Slices/appSlices';
+import { toggleBrushToolbar, toggleOpsToolbar, toggleStampToolbar } from '../State/Slices/appSlice';
 import BrushToolbar from './Toolbars/BrushToolbar';
 import OpsToolbar from './Toolbars/OpsToolbar';
 import StampToolbar from './Toolbars/StampToolbar';

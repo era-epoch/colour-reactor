@@ -8,7 +8,7 @@ import {
   setLeftClickColor,
   setMiddleClickColor,
   setRightClickColor,
-} from '../../State/Slices/appSlices';
+} from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 

@@ -4,7 +4,7 @@ import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createHPong } from '../../State/BoardObjects/HPong';
-import { setBigVLineOps } from '../../State/Slices/appSlices';
+import { setBigVLineOps } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { BoardObject } from '../../types';
