@@ -24,14 +24,13 @@ export interface Paint extends BoardObject {
   age: number;
 }
 
-export const createPaint = (ops: BoardObjectSpawnOptions, x: number, y: number): Paint => {
-  console.log('loading paint');
+export const createPaint = (ops: BoardObjectSpawnOptions): Paint => {
   const paint: Paint = {
     id: uuidv4(),
     tag: 'paint',
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
-    posX: x,
-    posY: y,
+    posX: ops.posX !== undefined ? ops.posX : 0,
+    posY: ops.posY !== undefined ? ops.posY : 0,
     updateAnimation: '',
     lifespan: Infinity,
     age: 0,
@@ -41,10 +40,11 @@ export const createPaint = (ops: BoardObjectSpawnOptions, x: number, y: number):
 
 export const updatePaint: UpdateFunction = (obj: BoardObject, state: BoardState) => {
   const paint = obj as Paint;
-  if (paint.age === 0) {
-    addObjectToSquare(paint, state.squares[paint.posY][paint.posX]);
+  if (paint.age !== 0) {
+    removeObjectFromSquare(paint, state.squares[paint.posY][paint.posX]);
   }
   paint.age++;
+  addObjectToSquare(paint, state.squares[paint.posY][paint.posX]);
   if (paint.age > paint.lifespan) {
     removeObjectFromSquare(paint, state.squares[paint.posY][paint.posX]);
     state.objectRemovalQueue.push(paint);
@@ -53,6 +53,7 @@ export const updatePaint: UpdateFunction = (obj: BoardObject, state: BoardState)
 
 export const renderPaint: BoardObjectRenderFunction = (ops: BoardObjectRenderOptions): BoardObjectRenderOutput => {
   const paint = ops.obj as Paint;
+  console.log('Age: ' + paint.age);
   const combinedColor: Color = Color.mix(ops.backgroundColor, paint.primary) as unknown as Color;
 
   const output: BoardObjectRenderOutput = {

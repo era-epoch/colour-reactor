@@ -4,6 +4,7 @@ import { MouseEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { RenderMap } from '../State/BoardObjects/Maps';
+import { createMorphPaint } from '../State/BoardObjects/MorphPaint';
 import { createPaint } from '../State/BoardObjects/Paint';
 import { loadObjects } from '../State/Slices/boardSlice';
 import { RootState } from '../State/rootReducer';
@@ -37,9 +38,11 @@ const Square = (props: Props): JSX.Element => {
   const defaultColorString = useSelector((state: RootState) => state.app.defaultColor);
   const defaultColor = new Color(defaultColorString);
 
-  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
-  const paintColor = useSelector((state: RootState) => state.app.paintOps.primary);
+  // BRUSHES
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
+  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
+  const paintOps = useSelector((state: RootState) => state.app.paintOps);
+  const morphPaintOps = useSelector((state: RootState) => state.app.morphPaintOps);
 
   // This should only run on the very first render
   if (!GlobalSquareRenderingInfo.has(squareTag)) {
@@ -104,11 +107,18 @@ const Square = (props: Props): JSX.Element => {
     case CursorMode.default:
       if (hovering) {
         combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+        style.cursor = 'default';
       }
       break;
     case CursorMode.painting:
       if (hovering) {
-        style.outline = `2px dashed ${paintColor}`;
+        style.outline = `2px dashed ${paintOps.primary}`;
+        style.zIndex = 2;
+      }
+      break;
+    case CursorMode.morphPainting:
+      if (hovering) {
+        style.outline = `2px dashed ${morphPaintOps.morphColors![0]}`;
         style.zIndex = 2;
       }
       break;
@@ -146,11 +156,15 @@ const Square = (props: Props): JSX.Element => {
         }
         break;
       case CursorMode.painting:
-        console.log('Trying to paint');
         if (e.button === 0) {
-          dispatch(loadObjects([createPaint({ primary: paintColor }, props.x, props.y)]));
-        } else if (e.button === 2) {
-        } else {
+          dispatch(loadObjects([createPaint({ primary: paintOps.primary, posX: props.x, posY: props.y })]));
+        }
+        break;
+      case CursorMode.morphPainting:
+        if (e.button === 0) {
+          dispatch(
+            loadObjects([createMorphPaint({ morphColors: morphPaintOps.morphColors, posX: props.x, posY: props.y })]),
+          );
         }
         break;
     }

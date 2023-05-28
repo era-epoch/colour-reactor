@@ -25,6 +25,10 @@ const TimeWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
+  if (paused) {
+    widgetStyle.backgroundColor = 'lightgray';
+  }
+
   const handleClick = () => {
     const pauseTarget = !paused;
     dispatch(setPause(pauseTarget));

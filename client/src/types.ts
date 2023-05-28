@@ -39,12 +39,29 @@ export interface BoardObjectSpawnOptionsInternal {
   primary: string;
   secondary: string;
   tertiary: string;
+  colors: string[];
   touchdownAnimation: string;
   liftoffAnimation: string;
   ghostAnimation: string;
+  updateAnimation: string;
+  morphCompleteAnimation: string;
+  morphDelta: number;
+  morphColors: string[];
+  morphType: MorphType;
+  lifespan: number;
+  age: number;
+  posX: number;
+  posY: number;
 }
 
 export enum CursorMode {
   default,
   painting,
+  morphPainting,
+}
+
+export enum MorphType {
+  cycle,
+  pingpong,
+  random,
 }

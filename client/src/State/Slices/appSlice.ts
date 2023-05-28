@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { cyberpunk } from '../../ColorSchemes';
+import { basicRainbow } from '../../ColorSchemes';
 import { BoardObjectSpawnOptions, CursorMode } from '../../types';
 
 export interface AppState {
@@ -11,6 +11,7 @@ export interface AppState {
   bigVLineOps: BoardObjectSpawnOptions;
   waveOps: BoardObjectSpawnOptions;
   paintOps: BoardObjectSpawnOptions;
+  morphPaintOps: BoardObjectSpawnOptions;
   defaultColor: string;
   cursorColor: string;
   leftClickColor: string;
@@ -20,19 +21,21 @@ export interface AppState {
   animations: string[];
   paused: boolean;
   cursorMode: CursorMode;
+  fillColor: string;
 }
 
 export const fallbackColor = 'black';
 
 const initialAppState: AppState = {
-  colorScheme: cyberpunk,
+  colorScheme: basicRainbow,
   opsToolbarOpen: false,
   brushToolbarOpen: false,
   stampToolbarOpen: false,
-  bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'rotate3d-x' },
-  bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'rotate3d-y' },
+  bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation' },
+  bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation' },
   waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down' },
   paintOps: { primary: fallbackColor },
+  morphPaintOps: {},
   defaultColor: 'white',
   cursorColor: fallbackColor,
   leftClickColor: fallbackColor,
@@ -42,6 +45,7 @@ const initialAppState: AppState = {
   animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin', 'circularize'],
   paused: false,
   cursorMode: CursorMode.default,
+  fillColor: fallbackColor,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
@@ -53,6 +57,13 @@ initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.
 initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.paintOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
 initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
+
+initialAppState.morphPaintOps.morphColors = [
+  ChooseRandomColorInScheme(initialAppState.colorScheme),
+  ChooseRandomColorInScheme(initialAppState.colorScheme),
+];
+
+initialAppState.fillColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
 
 const appSlice = createSlice({
   name: 'app',
@@ -162,6 +173,14 @@ const appSlice = createSlice({
         state.paintOps.tertiary = action.payload.tertiary;
       }
     },
+    setMorphPaintOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
+      if (action.payload.primary) {
+        state.paintOps.primary = action.payload.primary;
+      }
+      if (action.payload.morphColors) {
+        state.morphPaintOps.morphColors = action.payload.morphColors;
+      }
+    },
     setCursorColor: (state: AppState, action: PayloadAction<string>) => {
       state.cursorColor = action.payload;
     },
@@ -182,6 +201,12 @@ const appSlice = createSlice({
     },
     setCursorMode: (state: AppState, action: PayloadAction<CursorMode>) => {
       state.cursorMode = action.payload;
+    },
+    setMorphPaintColorAtIndex: (state: AppState, action: PayloadAction<{ index: number; color: string }>) => {
+      if (state.morphPaintOps.morphColors) state.morphPaintOps.morphColors[action.payload.index] = action.payload.color;
+    },
+    setFillColor: (state: AppState, action: PayloadAction<string>) => {
+      state.fillColor = action.payload;
     },
   },
 });
@@ -205,4 +230,7 @@ export const {
   setTimeDelta,
   setPaintOps,
   setCursorMode,
+  setMorphPaintOps,
+  setMorphPaintColorAtIndex,
+  setFillColor,
 } = appSlice.actions;
