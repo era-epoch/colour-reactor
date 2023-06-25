@@ -52,6 +52,7 @@ export interface BoardObjectSpawnOptionsInternal {
   age: number;
   posX: number;
   posY: number;
+  direction: Direction;
 }
 
 export enum CursorMode {
@@ -64,4 +65,19 @@ export enum MorphType {
   cycle,
   pingpong,
   random,
+}
+
+export enum Direction {
+  left,
+  right,
+  pingpong_h,
+  up,
+  down,
+  pingpong_v,
+}
+
+export enum DirectionType {
+  all,
+  horizontal,
+  vertical,
 }

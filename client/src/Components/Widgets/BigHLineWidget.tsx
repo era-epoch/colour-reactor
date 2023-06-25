@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createVPong } from '../../State/BoardObjects/VPong';
+import { createMover } from '../../State/BoardObjects/Mover';
 import { setBigHLineOps } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject } from '../../types';
+import { BoardObject, Direction } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import DirectionSelector from '../SubtoolbarOptions/DirectionSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -19,6 +20,7 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const boardWidth = useSelector((state: RootState) => state.board.squares[0].length);
   const bigHLineOps = useSelector((state: RootState) => state.app.bigHLineOps);
+  const directionOptions = useSelector((state: RootState) => state.app.verticalDirections);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
   const [hover, setHover] = useState(false);
@@ -50,7 +52,17 @@ const BigHLineWidget = (props: Props): JSX.Element => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardWidth; i++) {
       objects.push(
-        createVPong({ primary: bigHLineOps.primary, touchdownAnimation: bigHLineOps.touchdownAnimation }, i, 0, 1, 3),
+        createMover(
+          {
+            primary: bigHLineOps.primary,
+            touchdownAnimation: bigHLineOps.touchdownAnimation,
+            direction: bigHLineOps.direction,
+          },
+          i,
+          0,
+          1,
+          3,
+        ),
       );
     }
     dispatch(loadObjects(objects));
@@ -62,6 +74,10 @@ const BigHLineWidget = (props: Props): JSX.Element => {
 
   const setTouchdownAnimation = (anim: string) => {
     dispatch(setBigHLineOps({ touchdownAnimation: anim }));
+  };
+
+  const setDirection = (dir: Direction) => {
+    dispatch(setBigHLineOps({ direction: dir }));
   };
 
   return (
@@ -82,6 +98,11 @@ const BigHLineWidget = (props: Props): JSX.Element => {
             <AnimationSelector
               selectionCallback={setTouchdownAnimation}
               initAnimation={bigHLineOps.touchdownAnimation as string}
+            />
+            <DirectionSelector
+              selectionCallback={setDirection}
+              directionOptions={directionOptions}
+              initDirection={bigHLineOps.direction as Direction}
             />
           </div>
         </div>

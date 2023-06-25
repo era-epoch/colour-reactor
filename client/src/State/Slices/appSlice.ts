@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { basicRainbow } from '../../ColorSchemes';
-import { BoardObjectSpawnOptions, CursorMode } from '../../types';
+import { BoardObjectSpawnOptions, CursorMode, Direction } from '../../types';
 
 export interface AppState {
   colorScheme: string[];
@@ -19,6 +19,9 @@ export interface AppState {
   middleClickColor: string;
   timeDelta: number; // # of miliseconds between updates
   animations: string[];
+  directions: Direction[];
+  verticalDirections: Direction[];
+  horizontalDirections: Direction[];
   paused: boolean;
   cursorMode: CursorMode;
   fillColor: string;
@@ -31,8 +34,8 @@ const initialAppState: AppState = {
   opsToolbarOpen: false,
   brushToolbarOpen: false,
   stampToolbarOpen: false,
-  bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation' },
-  bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation' },
+  bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
+  bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.right },
   waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down' },
   paintOps: { primary: fallbackColor },
   morphPaintOps: {},
@@ -43,6 +46,16 @@ const initialAppState: AppState = {
   middleClickColor: fallbackColor,
   timeDelta: 250,
   animations: ['no-animation', 'rotate3d-y', 'rotate3d-x', 'tremble', 'scale-down', 'scale-up', 'spin', 'circularize'],
+  directions: [
+    Direction.down,
+    Direction.up,
+    Direction.pingpong_v,
+    Direction.left,
+    Direction.right,
+    Direction.pingpong_h,
+  ],
+  verticalDirections: [Direction.down, Direction.up, Direction.pingpong_v],
+  horizontalDirections: [Direction.left, Direction.right, Direction.pingpong_h],
   paused: false,
   cursorMode: CursorMode.default,
   fillColor: fallbackColor,
@@ -121,6 +134,9 @@ const appSlice = createSlice({
       if (action.payload.tertiary) {
         state.waveOps.tertiary = action.payload.tertiary;
       }
+      if (action.payload.direction) {
+        state.waveOps.direction = action.payload.direction;
+      }
     },
     setBigHLineOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
       if (action.payload.primary) {
@@ -141,6 +157,9 @@ const appSlice = createSlice({
       if (action.payload.tertiary) {
         state.bigHLineOps.tertiary = action.payload.tertiary;
       }
+      if (action.payload.direction) {
+        state.bigHLineOps.direction = action.payload.direction;
+      }
     },
     setBigVLineOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
       if (action.payload.primary) {
@@ -160,6 +179,9 @@ const appSlice = createSlice({
       }
       if (action.payload.tertiary) {
         state.bigVLineOps.tertiary = action.payload.tertiary;
+      }
+      if (action.payload.direction) {
+        state.bigVLineOps.direction = action.payload.direction;
       }
     },
     setPaintOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
