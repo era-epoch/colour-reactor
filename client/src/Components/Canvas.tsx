@@ -1,6 +1,6 @@
 import CSS from 'csstype';
 import { useSelector } from 'react-redux';
-import { uid } from 'react-uid';
+import uuid from 'react-uuid';
 import { RootState } from '../State/rootReducer';
 import Square from './Square';
 
@@ -33,9 +33,9 @@ const Canvas = (): JSX.Element => {
     <div className="canvas" style={canvasStyle}>
       {squares.map((row, i) => {
         return (
-          <div className="row" style={rowStyle} key={uid(row)}>
+          <div className="row" style={rowStyle} key={uuid()}>
             {row.map((square, j) => {
-              return <Square key={uid(j)} x={j} y={i} />;
+              return <Square key={uuid()} x={j} y={i} />;
             })}
           </div>
         );

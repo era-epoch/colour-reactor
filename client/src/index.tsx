@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import { store } from './State/store';
+import './Styles/dialogue.css';
 import './Styles/main.css';
 import './Styles/toolbars.css';
 import './index.css';

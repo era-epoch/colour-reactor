@@ -11,10 +11,12 @@
 .canvas {
   overflow: hidden;
   background-color: white;
+  position: relative;
 }
 
 .square {
   cursor: pointer;
+  position: absolute;
 }
 
 svg {

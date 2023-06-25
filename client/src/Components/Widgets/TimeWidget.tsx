@@ -51,7 +51,7 @@ const TimeWidget = (props: Props): JSX.Element => {
               minValue={10}
               maxValue={2000}
               selectionCallback={handleTimeDeltaChange}
-              steps={20}
+              steps={200}
             />
           </div>
         </div>

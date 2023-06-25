@@ -66,6 +66,8 @@ const Square = (props: Props): JSX.Element => {
     minWidth: `${pixelSize}px`,
     backgroundColor: defaultColor.toString(),
     transition: `background-color ${timeDelta}ms ease`,
+    left: `${props.x * pixelSize}px`,
+    top: `${props.y * pixelSize}px`,
   };
 
   let combinedColor = defaultColor;
