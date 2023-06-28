@@ -1,0 +1,28 @@
+.ui-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  border-radius: 1000px;
+  color: var(--button-primary);
+  cursor: pointer;
+  transition: all 200ms ease;
+  border: 2px solid transparent;
+}
+
+.ui-button.round {
+  aspect-ratio: 1 / 1;
+}
+
+.ui-button:hover {
+  translate: -2px -2px;
+  box-shadow: 1px 1px 2px var(--button-primary);
+  border-color: var(--button-primary);
+}
+
+.ui-button:active {
+  translate: 0px 0px;
+  background-color: var(--button-primary);
+  color: white;
+}

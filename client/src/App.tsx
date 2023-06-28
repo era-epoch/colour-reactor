@@ -1,4 +1,5 @@
 import Canvas from './Components/Canvas';
+import EpilepsyWarning from './Components/EpilepsyWarning';
 import MainMenu from './Components/MainMenu';
 import ToolbarContainer from './Components/ToolbarContainer';
 import Updater from './Components/Updater';
@@ -10,6 +11,7 @@ function App() {
       <ToolbarContainer />
       <Updater />
       <MainMenu />
+      <EpilepsyWarning />
     </div>
   );
 }

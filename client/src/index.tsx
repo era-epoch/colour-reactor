@@ -6,6 +6,7 @@ import { store } from './State/store';
 import './Styles/dialogue.css';
 import './Styles/main.css';
 import './Styles/toolbars.css';
+import './Styles/uibutton.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 

@@ -22,3 +22,14 @@ export const defaultWidgetStyle: CSS.Properties = {
   cursor: 'pointer',
   zIndex: '2',
 };
+
+export const defaultPopupStyle: CSS.Properties = {
+  width: `100%`,
+  height: `100%`,
+  borderRadius: `inherit`,
+  position: `absolute`,
+  opacity: `0.9`,
+  transitionProperty: 'all',
+  transitionTimingFunction: 'ease',
+  transitionDuration: '300ms',
+};

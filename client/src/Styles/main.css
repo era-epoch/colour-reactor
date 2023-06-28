@@ -1,3 +1,9 @@
+body {
+  --background: #f8f8f8;
+  --contrast: #333;
+  --button-primary: var(--contrast);
+}
+
 .App {
   overflow: hidden;
   width: 100vw;
@@ -45,6 +51,10 @@ svg:active {
 
 .pause-animations * {
   animation-play-state: paused !important;
+}
+
+.nodisplay {
+  display: none !important;
 }
 
 @keyframes wobble {
@@ -232,4 +242,15 @@ svg:active {
   100% {
     rotate: 360deg;
   }
+}
+
+.popout-shape {
+  background-color: var(--shape-color);
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  position: absolute;
+  box-shadow: 1px 1px 5px var(--shape-color);
+  opacity: 0.9;
+  transition: all 200ms ease;
 }

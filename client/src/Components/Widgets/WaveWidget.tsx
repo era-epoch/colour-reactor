@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createVPong } from '../../State/BoardObjects/VPong';
+import { createMover } from '../../State/BoardObjects/Mover';
 import { setWaveOps } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
@@ -55,7 +55,13 @@ const WaveWidget = (props: Props): JSX.Element => {
     let j_direction = 'down';
     while (centerI - i >= 0) {
       objects.push(
-        createVPong({ primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation }, centerI - i, j, 1, 3),
+        createMover(
+          { primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation, direction: waveOps.direction },
+          centerI - i,
+          j,
+          1,
+          3,
+        ),
       );
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
@@ -79,7 +85,13 @@ const WaveWidget = (props: Props): JSX.Element => {
     j_direction = 'down';
     while (centerI + i < boardWidth) {
       objects.push(
-        createVPong({ primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation }, centerI + i, j, 1, 3),
+        createMover(
+          { primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation, direction: waveOps.direction },
+          centerI + i,
+          j,
+          1,
+          3,
+        ),
       );
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
@@ -98,7 +110,6 @@ const WaveWidget = (props: Props): JSX.Element => {
       }
       i++;
     }
-    console.log('Last row: ' + j);
     dispatch(loadObjects(objects));
   };
 

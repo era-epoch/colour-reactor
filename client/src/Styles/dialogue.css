@@ -1,6 +1,52 @@
 .dialogue {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.dialogue-internal {
+  position: relative;
+  border-radius: 20px;
+}
+
+.dialogue-content {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  color: var(--contrast);
+  padding: 2rem;
+  gap: 1rem;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.dialogue-popout-shapes {
+  border-radius: inherit;
+}
+
+.warning-title {
+  font-size: larger;
+  text-align: center;
+  font-weight: bold;
+  color: var(--contrast);
+}
+
+.warning-blurb {
+  text-align: justify;
+  text-align-last: center;
+  color: var(--contrast);
+}
+
+.warning-controls {
+  display: flex;
+  justify-content: center;
 }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { basicRainbow } from '../../ColorSchemes';
+import { pastelRainbow } from '../../ColorSchemes';
 import { BoardObjectSpawnOptions, CursorMode, Direction } from '../../types';
 
 export interface AppState {
@@ -30,7 +30,7 @@ export interface AppState {
 export const fallbackColor = 'black';
 
 const initialAppState: AppState = {
-  colorScheme: basicRainbow,
+  colorScheme: pastelRainbow,
   opsToolbarOpen: false,
   brushToolbarOpen: false,
   stampToolbarOpen: false,
