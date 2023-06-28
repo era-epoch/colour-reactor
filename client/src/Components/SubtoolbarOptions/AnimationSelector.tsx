@@ -47,7 +47,7 @@ const AnimationSelector = (props: Props): JSX.Element => {
     <div className="animation-selector-wrapper subtoolbar-option-wrapper">
       <div className="relative-parent">
         <div className="animation-select-button subtoolbar-button" onClick={toggleAnimation}>
-          <FontAwesomeIcon icon={AnimationIconMap.get(props.initAnimation) as IconProp} />
+          <FontAwesomeIcon icon={AnimationIconMap.get(animation) as IconProp} />
         </div>
       </div>
     </div>

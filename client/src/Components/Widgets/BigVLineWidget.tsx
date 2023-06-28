@@ -77,6 +77,7 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   };
 
   const setDirection = (dir: Direction) => {
+    console.log('Setting direction to: ' + dir);
     dispatch(setBigVLineOps({ direction: dir }));
   };
 

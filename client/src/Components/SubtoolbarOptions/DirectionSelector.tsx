@@ -29,6 +29,7 @@ interface Props {
 
 const DirectionSelector = (props: Props): JSX.Element => {
   const directions = props.directionOptions;
+  console.log(directions);
   const [direction, setDirection] = useState(props.initDirection);
   const [index, setIndex] = useState(directions.findIndex((val: Direction) => val === direction));
 
@@ -42,7 +43,7 @@ const DirectionSelector = (props: Props): JSX.Element => {
     <div className="direction-selector-wrapper subtoolbar-option-wrapper">
       <div className="relative-parent">
         <div className="direction-select-button subtoolbar-button" onClick={toggle}>
-          <FontAwesomeIcon icon={DirectionIconMap.get(props.initDirection) as IconProp} />
+          <FontAwesomeIcon icon={DirectionIconMap.get(direction) as IconProp} />
         </div>
       </div>
     </div>

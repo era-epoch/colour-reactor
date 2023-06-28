@@ -75,9 +75,3 @@ export enum Direction {
   down,
   pingpong_v,
 }
-
-export enum DirectionType {
-  all,
-  horizontal,
-  vertical,
-}

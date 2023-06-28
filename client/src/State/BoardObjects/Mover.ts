@@ -43,6 +43,8 @@ export const createMover = (
   tickDelay: number,
   ghostTicks: number,
 ) => {
+  console.log('Creating mover with ops:');
+  console.log(ops);
   const Mover: Mover = {
     id: uuidv4(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
@@ -148,18 +150,18 @@ const AdvanceMoverPingpongH = (mover: Mover, state: BoardState) => {
 };
 
 const AdvanceMoverUp = (mover: Mover, state: BoardState) => {
-  if (mover.posY > 0) {
-    mover.posY--;
-  } else {
-    mover.posY = state.squares.length - 1;
-  }
-};
-
-const AdvanceMoverDown = (mover: Mover, state: BoardState) => {
   if (mover.posY < state.squares.length - 1) {
     mover.posY++;
   } else {
     mover.posY = 0;
+  }
+};
+
+const AdvanceMoverDown = (mover: Mover, state: BoardState) => {
+  if (mover.posY > 0) {
+    mover.posY--;
+  } else {
+    mover.posY = state.squares.length - 1;
   }
 };
 
