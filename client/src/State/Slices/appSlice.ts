@@ -36,7 +36,7 @@ const initialAppState: AppState = {
   stampToolbarOpen: false,
   bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
   bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.right },
-  waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down' },
+  waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down', direction: Direction.pingpong_v },
   paintOps: { primary: fallbackColor },
   morphPaintOps: {},
   defaultColor: 'white',

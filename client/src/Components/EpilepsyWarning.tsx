@@ -32,8 +32,8 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.zIndex = `-${i + 1}`;
-    newLowerStyle.opacity = `${1 - 0.05 * (i * (i / 3) + 1)}`;
-    newLowerStyle.transitionDuration = `${(i + 1) * 75}ms`;
+    newLowerStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
+    newLowerStyle.transitionDuration = `${(i + 1) * 100}ms`;
     lowerPopupStyles.push(newLowerStyle);
 
     const newUpperStyle: CSS.Properties = { ...defaultPopupStyle };
@@ -41,8 +41,8 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.zIndex = `-${i + 1}`;
-    newUpperStyle.opacity = `${1 - 0.05 * (i * (i / 3) + 1)}`;
-    newUpperStyle.transitionDuration = `${(i + 1) * 75}ms`;
+    newUpperStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
+    newUpperStyle.transitionDuration = `${(i + 1) * 100}ms`;
     upperPopupStyles.push(newUpperStyle);
   }
 

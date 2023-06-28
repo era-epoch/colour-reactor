@@ -3,7 +3,6 @@ import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import EraseWidget from '../Widgets/EraseWidget';
 import FillCanvasWidget from '../Widgets/FillCanvasWidget';
-import FullscreenWidget from '../Widgets/FullscreenWidget';
 import TimeWidget from '../Widgets/TimeWidget';
 
 const OpsToolbar = (): JSX.Element => {
@@ -34,7 +33,7 @@ const OpsToolbar = (): JSX.Element => {
       <EraseWidget widgetWrapperStyle={widgetStyles[0]} />
       <TimeWidget widgetWrapperStyle={widgetStyles[1]} />
       <FillCanvasWidget widgetWrapperStyle={widgetStyles[2]} />
-      <FullscreenWidget widgetWrapperStyle={widgetStyles[3]} />
+      {/* <FullscreenWidget widgetWrapperStyle={widgetStyles[3]} /> */}
     </div>
   );
 };
