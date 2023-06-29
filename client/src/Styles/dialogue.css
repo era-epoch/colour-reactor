@@ -33,6 +33,14 @@
   border-radius: inherit;
 }
 
+.landing-title {
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
 .warning-title {
   font-size: larger;
   text-align: center;
@@ -49,4 +57,20 @@
 .warning-controls {
   display: flex;
   justify-content: center;
+}
+
+.fade-out {
+  animation: fadeOut var(--fade-duration) ease forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
