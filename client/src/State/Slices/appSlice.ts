@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pastelRainbow } from '../../ColorSchemes';
-import { BoardObjectSpawnOptions, CursorMode, Direction } from '../../types';
+import { BoardObjectSpawnOptions, CursorMode, Direction, TooltipDirection, TooltipState } from '../../types';
 
 export interface AppState {
   colorScheme: string[];
@@ -25,6 +25,7 @@ export interface AppState {
   paused: boolean;
   cursorMode: CursorMode;
   fillColor: string;
+  tooltipState: TooltipState;
 }
 
 export const fallbackColor = 'black';
@@ -59,6 +60,7 @@ const initialAppState: AppState = {
   paused: false,
   cursorMode: CursorMode.default,
   fillColor: fallbackColor,
+  tooltipState: { active: false, text: '', direction: TooltipDirection.above, targetID: '' },
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
@@ -230,6 +232,17 @@ const appSlice = createSlice({
     setFillColor: (state: AppState, action: PayloadAction<string>) => {
       state.fillColor = action.payload;
     },
+    setTooltipState: (state: AppState, action: PayloadAction<TooltipState>) => {
+      state.tooltipState = action.payload;
+    },
+    unsetTooltip: (state: AppState) => {
+      state.tooltipState = {
+        active: false,
+        text: '',
+        direction: TooltipDirection.above,
+        targetID: '',
+      };
+    },
   },
 });
 
@@ -255,4 +268,6 @@ export const {
   setMorphPaintOps,
   setMorphPaintColorAtIndex,
   setFillColor,
+  setTooltipState,
+  unsetTooltip,
 } = appSlice.actions;

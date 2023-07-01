@@ -75,3 +75,17 @@ export enum Direction {
   down,
   pingpong_v,
 }
+
+export enum TooltipDirection {
+  above,
+  below,
+  left,
+  right,
+}
+
+export interface TooltipState {
+  active: boolean;
+  text: string;
+  direction: TooltipDirection;
+  targetID: string;
+}

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import EraseWidget from '../Widgets/EraseWidget';
@@ -7,6 +7,7 @@ import TimeWidget from '../Widgets/TimeWidget';
 
 const OpsToolbar = (): JSX.Element => {
   const open = useSelector((state: RootState) => state.app.opsToolbarOpen);
+  const dispatch = useDispatch();
 
   // TODO: change this
   const widgetStyles = [

@@ -2,14 +2,21 @@ import { faMousePointer, faStamp, faToolbox } from '@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { toggleBrushToolbar, toggleOpsToolbar, toggleStampToolbar } from '../State/Slices/appSlice';
+import {
+  setTooltipState,
+  toggleBrushToolbar,
+  toggleOpsToolbar,
+  toggleStampToolbar,
+  unsetTooltip,
+} from '../State/Slices/appSlice';
+import { TooltipDirection } from '../types';
 import BrushToolbar from './Toolbars/BrushToolbar';
 import OpsToolbar from './Toolbars/OpsToolbar';
 import StampToolbar from './Toolbars/StampToolbar';
 
 const toolbarWrapperStyle: CSS.Properties = {
   position: 'relative',
-  zIndex: '1',
+  zIndex: '3',
 };
 
 const ToolbarContainer = (): JSX.Element => {
@@ -35,6 +42,7 @@ const ToolbarContainer = (): JSX.Element => {
     borderRadius: '50% 50%',
     // boxShadow: '0px -5px black',
     border: '2px solid rgb(235, 235, 235)',
+    color: 'var(--contrast)',
     cursor: 'pointer',
     transition: 'all 350ms ease',
     position: 'relative',
@@ -43,30 +51,88 @@ const ToolbarContainer = (): JSX.Element => {
 
   const handleToggleOpsToolbar = () => {
     dispatch(toggleOpsToolbar());
+    dispatch(unsetTooltip());
   };
   const handleToggleBrushToolbar = () => {
     dispatch(toggleBrushToolbar());
+    dispatch(unsetTooltip());
   };
   const handleToggleStampToolbar = () => {
     dispatch(toggleStampToolbar());
+    dispatch(unsetTooltip());
+  };
+  const OnOpsMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Miscellaneous',
+        direction: TooltipDirection.right,
+        targetID: 'ops-toolbar-icon',
+      }),
+    );
+  };
+  const OnBrushMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Brushes/Cursors',
+        direction: TooltipDirection.right,
+        targetID: 'brush-toolbar-icon',
+      }),
+    );
+  };
+  const OnStampMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Stamps',
+        direction: TooltipDirection.right,
+        targetID: 'stamp-toolbar-icon',
+      }),
+    );
+  };
+
+  const OnMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(unsetTooltip());
   };
   return (
     <div className="toolbar-container" style={style}>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
         <StampToolbar />
-        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleStampToolbar}>
+        <div
+          className="toolbar-icon"
+          style={iconStyle}
+          onClick={handleToggleStampToolbar}
+          onMouseEnter={OnStampMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="stamp-toolbar-icon"
+        >
           <FontAwesomeIcon icon={faStamp} />
         </div>
       </div>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
         <BrushToolbar />
-        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleBrushToolbar}>
+        <div
+          className="toolbar-icon"
+          style={iconStyle}
+          onClick={handleToggleBrushToolbar}
+          onMouseEnter={OnBrushMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="brush-toolbar-icon"
+        >
           <FontAwesomeIcon icon={faMousePointer} />
         </div>
       </div>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
         <OpsToolbar />
-        <div className="toolbar-icon" style={iconStyle} onClick={handleToggleOpsToolbar}>
+        <div
+          className="toolbar-icon"
+          style={iconStyle}
+          onClick={handleToggleOpsToolbar}
+          onMouseEnter={OnOpsMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="ops-toolbar-icon"
+        >
           <FontAwesomeIcon icon={faToolbox} />
         </div>
       </div>

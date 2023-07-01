@@ -33,22 +33,6 @@ svg:active {
   scale: 0.75;
 }
 
-.toolbar {
-  pointer-events: none;
-}
-
-.toolbar > * {
-  pointer-events: auto;
-}
-
-.toolbar-container {
-  pointer-events: none;
-}
-
-.toolbar-container > *:not(.toolbar) {
-  pointer-events: auto;
-}
-
 .pause-animations * {
   animation-play-state: paused !important;
 }
@@ -244,13 +228,70 @@ svg:active {
   }
 }
 
-.popout-shape {
-  background-color: var(--shape-color);
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
+.tooltip-container {
   position: absolute;
-  box-shadow: 1px 1px 5px var(--shape-color);
-  opacity: 0.9;
-  transition: all 200ms ease;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tooltip-wrapper {
+  overflow: visible;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--contrast);
+  color: var(--background);
+  /* box-shadow: 1px 1px 1px var(--background); */
+  --transform-left-pixels: -100px;
+  border-radius: inherit;
+}
+
+.tooltip-internal {
+  position: relative;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.tooltip-popout-shapes {
+  border-radius: inherit;
+}
+
+/* .anim-slide-in-left {
+  animation: slideInLeft 400ms ease forwards;
+} */
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-150%);
+  }
+  25% {
+    transform: translateX(3px);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tooltipShapeSlideIn {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  25% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

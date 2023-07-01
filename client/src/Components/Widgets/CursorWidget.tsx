@@ -2,9 +2,9 @@ import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorColor, setCursorMode } from '../../State/Slices/appSlice';
+import { setCursorColor, setCursorMode, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
-import { CursorMode } from '../../types';
+import { CursorMode, TooltipDirection } from '../../types';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
@@ -34,16 +34,42 @@ const CursorWidget = (props: Props): JSX.Element => {
 
   const handleClick = () => {
     dispatch(setCursorMode(CursorMode.default));
+    pushTooltip(true);
   };
 
   const handleSetCursorColor = (color: string) => {
     dispatch(setCursorColor(color));
   };
 
+  const pushTooltip = (active: boolean) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: `Hover Colour ${active ? '(Active)' : ''}`,
+        direction: TooltipDirection.right,
+        targetID: 'cursor-widget',
+      }),
+    );
+  };
+
+  const handleMouseEnter = () => {
+    pushTooltip(cursorMode === CursorMode.default);
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(unsetTooltip());
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle}>
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="cursor-widget">
       <div className="relative-parent">
-        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick}>
+        <div
+          className="toolbar-widget"
+          style={widgetStyle}
+          onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <FontAwesomeIcon icon={faArrowPointer} />
         </div>
         <div className="subtoolbar-wrapper">

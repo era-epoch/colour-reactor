@@ -4,10 +4,10 @@ import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMover } from '../../State/BoardObjects/Mover';
-import { setBigVLineOps } from '../../State/Slices/appSlice';
+import { setBigVLineOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject, Direction } from '../../types';
+import { BoardObject, Direction, TooltipDirection } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 import DirectionSelector from '../SubtoolbarOptions/DirectionSelector';
@@ -40,12 +40,21 @@ const BigVLineWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  const handleMouseOver = () => {
+  const handleMouseEnter = () => {
     setHover(true);
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Vertical Line',
+        direction: TooltipDirection.right,
+        targetID: 'big-vline-widget',
+      }),
+    );
   };
 
-  const handleMouseOut = () => {
+  const handleMouseLeave = () => {
     setHover(false);
+    dispatch(unsetTooltip());
   };
 
   const handleClick = () => {
@@ -82,14 +91,14 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle}>
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="big-vline-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
           style={widgetStyle}
           onClick={handleClick}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <FontAwesomeIcon icon={faGripLinesVertical} style={iconStyle} />
         </div>

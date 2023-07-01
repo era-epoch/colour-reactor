@@ -21,7 +21,9 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     setShapePositionOffset(30);
   };
   const buttonMouseLeave = () => {
-    setShapePositionOffset(initShapePositionOffset);
+    if (!hiding) {
+      setShapePositionOffset(initShapePositionOffset);
+    }
   };
   const accept = () => {
     setHiding(true);

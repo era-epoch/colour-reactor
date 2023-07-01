@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPaint } from '../../State/BoardObjects/Paint';
-import { setFillColor } from '../../State/Slices/appSlice';
+import { setFillColor, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject } from '../../types';
+import { BoardObject, TooltipDirection } from '../../types';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
@@ -42,10 +42,31 @@ const FillCanvasWidget = (props: Props): JSX.Element => {
     dispatch(setFillColor(color));
   };
 
+  const handleMouseEnter = () => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Fill Canvas',
+        direction: TooltipDirection.right,
+        targetID: 'fill-canvas-widget',
+      }),
+    );
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(unsetTooltip());
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle}>
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="fill-canvas-widget">
       <div className="relative-parent">
-        <div className="toolbar-widget" onClick={handleClick} style={widgetStyle}>
+        <div
+          className="toolbar-widget"
+          onClick={handleClick}
+          style={widgetStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <FontAwesomeIcon icon={faPaintRoller} />
         </div>
         <div className="subtoolbar-wrapper">

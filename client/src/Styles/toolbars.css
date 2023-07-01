@@ -4,8 +4,20 @@
   height: 100%;
 }
 
+.toolbar {
+  pointer-events: none;
+}
+
+.toolbar > * {
+  pointer-events: auto;
+}
+
 .toolbar-container {
-  z-index: 100;
+  pointer-events: none;
+}
+
+.toolbar-container > *:not(.toolbar) {
+  pointer-events: auto;
 }
 
 .toolbar-widget {

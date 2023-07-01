@@ -29,7 +29,6 @@ interface Props {
 
 const DirectionSelector = (props: Props): JSX.Element => {
   const directions = props.directionOptions;
-  console.log(directions);
   const [direction, setDirection] = useState(props.initDirection);
   const [index, setIndex] = useState(directions.findIndex((val: Direction) => val === direction));
 

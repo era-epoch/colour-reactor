@@ -2,8 +2,9 @@ import { faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPause, setTimeDelta } from '../../State/Slices/appSlice';
+import { setPause, setTimeDelta, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
+import { TooltipDirection } from '../../types';
 import SubtoolSlider from '../SubtoolbarOptions/SubtoolSlider';
 
 interface Props {
@@ -38,10 +39,31 @@ const TimeWidget = (props: Props): JSX.Element => {
     dispatch(setTimeDelta(newTime));
   };
 
+  const handleMouseEnter = () => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Speed',
+        direction: TooltipDirection.right,
+        targetID: 'delta-time-widget',
+      }),
+    );
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(unsetTooltip());
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle}>
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="delta-time-widget">
       <div className="relative-parent">
-        <div className="toolbar-widget" onClick={handleClick} style={widgetStyle}>
+        <div
+          className="toolbar-widget"
+          onClick={handleClick}
+          style={widgetStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <FontAwesomeIcon icon={faHourglassStart} className={paused ? 'half-spin-up-once' : 'half-spin-down-once'} />
         </div>
         <div className="subtoolbar-wrapper">

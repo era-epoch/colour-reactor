@@ -2,9 +2,9 @@ import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorMode, setMorphPaintColorAtIndex } from '../../State/Slices/appSlice';
+import { setCursorMode, setMorphPaintColorAtIndex, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
-import { CursorMode } from '../../types';
+import { CursorMode, TooltipDirection } from '../../types';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
@@ -43,15 +43,42 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
   const handleClick = () => {
     if (cursorMode !== CursorMode.morphPainting) {
       dispatch(setCursorMode(CursorMode.morphPainting));
+      pushTooltip(true);
     } else {
       dispatch(setCursorMode(CursorMode.default));
+      pushTooltip(false);
     }
   };
 
+  const pushTooltip = (active: boolean) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: `Colour-Changing Paint ${active ? '(Active)' : ''}`,
+        direction: TooltipDirection.right,
+        targetID: 'morph-paint-widget',
+      }),
+    );
+  };
+
+  const handleMouseEnter = () => {
+    pushTooltip(cursorMode === CursorMode.morphPainting);
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(unsetTooltip());
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle}>
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="morph-paint-widget">
       <div className="relative-parent">
-        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick}>
+        <div
+          className="toolbar-widget"
+          style={widgetStyle}
+          onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <FontAwesomeIcon icon={faPaintBrush} />
         </div>
         <div className="subtoolbar-wrapper">
