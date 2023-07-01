@@ -8,7 +8,7 @@ import PopoutShape from './PopoutShape';
 interface Props {}
 
 const Tooltip = (props: Props): JSX.Element => {
-  const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
+  const colorScheme = useSelector((state: RootState) => state.app.colorScheme.colors);
   const tooltipState = useSelector((state: RootState) => state.app.tooltipState);
   const tooltipGapPixels = 10;
   const tooltipEnterTimeMS = 400;

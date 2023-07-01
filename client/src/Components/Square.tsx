@@ -71,6 +71,7 @@ const Square = (props: Props): JSX.Element => {
   };
 
   let combinedColor = defaultColor;
+  let previousColorRenderedFlag = false;
 
   // This should only run ONCE per tick
   if (ticksElapsed > prevTickRef.current) {
@@ -82,6 +83,13 @@ const Square = (props: Props): JSX.Element => {
 
         // Replace the current color with the one from this render pass
         combinedColor = renderOut.backgroundColor;
+        // if (!previousColorRenderedFlag) {
+        //   // On the first render pass, we don't take the combined colour so we can *ignore* the background color of the square
+        //   combinedColor = renderOut.rawBackgroundColor;
+        //   previousColorRenderedFlag = true;
+        // } else {
+        //   combinedColor = renderOut.backgroundColor;
+        // }
 
         for (const renderClass of renderOut.cssClasses) {
           // Add the renderer classes to the global scope map
@@ -109,6 +117,11 @@ const Square = (props: Props): JSX.Element => {
     case CursorMode.default:
       if (hovering) {
         combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+        // if (!previousColorRenderedFlag) {
+        //   combinedColor = new Color(cursorColor);
+        // } else {
+        //   combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+        // }
         style.cursor = 'default';
       }
       break;

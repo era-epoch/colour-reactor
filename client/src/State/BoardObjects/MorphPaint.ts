@@ -92,6 +92,7 @@ export const renderMorphPaint: BoardObjectRenderFunction = (ops: BoardObjectRend
 
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
+    rawBackgroundColor: new Color(morphPaint.primary),
     cssClasses: [],
   };
   return output;

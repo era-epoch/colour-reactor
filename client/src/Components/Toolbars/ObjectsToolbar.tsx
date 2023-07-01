@@ -2,17 +2,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import EraseWidget from '../Widgets/EraseWidget';
-import FillCanvasWidget from '../Widgets/FillCanvasWidget';
-import PaletteWidget from '../Widgets/PaletteWidget';
-import TimeWidget from '../Widgets/TimeWidget';
 
-const OpsToolbar = (): JSX.Element => {
+const ObjectsToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);
-  const open = activeToolbar === Toolbar.options;
+  const open = activeToolbar === Toolbar.objects;
 
   const widgetStyles = [
-    { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
@@ -30,15 +25,7 @@ const OpsToolbar = (): JSX.Element => {
     widgetStyles[i].zIndex = `-${i}`;
   }
 
-  return (
-    <div className="toolbar" style={toolbarStyle}>
-      <EraseWidget widgetWrapperStyle={widgetStyles[0]} />
-      <TimeWidget widgetWrapperStyle={widgetStyles[1]} />
-      <FillCanvasWidget widgetWrapperStyle={widgetStyles[2]} />
-      {/* <FullscreenWidget widgetWrapperStyle={widgetStyles[3]} /> */}
-      <PaletteWidget widgetWrapperStyle={widgetStyles[3]} />
-    </div>
-  );
+  return <div className="toolbar" style={toolbarStyle}></div>;
 };
 
-export default OpsToolbar;
+export default ObjectsToolbar;

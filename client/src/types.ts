@@ -23,6 +23,7 @@ export interface BoardObjectRenderOptions {
 export interface BoardObjectRenderOutput {
   backgroundColor: Color;
   cssClasses: BoardObjectCSSClass[];
+  rawBackgroundColor: Color;
 }
 
 export type BoardObjectRenderFunction = (ops: BoardObjectRenderOptions) => BoardObjectRenderOutput;
@@ -88,4 +89,24 @@ export interface TooltipState {
   text: string;
   direction: TooltipDirection;
   targetID: string;
+}
+
+export enum Dialogue {
+  none,
+  epilepsyWarning,
+  palette,
+}
+
+export enum Toolbar {
+  none,
+  stamps,
+  brushes,
+  objects,
+  options,
+}
+
+export interface ColorScheme {
+  name: string;
+  colors: string[];
+  id: string;
 }

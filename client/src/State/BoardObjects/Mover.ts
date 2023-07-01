@@ -210,6 +210,7 @@ export const renderMover: BoardObjectRenderFunction = (ops: BoardObjectRenderOpt
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
     cssClasses: cssClasses,
+    rawBackgroundColor: new Color(mover.primary),
   };
   return output;
 };
@@ -232,6 +233,7 @@ export const renderMoverGhost: BoardObjectRenderFunction = (ops: BoardObjectRend
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
     cssClasses: cssClasses,
+    rawBackgroundColor: combinedColor,
   };
   return output;
 };

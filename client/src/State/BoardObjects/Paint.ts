@@ -59,6 +59,7 @@ export const renderPaint: BoardObjectRenderFunction = (ops: BoardObjectRenderOpt
   const output: BoardObjectRenderOutput = {
     backgroundColor: combinedColor,
     cssClasses: [],
+    rawBackgroundColor: new Color(paint.primary),
   };
   return output;
 };

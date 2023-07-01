@@ -11,17 +11,15 @@ interface Props {
 export const colorSelectButtonStyle: CSS.Properties = {};
 
 const ColorSelector = (props: Props): JSX.Element => {
-  const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
-  const [color, setColor] = useState(props.initColor);
-  const [colorIndex, setColorIndex] = useState(colorScheme.findIndex((c) => c === color));
+  const colorScheme = useSelector((state: RootState) => state.app.colorScheme.colors);
+  const [colorIndex, setColorIndex] = useState(colorScheme.findIndex((c) => c === props.initColor));
 
   const buttonStyle = { ...colorSelectButtonStyle };
-  buttonStyle.backgroundColor = color;
+  buttonStyle.backgroundColor = props.initColor;
 
   const toggleColor = () => {
     let newIndex = (colorIndex + 1) % colorScheme.length;
     props.setColorCallback(colorScheme[newIndex]);
-    setColor(colorScheme[newIndex]);
     setColorIndex(newIndex);
   };
 

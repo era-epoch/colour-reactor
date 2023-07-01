@@ -1,12 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { pastelRainbow } from '../../ColorSchemes';
-import { BoardObjectSpawnOptions, CursorMode, Direction, TooltipDirection, TooltipState } from '../../types';
+import { AllColorSchemes, pastelRainbow } from '../../ColorSchemes';
+import {
+  BoardObjectSpawnOptions,
+  ColorScheme,
+  CursorMode,
+  Dialogue,
+  Direction,
+  Toolbar,
+  TooltipDirection,
+  TooltipState,
+} from '../../types';
 
 export interface AppState {
-  colorScheme: string[];
-  opsToolbarOpen: boolean;
-  brushToolbarOpen: boolean;
-  stampToolbarOpen: boolean;
+  colorScheme: ColorScheme;
+  availableColorSchemes: ColorScheme[];
   bigHLineOps: BoardObjectSpawnOptions;
   bigVLineOps: BoardObjectSpawnOptions;
   waveOps: BoardObjectSpawnOptions;
@@ -26,18 +33,18 @@ export interface AppState {
   cursorMode: CursorMode;
   fillColor: string;
   tooltipState: TooltipState;
+  activeDialogue: Dialogue;
+  activeToolbar: Toolbar;
 }
 
 export const fallbackColor = 'black';
 
 const initialAppState: AppState = {
   colorScheme: pastelRainbow,
-  opsToolbarOpen: false,
-  brushToolbarOpen: false,
-  stampToolbarOpen: false,
+  availableColorSchemes: AllColorSchemes,
   bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
   bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.right },
-  waveOps: { primary: fallbackColor, touchdownAnimation: 'scale-down', direction: Direction.pingpong_v },
+  waveOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.pingpong_v },
   paintOps: { primary: fallbackColor },
   morphPaintOps: {},
   defaultColor: 'white',
@@ -61,61 +68,33 @@ const initialAppState: AppState = {
   cursorMode: CursorMode.default,
   fillColor: fallbackColor,
   tooltipState: { active: false, text: '', direction: TooltipDirection.above, targetID: '' },
+  activeDialogue: Dialogue.epilepsyWarning,
+  activeToolbar: Toolbar.none,
 };
 
 const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
   return colorScheme[Math.floor(Math.random() * colorScheme.length)];
 };
 
-initialAppState.bigHLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.paintOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme);
-initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
+initialAppState.bigHLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
+initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
+initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
+initialAppState.paintOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
+initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 
 initialAppState.morphPaintOps.morphColors = [
-  ChooseRandomColorInScheme(initialAppState.colorScheme),
-  ChooseRandomColorInScheme(initialAppState.colorScheme),
+  ChooseRandomColorInScheme(initialAppState.colorScheme.colors),
+  ChooseRandomColorInScheme(initialAppState.colorScheme.colors),
 ];
 
-initialAppState.fillColor = ChooseRandomColorInScheme(initialAppState.colorScheme);
+initialAppState.fillColor = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 
 const appSlice = createSlice({
   name: 'app',
   initialState: initialAppState,
   reducers: {
-    setOpsToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
-      state.opsToolbarOpen = action.payload;
-    },
-    toggleOpsToolbar: (state: AppState) => {
-      state.opsToolbarOpen = !state.opsToolbarOpen;
-      if (state.opsToolbarOpen) {
-        // Close all other toolbars
-        state.brushToolbarOpen = false;
-        state.stampToolbarOpen = false;
-      }
-    },
-    setBrushToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
-      state.brushToolbarOpen = action.payload;
-    },
-    toggleBrushToolbar: (state: AppState) => {
-      state.brushToolbarOpen = !state.brushToolbarOpen;
-      if (state.brushToolbarOpen) {
-        // Close all other toolbars
-        state.opsToolbarOpen = false;
-        state.stampToolbarOpen = false;
-      }
-    },
-    setStampToolBarOpen: (state: AppState, action: PayloadAction<boolean>) => {
-      state.stampToolbarOpen = action.payload;
-    },
-    toggleStampToolbar: (state: AppState) => {
-      state.stampToolbarOpen = !state.stampToolbarOpen;
-      if (state.stampToolbarOpen) {
-        // Close all other toolbars
-        state.opsToolbarOpen = false;
-        state.brushToolbarOpen = false;
-      }
+    setActiveToolbar: (state: AppState, action: PayloadAction<Toolbar>) => {
+      state.activeToolbar = action.payload;
     },
     setWaveOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
       if (action.payload.primary) {
@@ -243,17 +222,27 @@ const appSlice = createSlice({
         targetID: '',
       };
     },
+    setActiveDialogue: (state: AppState, action: PayloadAction<Dialogue>) => {
+      state.activeDialogue = action.payload;
+    },
+    setColorScheme: (state: AppState, action: PayloadAction<ColorScheme>) => {
+      state.colorScheme = action.payload;
+      const colors = action.payload.colors;
+      state.bigHLineOps.primary = ChooseRandomColorInScheme(colors);
+      state.bigVLineOps.primary = ChooseRandomColorInScheme(colors);
+      state.waveOps.primary = ChooseRandomColorInScheme(colors);
+      state.paintOps.primary = ChooseRandomColorInScheme(colors);
+      state.fillColor = ChooseRandomColorInScheme(colors);
+      state.cursorColor = ChooseRandomColorInScheme(colors);
+
+      state.morphPaintOps.morphColors = [ChooseRandomColorInScheme(colors), ChooseRandomColorInScheme(colors)];
+    },
   },
 });
 
 export default appSlice.reducer;
 export const {
-  setOpsToolBarOpen,
-  setBrushToolBarOpen,
-  toggleBrushToolbar,
-  toggleOpsToolbar,
-  setStampToolBarOpen,
-  toggleStampToolbar,
+  setActiveToolbar,
   setBigHLineOps,
   setWaveOps,
   setBigVLineOps,
@@ -270,4 +259,6 @@ export const {
   setFillColor,
   setTooltipState,
   unsetTooltip,
+  setActiveDialogue,
+  setColorScheme,
 } = appSlice.actions;

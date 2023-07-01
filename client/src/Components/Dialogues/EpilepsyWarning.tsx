@@ -2,21 +2,30 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
 import uuid from 'react-uuid';
-import { RootState } from '../State/rootReducer';
-import { defaultPopupStyle } from '../Styles/ComponentStyles';
-import PopoutShape from './PopoutShape';
+import { setActiveDialogue, setColorScheme } from '../../State/Slices/appSlice';
+import { RootState } from '../../State/rootReducer';
+import { defaultPopupStyle } from '../../Styles/ComponentStyles';
+import { ColorScheme, Dialogue } from '../../types';
+import PopoutShape from '../PopoutShape';
 
 interface Props {}
 
 const EpilepsyWarning = (props: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
+  const allColorSchemes = useSelector((state: RootState) => state.app.availableColorSchemes);
+  const activeDialogue = useSelector((state: RootState) => state.app.activeDialogue);
+  const shown = activeDialogue === Dialogue.epilepsyWarning;
+
   const initShapePositionOffset = 12;
-  const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
-  const [hidden, setHidden] = useState(false);
-  const [hiding, setHiding] = useState(false);
   const fadeOutDuration = 2000;
+
+  const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
+  const [hiding, setHiding] = useState(false);
+
   const buttonMouseEnter = () => {
     setShapePositionOffset(30);
   };
@@ -28,11 +37,11 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
   const accept = () => {
     setHiding(true);
     setTimeout(() => {
-      setHidden(true);
+      dispatch(setActiveDialogue(Dialogue.none));
     }, fadeOutDuration);
   };
   const buttonMouseDown = () => {
-    setShapePositionOffset(25);
+    setShapePositionOffset(5);
   };
   const buttonMouseUp = () => {
     setShapePositionOffset(100);
@@ -40,9 +49,9 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
 
   const lowerPopupStyles: CSS.Properties[] = [];
   const upperPopupStyles: CSS.Properties[] = [];
-  for (let i = 0; i < colorScheme.length; i++) {
+  for (let i = 0; i < colorScheme.colors.length; i++) {
     const newLowerStyle: CSS.Properties = { ...defaultPopupStyle };
-    newLowerStyle.backgroundColor = colorScheme[i];
+    newLowerStyle.backgroundColor = colorScheme.colors[i];
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.zIndex = `-${i + 1}`;
@@ -51,7 +60,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     lowerPopupStyles.push(newLowerStyle);
 
     const newUpperStyle: CSS.Properties = { ...defaultPopupStyle };
-    newUpperStyle.backgroundColor = colorScheme[i];
+    newUpperStyle.backgroundColor = colorScheme.colors[i];
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.zIndex = `-${i + 1}`;
@@ -66,9 +75,13 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     siteTitleArray.push(c);
   }
 
+  const handleColorSchemeSelectChange = (selectedValue: ColorScheme | null) => {
+    if (selectedValue) dispatch(setColorScheme(selectedValue));
+  };
+
   return (
     <div
-      className={`EpilepsyWarning dialogue ${hiding ? 'fade-out' : ''} ${hidden ? 'nodisplay' : ''}`}
+      className={`EpilepsyWarning dialogue ${hiding ? 'fade-out' : ''} ${shown ? '' : 'nodisplay'}`}
       style={{ '--fade-duration': `${fadeOutDuration}ms` } as React.CSSProperties}
     >
       <div className="dialogue-internal">
@@ -76,11 +89,24 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
           <div className="landing-title">
             {siteTitleArray.map((c, i) => {
               return (
-                <div className="site-title-char" key={uuid()} style={{ color: colorScheme[i % colorScheme.length] }}>
+                <div
+                  className="site-title-char"
+                  key={uuid()}
+                  style={{ color: colorScheme.colors[i % colorScheme.colors.length] }}
+                >
                   {c}
                 </div>
               );
             })}
+          </div>
+          <div className="dialogue-subtitle">Select a colour palette ...</div>
+          <div className="dialogue-section" onMouseEnter={buttonMouseEnter} onMouseLeave={buttonMouseLeave}>
+            <Select
+              options={allColorSchemes}
+              getOptionLabel={(scheme: ColorScheme) => scheme.name}
+              getOptionValue={(scheme: ColorScheme) => scheme.id}
+              onChange={handleColorSchemeSelectChange}
+            />
           </div>
           <div className="warning-title">WARNING: PHOTOSENSITIVITY/EPILEPSY SEIZURES</div>
           <div className="warning-blurb">
@@ -104,10 +130,10 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
           </div>
         </div>
         <div className="dialogue-popout-shapes">
-          {colorScheme.map((color, i) => {
+          {colorScheme.colors.map((color, i) => {
             return <PopoutShape style={upperPopupStyles[i]} />;
           })}
-          {colorScheme.map((color, i) => {
+          {colorScheme.colors.map((color, i) => {
             return <PopoutShape style={lowerPopupStyles[i]} />;
           })}
         </div>

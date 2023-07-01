@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
+import { Toolbar } from '../../types';
 import BigHLineWidget from '../Widgets/BigHLineWidget';
 import BigVLineWidget from '../Widgets/BigVLineWidget';
 import WaveWidget from '../Widgets/WaveWidget';
 
 const StampToolbar = (): JSX.Element => {
-  const open = useSelector((state: RootState) => state.app.stampToolbarOpen);
-  const dispatch = useDispatch();
+  const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);
+  const open = activeToolbar === Toolbar.stamps;
 
   const widgetStyles = [
     { ...defaultWidgetStyle },

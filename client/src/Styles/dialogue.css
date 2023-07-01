@@ -4,12 +4,45 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(50, 50, 50, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
+}
+
+.EpilepsyWarning {
+  animation: dialogueFadeIn 1000ms ease forwards;
+}
+
+@keyframes dialogueFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.EpilepsyWarning .dialogue-internal {
+  transform: translateY(250%);
+  animation: dialogueSlideUp 800ms 400ms ease forwards;
+}
+
+@keyframes dialogueSlideUp {
+  0% {
+    transform: translateY(250%);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+  75% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .dialogue-internal {
@@ -54,6 +87,7 @@
   color: var(--contrast);
 }
 
+.dialogue-controls,
 .warning-controls {
   display: flex;
   justify-content: center;

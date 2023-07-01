@@ -1,5 +1,6 @@
 import Canvas from './Components/Canvas';
-import EpilepsyWarning from './Components/EpilepsyWarning';
+import EpilepsyWarning from './Components/Dialogues/EpilepsyWarning';
+import PaletteDialogue from './Components/Dialogues/PaletteDialogue';
 import MainMenu from './Components/MainMenu';
 import ToolbarContainer from './Components/ToolbarContainer';
 import Tooltip from './Components/Tooltip';
@@ -12,8 +13,10 @@ function App() {
       <ToolbarContainer />
       <Updater />
       <MainMenu />
-      <EpilepsyWarning />
       <Tooltip />
+      {/* Dialogues */}
+      <EpilepsyWarning />
+      <PaletteDialogue />
     </div>
   );
 }

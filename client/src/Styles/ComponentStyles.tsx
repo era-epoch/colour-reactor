@@ -28,7 +28,7 @@ export const defaultPopupStyle: CSS.Properties = {
   height: `100%`,
   borderRadius: `inherit`,
   position: `absolute`,
-  opacity: `0.9`,
+  opacity: `1`,
   transitionProperty: 'all',
   transitionTimingFunction: 'ease',
   transitionDuration: '300ms',
