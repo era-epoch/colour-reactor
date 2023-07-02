@@ -13,6 +13,11 @@ export interface BoardObject {
   tag: string;
 }
 
+export interface PositionalBoardObject extends BoardObject {
+  posX: number;
+  posY: number;
+}
+
 export type UpdateFunction = (obj: BoardObject, state: BoardState) => void;
 
 export interface BoardObjectRenderOptions {
@@ -50,10 +55,13 @@ export interface BoardObjectSpawnOptionsInternal {
   morphColors: string[];
   morphType: MorphType;
   lifespan: number;
+  tickDelay: number;
   age: number;
   posX: number;
   posY: number;
   direction: Direction;
+  compassDirection: CompassDirection;
+  determination: number;
 }
 
 export enum CursorMode {
@@ -75,6 +83,18 @@ export enum Direction {
   up,
   down,
   pingpong_v,
+}
+
+export enum CompassDirection {
+  north,
+  northeast,
+  east,
+  southeast,
+  south,
+  southwest,
+  west,
+  northwest,
+  none,
 }
 
 export enum TooltipDirection {

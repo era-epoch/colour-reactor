@@ -8,6 +8,7 @@ import {
   BoardObjectRenderOutput,
   BoardObjectSpawnOptions,
   Direction,
+  PositionalBoardObject,
   UpdateFunction,
 } from '../../types';
 import { fallbackColor } from '../Slices/appSlice';
@@ -15,9 +16,7 @@ import { BoardState } from '../Slices/boardSlice';
 import { addObjectToSquare, removeObjectFromSquare } from '../Slices/helpers';
 import { RenderMap, UpdateMap } from './Maps';
 
-export interface Mover extends BoardObject {
-  posX: number;
-  posY: number;
+export interface Mover extends PositionalBoardObject {
   tickDelay: number; // Number of ticks (global time units)
   ticksSinceUpdate: number;
   ghostTicks: number;
@@ -42,9 +41,7 @@ export const createMover = (
   y: number,
   tickDelay: number,
   ghostTicks: number,
-) => {
-  console.log('Creating mover with ops:');
-  console.log(ops);
+): Mover => {
   const Mover: Mover = {
     id: uuidv4(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
@@ -63,7 +60,7 @@ export const createMover = (
   return Mover;
 };
 
-export const createMoverGhost = (source: Mover) => {
+export const createMoverGhost = (source: Mover): MoverGhost => {
   const ghost: MoverGhost = {
     id: uuidv4(),
     primary: source.primary,

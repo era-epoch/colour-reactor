@@ -4,6 +4,7 @@ import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
 import BigHLineWidget from '../Widgets/BigHLineWidget';
 import BigVLineWidget from '../Widgets/BigVLineWidget';
+import SwarmWidget from '../Widgets/SwarmWidget';
 import WaveWidget from '../Widgets/WaveWidget';
 
 const StampToolbar = (): JSX.Element => {
@@ -33,6 +34,7 @@ const StampToolbar = (): JSX.Element => {
       <BigHLineWidget widgetWrapperStyle={widgetStyles[0]} />
       <BigVLineWidget widgetWrapperStyle={widgetStyles[1]} />
       <WaveWidget widgetWrapperStyle={widgetStyles[2]} />
+      <SwarmWidget widgetWrapperStyle={widgetStyles[3]} />
     </div>
   );
 };

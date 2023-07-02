@@ -3,6 +3,7 @@ import { AllColorSchemes, pastelRainbow } from '../../ColorSchemes';
 import {
   BoardObjectSpawnOptions,
   ColorScheme,
+  CompassDirection,
   CursorMode,
   Dialogue,
   Direction,
@@ -17,6 +18,7 @@ export interface AppState {
   bigHLineOps: BoardObjectSpawnOptions;
   bigVLineOps: BoardObjectSpawnOptions;
   waveOps: BoardObjectSpawnOptions;
+  swarmOps: BoardObjectSpawnOptions;
   paintOps: BoardObjectSpawnOptions;
   morphPaintOps: BoardObjectSpawnOptions;
   defaultColor: string;
@@ -45,6 +47,7 @@ const initialAppState: AppState = {
   bigHLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
   bigVLineOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.right },
   waveOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.pingpong_v },
+  swarmOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', compassDirection: CompassDirection.none },
   paintOps: { primary: fallbackColor },
   morphPaintOps: {},
   defaultColor: 'white',
@@ -79,6 +82,7 @@ const ChooseRandomColorInScheme = (colorScheme: string[]): string => {
 initialAppState.bigHLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 initialAppState.bigVLineOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 initialAppState.waveOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
+initialAppState.swarmOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 initialAppState.paintOps.primary = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 initialAppState.cursorColor = ChooseRandomColorInScheme(initialAppState.colorScheme.colors);
 
@@ -97,6 +101,7 @@ const appSlice = createSlice({
       state.activeToolbar = action.payload;
     },
     setWaveOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
+      // TODO: figure out a better way to set these that isn't so grotesque
       if (action.payload.primary) {
         state.waveOps.primary = action.payload.primary;
       }
@@ -165,6 +170,17 @@ const appSlice = createSlice({
         state.bigVLineOps.direction = action.payload.direction;
       }
     },
+    setSwarmOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
+      if (action.payload.primary) {
+        state.swarmOps.primary = action.payload.primary;
+      }
+      if (action.payload.touchdownAnimation) {
+        state.swarmOps.touchdownAnimation = action.payload.touchdownAnimation;
+      }
+      if (action.payload.compassDirection) {
+        state.swarmOps.compassDirection = action.payload.compassDirection;
+      }
+    },
     setPaintOps: (state: AppState, action: PayloadAction<BoardObjectSpawnOptions>) => {
       if (action.payload.primary) {
         state.paintOps.primary = action.payload.primary;
@@ -231,6 +247,7 @@ const appSlice = createSlice({
       state.bigHLineOps.primary = ChooseRandomColorInScheme(colors);
       state.bigVLineOps.primary = ChooseRandomColorInScheme(colors);
       state.waveOps.primary = ChooseRandomColorInScheme(colors);
+      state.swarmOps.primary = ChooseRandomColorInScheme(colors);
       state.paintOps.primary = ChooseRandomColorInScheme(colors);
       state.fillColor = ChooseRandomColorInScheme(colors);
       state.cursorColor = ChooseRandomColorInScheme(colors);
@@ -261,4 +278,5 @@ export const {
   unsetTooltip,
   setActiveDialogue,
   setColorScheme,
+  setSwarmOps,
 } = appSlice.actions;

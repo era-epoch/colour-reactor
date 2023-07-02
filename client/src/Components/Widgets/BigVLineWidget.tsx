@@ -1,7 +1,6 @@
 import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMover } from '../../State/BoardObjects/Mover';
 import { setBigVLineOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
@@ -23,17 +22,10 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   const directionOptions = useSelector((state: RootState) => state.app.horizontalDirections);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
-  const [hover, setHover] = useState(false);
   widgetWrapperStyle.color = bigVLineOps.primary;
   widgetWrapperStyle.borderColor = bigVLineOps.primary;
 
   const iconStyle: CSS.Properties = {};
-  if (hover) {
-    iconStyle.animationName = `wobble`;
-    iconStyle.animationTimingFunction = `ease`;
-    iconStyle.animationDuration = '400ms';
-    iconStyle.animationIterationCount = '1';
-  }
 
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
@@ -41,7 +33,6 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseEnter = () => {
-    setHover(true);
     dispatch(
       setTooltipState({
         active: true,
@@ -53,7 +44,6 @@ const BigVLineWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseLeave = () => {
-    setHover(false);
     dispatch(unsetTooltip());
   };
 
