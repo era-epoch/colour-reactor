@@ -2,14 +2,14 @@ import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { createMover } from '../../State/BoardObjects/Mover';
-import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { loadObjects } from '../../State/Slices/boardSlice';
-import { RootState } from '../../State/rootReducer';
-import { BoardObject, Direction, SpawnWidget, TooltipDirection } from '../../types';
-import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
-import DirectionSelector from '../SubtoolbarOptions/DirectionSelector';
+import { createMover } from '../../../State/BoardObjects/Mover';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { loadObjects } from '../../../State/Slices/boardSlice';
+import { RootState } from '../../../State/rootReducer';
+import { BoardObject, Direction, SpawnWidget, TooltipDirection } from '../../../types';
+import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import DirectionSelector from '../../SubtoolbarOptions/DirectionSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;

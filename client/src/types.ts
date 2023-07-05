@@ -124,6 +124,8 @@ export enum Toolbar {
   brushes,
   objects,
   options,
+  file,
+  about,
 }
 
 export interface ColorScheme {

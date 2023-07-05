@@ -1,30 +1,31 @@
-import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveObject, setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { RootState } from '../../State/rootReducer';
-import { SpawnWidget, TooltipDirection } from '../../types';
-import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import { setActiveObject, setSpawnOps, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { RootState } from '../../../State/rootReducer';
+import { Direction, SpawnWidget, TooltipDirection } from '../../../types';
+import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import DirectionSelector from '../../SubtoolbarOptions/DirectionSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const FireflyWidget = (props: Props): JSX.Element => {
+const MoverWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const fireflyOps = useSelector((state: RootState) => state.app.fireflyOps);
+  const moverOps = useSelector((state: RootState) => state.app.moverOps);
   const directionOptions = useSelector((state: RootState) => state.app.directions);
   const activeObject = useSelector((state: RootState) => state.app.activeObject);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
-  widgetWrapperStyle.color = fireflyOps.primary;
-  widgetWrapperStyle.borderColor = fireflyOps.primary;
+  widgetWrapperStyle.color = moverOps.primary;
+  widgetWrapperStyle.borderColor = moverOps.primary;
 
   const iconStyle: CSS.Properties = {};
 
-  const widgetActive = activeObject === SpawnWidget.firefly;
+  const widgetActive = activeObject === SpawnWidget.mover;
 
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
@@ -32,7 +33,7 @@ const FireflyWidget = (props: Props): JSX.Element => {
   };
 
   if (widgetActive) {
-    widgetStyle.backgroundColor = fireflyOps.primary;
+    widgetStyle.backgroundColor = moverOps.primary;
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
   }
 
@@ -40,9 +41,9 @@ const FireflyWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Bug${active ? ' (Active)' : ''}`,
+        text: `Moving Pixel${active ? ' (Active)' : ''}`,
         direction: TooltipDirection.right,
-        targetID: 'firefly-widget',
+        targetID: 'mover-widget',
       }),
     );
   };
@@ -60,25 +61,25 @@ const FireflyWidget = (props: Props): JSX.Element => {
       dispatch(setActiveObject(SpawnWidget.none));
       pushTooltip(false);
     } else {
-      dispatch(setActiveObject(SpawnWidget.firefly));
+      dispatch(setActiveObject(SpawnWidget.mover));
       pushTooltip(true);
     }
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.firefly }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.mover }));
   };
 
   const setTouchdownAnimation = (anim: string) => {
-    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.firefly }));
+    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.mover }));
   };
 
-  // const setDirection = (dir: Direction) => {
-  //   dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.firefly }));
-  // };
+  const setDirection = (dir: Direction) => {
+    dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.mover }));
+  };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="firefly-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="mover-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
@@ -87,20 +88,20 @@ const FireflyWidget = (props: Props): JSX.Element => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <FontAwesomeIcon icon={faBug} style={iconStyle} />
+          <FontAwesomeIcon icon={faSquareCaretDown} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={setWidgetColor} initColor={fireflyOps.primary} />
+            <ColorSelector setColorCallback={setWidgetColor} initColor={moverOps.primary} />
             <AnimationSelector
               selectionCallback={setTouchdownAnimation}
-              initAnimation={fireflyOps.touchdownAnimation as string}
+              initAnimation={moverOps.touchdownAnimation as string}
             />
-            {/* <DirectionSelector
+            <DirectionSelector
               selectionCallback={setDirection}
               directionOptions={directionOptions}
-              initDirection={fireflyOps.direction as Direction}
-            /> */}
+              initDirection={moverOps.direction as Direction}
+            />
           </div>
         </div>
       </div>
@@ -108,4 +109,4 @@ const FireflyWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default FireflyWidget;
+export default MoverWidget;

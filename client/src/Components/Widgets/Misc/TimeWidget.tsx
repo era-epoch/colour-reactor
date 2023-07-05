@@ -2,10 +2,10 @@ import { faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPause, setTimeDelta, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { RootState } from '../../State/rootReducer';
-import { TooltipDirection } from '../../types';
-import SubtoolSlider from '../SubtoolbarOptions/SubtoolSlider';
+import { setPause, setTimeDelta, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { RootState } from '../../../State/rootReducer';
+import { TooltipDirection } from '../../../types';
+import SubtoolSlider from '../../SubtoolbarOptions/SubtoolSlider';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;

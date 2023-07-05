@@ -2,12 +2,12 @@ import { faPaintRoller } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPaint } from '../../State/BoardObjects/Paint';
-import { setFillColor, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { loadObjects } from '../../State/Slices/boardSlice';
-import { RootState } from '../../State/rootReducer';
-import { BoardObject, TooltipDirection } from '../../types';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import { createPaint } from '../../../State/BoardObjects/Paint';
+import { setFillColor, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { loadObjects } from '../../../State/Slices/boardSlice';
+import { RootState } from '../../../State/rootReducer';
+import { BoardObject, TooltipDirection } from '../../../types';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;

@@ -2,20 +2,20 @@ import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorMode, setMorphPaintColorAtIndex, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { RootState } from '../../State/rootReducer';
-import { CursorMode, TooltipDirection } from '../../types';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import { setCursorMode, setSpawnOps, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { RootState } from '../../../State/rootReducer';
+import { CursorMode, SpawnWidget, TooltipDirection } from '../../../types';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const MorphPaintWidget = (props: Props): JSX.Element => {
+const PaintWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const morphPaintColors = useSelector((state: RootState) => state.app.morphPaintOps.morphColors);
+  const paintColor = useSelector((state: RootState) => state.app.paintOps.primary);
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
-  const widgetColor = morphPaintColors![0];
+  const widgetColor = paintColor;
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
 
@@ -27,22 +27,18 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  if (cursorMode === CursorMode.morphPainting) {
+  if (cursorMode === CursorMode.painting) {
     widgetStyle.backgroundColor = widgetColor;
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
   }
 
-  const handleSetMorphPaintColor1 = (color: string) => {
-    dispatch(setMorphPaintColorAtIndex({ index: 0, color: color }));
-  };
-
-  const handleSetMorphPaintColor2 = (color: string) => {
-    dispatch(setMorphPaintColorAtIndex({ index: 1, color: color }));
+  const handleSetPaintColor = (color: string) => {
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.paint }));
   };
 
   const handleClick = () => {
-    if (cursorMode !== CursorMode.morphPainting) {
-      dispatch(setCursorMode(CursorMode.morphPainting));
+    if (cursorMode !== CursorMode.painting) {
+      dispatch(setCursorMode(CursorMode.painting));
       pushTooltip(true);
     } else {
       dispatch(setCursorMode(CursorMode.default));
@@ -54,15 +50,15 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Colour-Changing Paint ${active ? '(Active)' : ''}`,
+        text: `Paint ${active ? '(Active)' : ''}`,
         direction: TooltipDirection.right,
-        targetID: 'morph-paint-widget',
+        targetID: 'painting-widget',
       }),
     );
   };
 
   const handleMouseEnter = () => {
-    pushTooltip(cursorMode === CursorMode.morphPainting);
+    pushTooltip(cursorMode === CursorMode.painting);
   };
 
   const handleMouseLeave = () => {
@@ -70,7 +66,7 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="morph-paint-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="painting-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
@@ -83,8 +79,7 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={handleSetMorphPaintColor1} initColor={morphPaintColors![0]} />
-            <ColorSelector setColorCallback={handleSetMorphPaintColor2} initColor={morphPaintColors![1]} />
+            <ColorSelector setColorCallback={handleSetPaintColor} initColor={paintColor} />
           </div>
         </div>
       </div>
@@ -92,4 +87,4 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default MorphPaintWidget;
+export default PaintWidget;

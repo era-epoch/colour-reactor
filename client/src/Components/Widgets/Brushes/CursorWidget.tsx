@@ -1,21 +1,21 @@
-import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorMode, setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { RootState } from '../../State/rootReducer';
-import { CursorMode, SpawnWidget, TooltipDirection } from '../../types';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import { setCursorColor, setCursorMode, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { RootState } from '../../../State/rootReducer';
+import { CursorMode, TooltipDirection } from '../../../types';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const PaintWidget = (props: Props): JSX.Element => {
+const CursorWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const paintColor = useSelector((state: RootState) => state.app.paintOps.primary);
+  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
-  const widgetColor = paintColor;
+  const widgetColor = cursorColor;
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
 
@@ -27,38 +27,33 @@ const PaintWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  if (cursorMode === CursorMode.painting) {
+  if (cursorMode === CursorMode.default) {
     widgetStyle.backgroundColor = widgetColor;
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
   }
 
-  const handleSetPaintColor = (color: string) => {
-    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.paint }));
+  const handleClick = () => {
+    dispatch(setCursorMode(CursorMode.default));
+    pushTooltip(true);
   };
 
-  const handleClick = () => {
-    if (cursorMode !== CursorMode.painting) {
-      dispatch(setCursorMode(CursorMode.painting));
-      pushTooltip(true);
-    } else {
-      dispatch(setCursorMode(CursorMode.default));
-      pushTooltip(false);
-    }
+  const handleSetCursorColor = (color: string) => {
+    dispatch(setCursorColor(color));
   };
 
   const pushTooltip = (active: boolean) => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Paint ${active ? '(Active)' : ''}`,
+        text: `Hover Colour ${active ? '(Active)' : ''}`,
         direction: TooltipDirection.right,
-        targetID: 'painting-widget',
+        targetID: 'cursor-widget',
       }),
     );
   };
 
   const handleMouseEnter = () => {
-    pushTooltip(cursorMode === CursorMode.painting);
+    pushTooltip(cursorMode === CursorMode.default);
   };
 
   const handleMouseLeave = () => {
@@ -66,7 +61,7 @@ const PaintWidget = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="painting-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="cursor-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
@@ -75,11 +70,11 @@ const PaintWidget = (props: Props): JSX.Element => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <FontAwesomeIcon icon={faPaintBrush} />
+          <FontAwesomeIcon icon={faArrowPointer} />
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={handleSetPaintColor} initColor={paintColor} />
+            <ColorSelector setColorCallback={handleSetCursorColor} initColor={cursorColor} />
           </div>
         </div>
       </div>
@@ -87,4 +82,4 @@ const PaintWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default PaintWidget;
+export default CursorWidget;

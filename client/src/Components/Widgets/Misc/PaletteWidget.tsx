@@ -1,16 +1,15 @@
-import { faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faPalette } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { deleteAllObjects } from '../../State/Slices/boardSlice';
-import { TooltipDirection } from '../../types';
+import { setActiveDialogue, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { Dialogue, TooltipDirection } from '../../../types';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const EraseWidget = (props: Props): JSX.Element => {
+const PaletteWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
@@ -20,17 +19,18 @@ const EraseWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  const handleErase = () => {
-    dispatch(deleteAllObjects());
+  const handleClick = () => {
+    dispatch(unsetTooltip());
+    dispatch(setActiveDialogue(Dialogue.palette));
   };
 
   const handleMouseEnter = () => {
     dispatch(
       setTooltipState({
         active: true,
-        text: 'Erase Everything',
+        text: `Colour Palette`,
         direction: TooltipDirection.right,
-        targetID: 'erase-widget',
+        targetID: 'palette-widget',
       }),
     );
   };
@@ -40,20 +40,20 @@ const EraseWidget = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="erase-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="palette-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
-          onClick={handleErase}
           style={widgetStyle}
+          onClick={handleClick}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <FontAwesomeIcon icon={faEraser} />
+          <FontAwesomeIcon icon={faPalette} />
         </div>
       </div>
     </div>
   );
 };
 
-export default EraseWidget;
+export default PaletteWidget;

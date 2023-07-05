@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import CursorWidget from '../Widgets/CursorWidget';
-import MorphPaintWidget from '../Widgets/MorphPaintWidget';
-import PaintWidget from '../Widgets/PaintWidget';
+import CursorWidget from '../Widgets/Brushes/CursorWidget';
+import MorphPaintWidget from '../Widgets/Brushes/MorphPaintWidget';
+import PaintWidget from '../Widgets/Brushes/PaintWidget';
 
 const BrushToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);

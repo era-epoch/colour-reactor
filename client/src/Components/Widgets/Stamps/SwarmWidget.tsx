@@ -2,13 +2,13 @@ import { faBugs } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { createFirefly } from '../../State/BoardObjects/FireFly';
-import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
-import { loadObjects } from '../../State/Slices/boardSlice';
-import { RootState } from '../../State/rootReducer';
-import { BoardObject, SpawnWidget, TooltipDirection } from '../../types';
-import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
-import ColorSelector from '../SubtoolbarOptions/ColorSelector';
+import { createFirefly } from '../../../State/BoardObjects/FireFly';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { loadObjects } from '../../../State/Slices/boardSlice';
+import { RootState } from '../../../State/rootReducer';
+import { BoardObject, SpawnWidget, TooltipDirection } from '../../../types';
+import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
+import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;

@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import EraseWidget from '../Widgets/EraseWidget';
-import FillCanvasWidget from '../Widgets/FillCanvasWidget';
-import PaletteWidget from '../Widgets/PaletteWidget';
-import TimeWidget from '../Widgets/TimeWidget';
+import EraseWidget from '../Widgets/Misc/EraseWidget';
+import FillCanvasWidget from '../Widgets/Misc/FillCanvasWidget';
+import PaletteWidget from '../Widgets/Misc/PaletteWidget';
+import TimeWidget from '../Widgets/Misc/TimeWidget';
 
 const OpsToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);

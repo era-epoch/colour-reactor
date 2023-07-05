@@ -1,11 +1,13 @@
-import { faMousePointer, faStamp, faToolbox, faVectorSquare } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faInfo, faMousePointer, faStamp, faToolbox, faVectorSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveToolbar, setTooltipState, unsetTooltip } from '../State/Slices/appSlice';
 import { RootState } from '../State/rootReducer';
 import { Toolbar, TooltipDirection } from '../types';
+import AboutToolbar from './Toolbars/AboutToolbar';
 import BrushToolbar from './Toolbars/BrushToolbar';
+import FileToolbar from './Toolbars/FileToolbar';
 import ObjectsToolbar from './Toolbars/ObjectsToolbar';
 import OpsToolbar from './Toolbars/OpsToolbar';
 import StampToolbar from './Toolbars/StampToolbar';
@@ -51,6 +53,8 @@ const ToolbarContainer = (): JSX.Element => {
   const objectsIconStyle = { ...iconStyle };
   const stampIconStyle = { ...iconStyle };
   const opsIconStyle = { ...iconStyle };
+  const fileIconStyle = { ...iconStyle };
+  const aboutIconStyle = { ...iconStyle };
 
   switch (activeToolbar) {
     case Toolbar.brushes:
@@ -65,40 +69,41 @@ const ToolbarContainer = (): JSX.Element => {
     case Toolbar.options:
       opsIconStyle.borderColor = 'var(--contrast)';
       break;
+    case Toolbar.file:
+      fileIconStyle.borderColor = 'var(--contrast)';
+      break;
+    case Toolbar.about:
+      aboutIconStyle.borderColor = 'var(--contrast)';
+      break;
   }
 
   const handleToggleOpsToolbar = () => {
-    if (activeToolbar === Toolbar.options) {
-      dispatch(setActiveToolbar(Toolbar.none));
-    } else {
-      dispatch(setActiveToolbar(Toolbar.options));
-    }
-    dispatch(unsetTooltip());
+    handleToggleToolbar(Toolbar.options);
   };
   const handleToggleBrushToolbar = () => {
-    if (activeToolbar === Toolbar.brushes) {
-      dispatch(setActiveToolbar(Toolbar.none));
-    } else {
-      dispatch(setActiveToolbar(Toolbar.brushes));
-    }
-    dispatch(unsetTooltip());
+    handleToggleToolbar(Toolbar.brushes);
   };
   const handleToggleStampToolbar = () => {
-    if (activeToolbar === Toolbar.stamps) {
-      dispatch(setActiveToolbar(Toolbar.none));
-    } else {
-      dispatch(setActiveToolbar(Toolbar.stamps));
-    }
-    dispatch(unsetTooltip());
+    handleToggleToolbar(Toolbar.stamps);
   };
   const handleToggleObjectsToolbar = () => {
-    if (activeToolbar === Toolbar.objects) {
+    handleToggleToolbar(Toolbar.objects);
+  };
+  const handleToggleFileToolbar = () => {
+    handleToggleToolbar(Toolbar.file);
+  };
+  const handleToggleAboutToolbar = () => {
+    handleToggleToolbar(Toolbar.about);
+  };
+  const handleToggleToolbar = (toolbar: Toolbar) => {
+    if (activeToolbar === toolbar) {
       dispatch(setActiveToolbar(Toolbar.none));
     } else {
-      dispatch(setActiveToolbar(Toolbar.objects));
+      dispatch(setActiveToolbar(toolbar));
     }
     dispatch(unsetTooltip());
   };
+
   const OnOpsMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     dispatch(
       setTooltipState({
@@ -136,6 +141,26 @@ const ToolbarContainer = (): JSX.Element => {
         text: 'Objects',
         direction: TooltipDirection.right,
         targetID: 'objects-toolbar-icon',
+      }),
+    );
+  };
+  const OnFileMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'File',
+        direction: TooltipDirection.right,
+        targetID: 'file-toolbar-icon',
+      }),
+    );
+  };
+  const OnAboutMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'About',
+        direction: TooltipDirection.right,
+        targetID: 'about-toolbar-icon',
       }),
     );
   };
@@ -195,6 +220,32 @@ const ToolbarContainer = (): JSX.Element => {
           id="ops-toolbar-icon"
         >
           <FontAwesomeIcon icon={faToolbox} />
+        </div>
+      </div>
+      <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
+        <FileToolbar />
+        <div
+          className="toolbar-icon"
+          style={fileIconStyle}
+          onClick={handleToggleFileToolbar}
+          onMouseEnter={OnFileMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="file-toolbar-icon"
+        >
+          <FontAwesomeIcon icon={faFile} />
+        </div>
+      </div>
+      <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
+        <AboutToolbar />
+        <div
+          className="toolbar-icon"
+          style={aboutIconStyle}
+          onClick={handleToggleAboutToolbar}
+          onMouseEnter={OnAboutMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="about-toolbar-icon"
+        >
+          <FontAwesomeIcon icon={faInfo} />
         </div>
       </div>
     </div>

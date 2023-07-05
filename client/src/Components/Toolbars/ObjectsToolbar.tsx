@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import FireflyWidget from '../Widgets/FireflyWidget';
-import MoverWidget from '../Widgets/MoverWidget';
+import FireflyWidget from '../Widgets/Objects/FireflyWidget';
+import MoverWidget from '../Widgets/Objects/MoverWidget';
 
 const ObjectsToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);

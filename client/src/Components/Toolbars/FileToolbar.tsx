@@ -2,14 +2,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import BigHLineWidget from '../Widgets/Stamps/BigHLineWidget';
-import BigVLineWidget from '../Widgets/Stamps/BigVLineWidget';
-import SwarmWidget from '../Widgets/Stamps/SwarmWidget';
-import WaveWidget from '../Widgets/Stamps/WaveWidget';
 
-const StampToolbar = (): JSX.Element => {
+const FileToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);
-  const open = activeToolbar === Toolbar.stamps;
+  const open = activeToolbar === Toolbar.file;
 
   const widgetStyles = [
     { ...defaultWidgetStyle },
@@ -29,14 +25,7 @@ const StampToolbar = (): JSX.Element => {
     widgetStyles[i].zIndex = `-${i}`;
   }
 
-  return (
-    <div className="toolbar" style={toolbarStyle}>
-      <BigHLineWidget widgetWrapperStyle={widgetStyles[0]} />
-      <BigVLineWidget widgetWrapperStyle={widgetStyles[1]} />
-      <WaveWidget widgetWrapperStyle={widgetStyles[2]} />
-      <SwarmWidget widgetWrapperStyle={widgetStyles[3]} />
-    </div>
-  );
+  return <div className="toolbar" style={toolbarStyle}></div>;
 };
 
-export default StampToolbar;
+export default FileToolbar;
