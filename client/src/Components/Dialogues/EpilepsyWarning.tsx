@@ -1,7 +1,6 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CSS from 'csstype';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import uuid from 'react-uuid';
@@ -24,7 +23,14 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
   const fadeOutDuration = 2000;
 
   const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
+  const [popupJostle, setPopupJostle] = useState(false);
   const [hiding, setHiding] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPopupJostle(false);
+    }, 410);
+  }, [popupJostle]);
 
   const buttonMouseEnter = () => {
     setShapePositionOffset(30);
@@ -47,25 +53,29 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     setShapePositionOffset(100);
   };
 
-  const lowerPopupStyles: CSS.Properties[] = [];
-  const upperPopupStyles: CSS.Properties[] = [];
+  const lowerPopupStyles: any[] = [];
+  const upperPopupStyles: any[] = [];
   for (let i = 0; i < colorScheme.colors.length; i++) {
-    const newLowerStyle: CSS.Properties = { ...defaultPopupStyle };
+    const newLowerStyle: any = { ...defaultPopupStyle };
     newLowerStyle.backgroundColor = colorScheme.colors[i];
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.zIndex = `-${i + 1}`;
     newLowerStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
     newLowerStyle.transitionDuration = `${(i + 1) * 100}ms`;
+    newLowerStyle['--fly-in-origin'] = `100vw`;
+    newLowerStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
     lowerPopupStyles.push(newLowerStyle);
 
-    const newUpperStyle: CSS.Properties = { ...defaultPopupStyle };
+    const newUpperStyle: any = { ...defaultPopupStyle };
     newUpperStyle.backgroundColor = colorScheme.colors[i];
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.zIndex = `-${i + 1}`;
     newUpperStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
     newUpperStyle.transitionDuration = `${(i + 1) * 100}ms`;
+    newUpperStyle['--fly-in-origin'] = `-100vw`;
+    newUpperStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
     upperPopupStyles.push(newUpperStyle);
   }
 
@@ -76,7 +86,10 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
   }
 
   const handleColorSchemeSelectChange = (selectedValue: ColorScheme | null) => {
-    if (selectedValue) dispatch(setColorScheme(selectedValue));
+    if (selectedValue) {
+      dispatch(setColorScheme(selectedValue));
+      setPopupJostle(true);
+    }
   };
 
   return (
@@ -100,7 +113,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
             })}
           </div>
           <div className="dialogue-subtitle">Select a colour palette ...</div>
-          <div className="dialogue-section" onMouseEnter={buttonMouseEnter} onMouseLeave={buttonMouseLeave}>
+          <div className="dialogue-section">
             <Select
               options={allColorSchemes}
               getOptionLabel={(scheme: ColorScheme) => scheme.name}
@@ -131,10 +144,10 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
         </div>
         <div className="dialogue-popout-shapes">
           {colorScheme.colors.map((color, i) => {
-            return <PopoutShape style={upperPopupStyles[i]} />;
+            return <PopoutShape style={upperPopupStyles[i]} jostle={popupJostle} />;
           })}
           {colorScheme.colors.map((color, i) => {
-            return <PopoutShape style={lowerPopupStyles[i]} />;
+            return <PopoutShape style={lowerPopupStyles[i]} jostle={popupJostle} />;
           })}
         </div>
       </div>

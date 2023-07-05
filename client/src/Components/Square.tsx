@@ -124,6 +124,7 @@ const Square = (props: Props): JSX.Element => {
     renderingInfo.backgroundColor = combinedColor;
     prevTickRef.current = ticksElapsed;
   } else {
+    // This runs on NON-update renders
     combinedColor = renderingInfo.backgroundColor;
   }
 

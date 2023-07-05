@@ -32,6 +32,7 @@
 
 @keyframes dialogueSlideUp {
   0% {
+    opacity: 0;
     transform: translateY(250%);
   }
   50% {
@@ -41,6 +42,7 @@
     transform: translateY(10px);
   }
   100% {
+    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -106,5 +108,45 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+.fly-in {
+  transform: translateX(var(--fly-in-origin));
+  animation: flyIn 1500ms ease forwards;
+  animation-delay: var(--fly-in-delay);
+}
+
+@keyframes flyIn {
+  0% {
+    transform: translateX(var(--fly-in-origin));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.jostle {
+  animation: jostle 400ms ease forwards;
+}
+
+@keyframes jostle {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(var(--jostle-1), var(--jostle-2));
+  }
+  40% {
+    transform: translate(var(--jostle-3), var(--jostle-4));
+  }
+  60% {
+    transform: translate(var(--jostle-5), var(--jostle-6));
+  }
+  80% {
+    transform: translate(var(--jostle-7), var(--jostle-8));
+  }
+  100% {
+    transform: translate(0, 0);
   }
 }
