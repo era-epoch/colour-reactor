@@ -53,7 +53,6 @@ export const updatePaint: UpdateFunction = (obj: BoardObject, state: BoardState)
 
 export const renderPaint: BoardObjectRenderFunction = (ops: BoardObjectRenderOptions): BoardObjectRenderOutput => {
   const paint = ops.obj as Paint;
-  console.log('Age: ' + paint.age);
   const combinedColor: Color = Color.mix(ops.backgroundColor, paint.primary) as unknown as Color;
 
   const output: BoardObjectRenderOutput = {

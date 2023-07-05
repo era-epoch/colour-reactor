@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
 import { createFirefly } from '../../State/BoardObjects/FireFly';
-import { setSwarmOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject, TooltipDirection } from '../../types';
+import { BoardObject, SpawnWidget, TooltipDirection } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
@@ -67,17 +67,12 @@ const SwarmWidget = (props: Props): JSX.Element => {
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setSwarmOps({ primary: color }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.swarm }));
   };
 
   const setTouchdownAnimation = (anim: string) => {
-    dispatch(setSwarmOps({ touchdownAnimation: anim }));
+    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.swarm }));
   };
-
-  // const setDirection = (dir: Direction) => {
-  //   console.log('Setting direction to: ' + dir);
-  //   dispatch(setBigVLineOps({ direction: dir }));
-  // };
 
   return (
     <div className="widget-wrapper" style={widgetWrapperStyle} id="swarm-widget">

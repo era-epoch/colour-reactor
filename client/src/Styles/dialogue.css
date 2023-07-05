@@ -51,7 +51,7 @@
 }
 
 .dialogue-content {
-  max-width: 600px;
+  max-width: min(600px, 95vw);
   display: flex;
   flex-direction: column;
   background-color: var(--background);

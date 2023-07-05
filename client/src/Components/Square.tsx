@@ -3,12 +3,22 @@ import CSS from 'csstype';
 import { MouseEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { createFirefly } from '../State/BoardObjects/FireFly';
 import { RenderMap } from '../State/BoardObjects/Maps';
 import { createMorphPaint } from '../State/BoardObjects/MorphPaint';
+import { createMover } from '../State/BoardObjects/Mover';
 import { createPaint } from '../State/BoardObjects/Paint';
+import { fallbackColor } from '../State/Slices/appSlice';
 import { loadObjects } from '../State/Slices/boardSlice';
 import { RootState } from '../State/rootReducer';
-import { BoardObjectCSSClass, BoardObjectRenderOptions, BoardObjectRenderOutput, CursorMode } from '../types';
+import {
+  BoardObjectCSSClass,
+  BoardObjectRenderOptions,
+  BoardObjectRenderOutput,
+  CompassDirection,
+  CursorMode,
+  SpawnWidget,
+} from '../types';
 
 interface Props {
   x: number;
@@ -37,6 +47,11 @@ const Square = (props: Props): JSX.Element => {
 
   const defaultColorString = useSelector((state: RootState) => state.app.defaultColor);
   const defaultColor = new Color(defaultColorString);
+
+  // Object Spawning
+  const activeObject = useSelector((state: RootState) => state.app.activeObject);
+  const moverOps = useSelector((state: RootState) => state.app.moverOps);
+  const fireflyOps = useSelector((state: RootState) => state.app.fireflyOps);
 
   // BRUSHES
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
@@ -112,31 +127,39 @@ const Square = (props: Props): JSX.Element => {
     combinedColor = renderingInfo.backgroundColor;
   }
 
-  // HOVER STYLE
-  switch (cursorMode) {
-    case CursorMode.default:
-      if (hovering) {
-        combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
-        // if (!previousColorRenderedFlag) {
-        //   combinedColor = new Color(cursorColor);
-        // } else {
-        //   combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
-        // }
-        style.cursor = 'default';
-      }
-      break;
-    case CursorMode.painting:
-      if (hovering) {
-        style.outline = `2px dashed ${paintOps.primary}`;
-        style.zIndex = 2;
-      }
-      break;
-    case CursorMode.morphPainting:
-      if (hovering) {
-        style.outline = `2px dashed ${morphPaintOps.morphColors![0]}`;
-        style.zIndex = 2;
-      }
-      break;
+  if (activeObject === SpawnWidget.none) {
+    // If we're not spawning an object, hover style based on cursor mode
+    switch (cursorMode) {
+      case CursorMode.default:
+        if (hovering) {
+          combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+          // if (!previousColorRenderedFlag) {
+          //   combinedColor = new Color(cursorColor);
+          // } else {
+          //   combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
+          // }
+          style.cursor = 'default';
+        }
+        break;
+      case CursorMode.painting:
+        if (hovering) {
+          style.outline = `2px dashed ${paintOps.primary}`;
+          style.zIndex = 2;
+        }
+        break;
+      case CursorMode.morphPainting:
+        if (hovering) {
+          style.outline = `2px dashed ${morphPaintOps.morphColors![0]}`;
+          style.zIndex = 2;
+        }
+        break;
+    }
+  } else {
+    // If we ARE spawning an object, hover styling based on that
+    if (hovering) {
+      style.outline = `2px dashed ${fallbackColor}`;
+      style.zIndex = 2;
+    }
   }
 
   style.backgroundColor = combinedColor.toString();
@@ -159,6 +182,14 @@ const Square = (props: Props): JSX.Element => {
 
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
+    if (activeObject === SpawnWidget.none) {
+      handleBrushOnClick(e);
+    } else {
+      handleObjectSpawnOnClick(e);
+    }
+  };
+
+  const handleBrushOnClick = (e: MouseEvent) => {
     switch (cursorMode) {
       case CursorMode.default:
         if (e.ctrlKey) {
@@ -181,6 +212,37 @@ const Square = (props: Props): JSX.Element => {
             loadObjects([createMorphPaint({ morphColors: morphPaintOps.morphColors, posX: props.x, posY: props.y })]),
           );
         }
+        break;
+    }
+  };
+
+  const handleObjectSpawnOnClick = (e: MouseEvent) => {
+    switch (activeObject) {
+      case SpawnWidget.mover:
+        dispatch(
+          loadObjects([
+            createMover({
+              posX: props.x,
+              posY: props.y,
+              primary: moverOps.primary,
+              touchdownAnimation: moverOps.touchdownAnimation,
+              direction: moverOps.direction,
+            }),
+          ]),
+        );
+        break;
+      case SpawnWidget.firefly:
+        dispatch(
+          loadObjects([
+            createFirefly({
+              posX: props.x,
+              posY: props.y,
+              primary: fireflyOps.primary,
+              touchdownAnimation: fireflyOps.touchdownAnimation,
+              compassDirection: CompassDirection.none,
+            }),
+          ]),
+        );
         break;
     }
   };

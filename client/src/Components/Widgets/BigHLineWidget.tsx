@@ -1,13 +1,12 @@
 import { faGripLines } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMover } from '../../State/BoardObjects/Mover';
-import { setBigHLineOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject, Direction, TooltipDirection } from '../../types';
+import { BoardObject, Direction, SpawnWidget, TooltipDirection } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 import DirectionSelector from '../SubtoolbarOptions/DirectionSelector';
@@ -23,17 +22,10 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   const directionOptions = useSelector((state: RootState) => state.app.verticalDirections);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
-  const [hover, setHover] = useState(false);
   widgetWrapperStyle.color = bigHLineOps.primary;
   widgetWrapperStyle.borderColor = bigHLineOps.primary;
 
   const iconStyle: CSS.Properties = {};
-  if (hover) {
-    iconStyle.animationName = `wobble`;
-    iconStyle.animationTimingFunction = `ease`;
-    iconStyle.animationDuration = '400ms';
-    iconStyle.animationIterationCount = '1';
-  }
 
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
@@ -41,7 +33,6 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseEnter = () => {
-    setHover(true);
     dispatch(
       setTooltipState({
         active: true,
@@ -53,7 +44,6 @@ const BigHLineWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseLeave = () => {
-    setHover(false);
     dispatch(unsetTooltip());
   };
 
@@ -61,32 +51,30 @@ const BigHLineWidget = (props: Props): JSX.Element => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardWidth; i++) {
       objects.push(
-        createMover(
-          {
-            primary: bigHLineOps.primary,
-            touchdownAnimation: bigHLineOps.touchdownAnimation,
-            direction: bigHLineOps.direction,
-          },
-          i,
-          0,
-          1,
-          3,
-        ),
+        createMover({
+          primary: bigHLineOps.primary,
+          touchdownAnimation: bigHLineOps.touchdownAnimation,
+          direction: bigHLineOps.direction,
+          posX: i,
+          posY: 0,
+          tickDelay: 1,
+          ghostTicks: 3,
+        }),
       );
     }
     dispatch(loadObjects(objects));
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setBigHLineOps({ primary: color }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.bigHLine }));
   };
 
   const setTouchdownAnimation = (anim: string) => {
-    dispatch(setBigHLineOps({ touchdownAnimation: anim }));
+    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.bigHLine }));
   };
 
   const setDirection = (dir: Direction) => {
-    dispatch(setBigHLineOps({ direction: dir }));
+    dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.bigHLine }));
   };
 
   return (

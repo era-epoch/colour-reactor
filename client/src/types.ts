@@ -49,6 +49,7 @@ export interface BoardObjectSpawnOptionsInternal {
   touchdownAnimation: string;
   liftoffAnimation: string;
   ghostAnimation: string;
+  ghostTicks: number;
   updateAnimation: string;
   morphCompleteAnimation: string;
   morphDelta: number;
@@ -129,4 +130,16 @@ export interface ColorScheme {
   name: string;
   colors: string[];
   id: string;
+}
+
+export enum SpawnWidget {
+  none,
+  wave,
+  bigHLine,
+  bigVLine,
+  swarm,
+  paint,
+  morphPaint,
+  mover,
+  firefly,
 }

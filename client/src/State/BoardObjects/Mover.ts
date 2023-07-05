@@ -35,24 +35,18 @@ export interface MoverGhost extends BoardObject {
   ghostAnimation: string;
 }
 
-export const createMover = (
-  ops: BoardObjectSpawnOptions,
-  x: number,
-  y: number,
-  tickDelay: number,
-  ghostTicks: number,
-): Mover => {
+export const createMover = (ops: BoardObjectSpawnOptions): Mover => {
   const Mover: Mover = {
     id: uuidv4(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
-    posX: x,
-    posY: y,
+    posX: ops.posX !== undefined ? ops.posX : 0,
+    posY: ops.posY !== undefined ? ops.posY : 0,
     direction: ops.direction !== undefined ? ops.direction : Direction.right,
     polarity: true,
-    tickDelay: tickDelay,
+    tickDelay: ops.tickDelay !== undefined ? ops.tickDelay : 1,
     ticksSinceUpdate: 0,
     tag: 'Mover',
-    ghostTicks: ghostTicks,
+    ghostTicks: ops.ghostTicks !== undefined ? ops.ghostTicks : 0,
     touchdownAnimation: ops.touchdownAnimation !== undefined ? ops.touchdownAnimation : '',
     liftoffAnimation: ops.liftoffAnimation !== undefined ? ops.liftoffAnimation : '',
     ghostAnimation: ops.ghostAnimation !== undefined ? ops.ghostAnimation : '',

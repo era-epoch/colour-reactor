@@ -1,13 +1,12 @@
 import { faWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMover } from '../../State/BoardObjects/Mover';
-import { setTooltipState, setWaveOps, unsetTooltip } from '../../State/Slices/appSlice';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject, TooltipDirection } from '../../types';
+import { BoardObject, SpawnWidget, TooltipDirection } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
@@ -22,17 +21,10 @@ const WaveWidget = (props: Props): JSX.Element => {
   const waveOps = useSelector((state: RootState) => state.app.waveOps);
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
-  const [hover, setHover] = useState(false);
   widgetWrapperStyle.color = waveOps.primary;
   widgetWrapperStyle.borderColor = waveOps.primary;
 
   const iconStyle: CSS.Properties = {};
-  if (hover) {
-    iconStyle.animationName = `wobble`;
-    iconStyle.animationTimingFunction = `ease`;
-    iconStyle.animationDuration = '400ms';
-    iconStyle.animationIterationCount = '1';
-  }
 
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
@@ -40,7 +32,6 @@ const WaveWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseEnter = () => {
-    setHover(true);
     dispatch(
       setTooltipState({
         active: true,
@@ -52,7 +43,6 @@ const WaveWidget = (props: Props): JSX.Element => {
   };
 
   const handleMouseLeave = () => {
-    setHover(false);
     dispatch(unsetTooltip());
   };
 
@@ -65,11 +55,15 @@ const WaveWidget = (props: Props): JSX.Element => {
     while (centerI - i >= 0) {
       objects.push(
         createMover(
-          { primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation, direction: waveOps.direction },
-          centerI - i,
-          j,
-          1,
-          3,
+          createMover({
+            primary: waveOps.primary,
+            touchdownAnimation: waveOps.touchdownAnimation,
+            direction: waveOps.direction,
+            posX: centerI - i,
+            posY: j,
+            tickDelay: 1,
+            ghostTicks: 3,
+          }),
         ),
       );
       if (j_direction === 'down') {
@@ -94,13 +88,15 @@ const WaveWidget = (props: Props): JSX.Element => {
     j_direction = 'down';
     while (centerI + i < boardWidth) {
       objects.push(
-        createMover(
-          { primary: waveOps.primary, touchdownAnimation: waveOps.touchdownAnimation, direction: waveOps.direction },
-          centerI + i,
-          j,
-          1,
-          3,
-        ),
+        createMover({
+          primary: waveOps.primary,
+          touchdownAnimation: waveOps.touchdownAnimation,
+          direction: waveOps.direction,
+          posX: centerI + i,
+          posY: j,
+          tickDelay: 1,
+          ghostTicks: 3,
+        }),
       );
       if (j_direction === 'down') {
         if (j < boardHeight - 1) {
@@ -123,11 +119,11 @@ const WaveWidget = (props: Props): JSX.Element => {
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setWaveOps({ primary: color }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.wave }));
   };
 
   const setTouchdownAnimation = (anim: string) => {
-    dispatch(setWaveOps({ touchdownAnimation: anim }));
+    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.wave }));
   };
 
   return (

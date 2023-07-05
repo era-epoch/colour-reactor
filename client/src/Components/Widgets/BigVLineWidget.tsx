@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMover } from '../../State/BoardObjects/Mover';
-import { setBigVLineOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
+import { setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { loadObjects } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
-import { BoardObject, Direction, TooltipDirection } from '../../types';
+import { BoardObject, Direction, SpawnWidget, TooltipDirection } from '../../types';
 import AnimationSelector from '../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 import DirectionSelector from '../SubtoolbarOptions/DirectionSelector';
@@ -51,33 +51,30 @@ const BigVLineWidget = (props: Props): JSX.Element => {
     const objects: BoardObject[] = [];
     for (let i = 0; i < boardHeight; i++) {
       objects.push(
-        createMover(
-          {
-            primary: bigVLineOps.primary,
-            touchdownAnimation: bigVLineOps.touchdownAnimation,
-            direction: bigVLineOps.direction,
-          },
-          0,
-          i,
-          1,
-          8,
-        ),
+        createMover({
+          primary: bigVLineOps.primary,
+          touchdownAnimation: bigVLineOps.touchdownAnimation,
+          direction: bigVLineOps.direction,
+          posX: 0,
+          posY: i,
+          tickDelay: 1,
+          ghostTicks: 8,
+        }),
       );
     }
     dispatch(loadObjects(objects));
   };
 
   const setWidgetColor = (color: string) => {
-    dispatch(setBigVLineOps({ primary: color }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.bigVLine }));
   };
 
   const setTouchdownAnimation = (anim: string) => {
-    dispatch(setBigVLineOps({ touchdownAnimation: anim }));
+    dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.bigVLine }));
   };
 
   const setDirection = (dir: Direction) => {
-    console.log('Setting direction to: ' + dir);
-    dispatch(setBigVLineOps({ direction: dir }));
+    dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.bigVLine }));
   };
 
   return (

@@ -2,9 +2,9 @@ import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorMode, setPaintOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
+import { setCursorMode, setSpawnOps, setTooltipState, unsetTooltip } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
-import { CursorMode, TooltipDirection } from '../../types';
+import { CursorMode, SpawnWidget, TooltipDirection } from '../../types';
 import ColorSelector from '../SubtoolbarOptions/ColorSelector';
 
 interface Props {
@@ -33,7 +33,7 @@ const PaintWidget = (props: Props): JSX.Element => {
   }
 
   const handleSetPaintColor = (color: string) => {
-    dispatch(setPaintOps({ primary: color }));
+    dispatch(setSpawnOps({ ops: { primary: color }, target: SpawnWidget.paint }));
   };
 
   const handleClick = () => {

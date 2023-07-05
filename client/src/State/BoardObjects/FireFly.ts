@@ -51,9 +51,9 @@ export const advanceFirefly: UpdateFunction = (obj: BoardObject, state: BoardSta
     removeObjectFromSquare(firefly, state.squares[firefly.posY][firefly.posX]);
     // Probability weights for each compass direction (center = stationary)
     let weights = [
-      [0, 0, 0],
-      [0, 1, 0],
-      [0, 0, 0],
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1],
     ];
     const directions = [
       [CompassDirection.northwest, CompassDirection.north, CompassDirection.northeast],
