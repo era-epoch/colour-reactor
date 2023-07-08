@@ -1,11 +1,12 @@
-import { faHourglassStart } from '@fortawesome/free-solid-svg-icons';
+import { faFire, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
+import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPause, setTimeDelta, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
 import { RootState } from '../../../State/rootReducer';
 import { TooltipDirection } from '../../../types';
-import SubtoolSlider from '../../SubtoolbarOptions/SubtoolSlider';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -54,6 +55,11 @@ const TimeWidget = (props: Props): JSX.Element => {
     dispatch(unsetTooltip());
   };
 
+  const handleDeltaTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    console.log('test');
+  };
+
   return (
     <div className="widget-wrapper" style={widgetWrapperStyle} id="delta-time-widget">
       <div className="relative-parent">
@@ -68,13 +74,14 @@ const TimeWidget = (props: Props): JSX.Element => {
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <SubtoolSlider
+            {/* <SubtoolSlider
               initValue={timeDelta}
               minValue={10}
               maxValue={2000}
               selectionCallback={handleTimeDeltaChange}
-              steps={200}
-            />
+              steps={10}
+            /> */}
+            <NumberInput labelIcon={faFire} value={timeDelta} changeCallback={handleDeltaTimeChange} />
           </div>
         </div>
       </div>
