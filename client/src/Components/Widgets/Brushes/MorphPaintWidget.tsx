@@ -59,7 +59,7 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Colour-Changing Paint ${active ? '(Active)' : ''}`,
+        text: `Colour-Changing Paint ${active ? '(Active - Left Click)' : ''}`,
         direction: TooltipDirection.right,
         targetID: 'morph-paint-widget',
       }),

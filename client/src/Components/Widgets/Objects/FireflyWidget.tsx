@@ -40,7 +40,7 @@ const FireflyWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Bug${active ? ' (Active)' : ''}`,
+        text: `Bug${active ? ' (Active - Right Click)' : ''}`,
         direction: TooltipDirection.right,
         targetID: 'firefly-widget',
       }),

@@ -50,7 +50,7 @@ const PaintWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Paint ${active ? '(Active)' : ''}`,
+        text: `Paint ${active ? '(Active - Left Click)' : ''}`,
         direction: TooltipDirection.right,
         targetID: 'painting-widget',
       }),

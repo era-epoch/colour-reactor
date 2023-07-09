@@ -45,7 +45,7 @@ const CursorWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Hover Colour ${active ? '(Active)' : ''}`,
+        text: `Hover Colour ${active ? '(Active - Left Click)' : ''}`,
         direction: TooltipDirection.right,
         targetID: 'cursor-widget',
       }),

@@ -173,51 +173,19 @@ const Square = (props: Props): JSX.Element => {
   // #region
   // EVENT FUNCTIONS
 
-  const handleMouseOver = () => {
+  const handleMouseOver = (e: MouseEvent) => {
     setHovering(true);
+    if (e.buttons === 1) {
+      activateBrush(e);
+    }
   };
 
   const handleMouseOut = () => {
     setHovering(false);
   };
 
-  const handleClick = (e: MouseEvent) => {
-    e.preventDefault();
-    if (activeObject === SpawnWidget.none) {
-      handleBrushOnClick(e);
-    } else {
-      handleObjectSpawnOnClick(e);
-    }
-  };
-
-  const handleBrushOnClick = (e: MouseEvent) => {
-    switch (cursorMode) {
-      case CursorMode.default:
-        if (e.ctrlKey) {
-          rotateSquareY();
-          return;
-        }
-        if (e.altKey) {
-          rotateSquareX();
-          return;
-        }
-        break;
-      case CursorMode.painting:
-        if (e.button === 0) {
-          dispatch(loadObjects([createPaint({ primary: paintOps.primary, posX: props.x, posY: props.y })]));
-        }
-        break;
-      case CursorMode.morphPainting:
-        if (e.button === 0) {
-          dispatch(
-            loadObjects([createMorphPaint({ morphColors: morphPaintOps.morphColors, posX: props.x, posY: props.y })]),
-          );
-        }
-        break;
-    }
-  };
-
   const handleObjectSpawnOnClick = (e: MouseEvent) => {
+    console.log("spawning");
     switch (activeObject) {
       case SpawnWidget.mover:
         dispatch(
@@ -250,7 +218,33 @@ const Square = (props: Props): JSX.Element => {
 
   const handleMouseUp = () => {};
 
-  const handleMouseDown = () => {};
+  const handleMouseDown = (e: MouseEvent) => {
+    if (e.buttons === 1) {
+      activateBrush(e);
+    } else if (e.buttons === 2) {
+      handleObjectSpawnOnClick(e);
+    }
+  };
+
+  const handleDragEnter = (e: MouseEvent) => {
+  }
+
+  const activateBrush = (e: MouseEvent) => {
+    switch (cursorMode) {
+      case CursorMode.painting:
+        if (e.buttons === 1) {
+          dispatch(loadObjects([createPaint({ primary: paintOps.primary, posX: props.x, posY: props.y })]));
+        }
+        break;
+      case CursorMode.morphPainting:
+        if (e.buttons === 1) {
+          dispatch(
+            loadObjects([createMorphPaint({ morphColors: morphPaintOps.morphColors, posX: props.x, posY: props.y })]),
+          );
+        }
+        break;
+    }
+  }
 
   const rotateSquareY = () => {
     setRotateY(!rotateY);
@@ -268,7 +262,8 @@ const Square = (props: Props): JSX.Element => {
       onMouseOut={handleMouseOut}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onClick={handleClick}
+      // onClick={handleClick}
+      onDragEnter={handleDragEnter}
       onContextMenu={(e) => e.preventDefault()}
     ></div>
   );

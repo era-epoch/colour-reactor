@@ -41,7 +41,7 @@ const MoverWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Moving Pixel${active ? ' (Active)' : ''}`,
+        text: `Moving Pixel${active ? ' (Active - Right Click)' : ''}`,
         direction: TooltipDirection.right,
         targetID: 'mover-widget',
       }),

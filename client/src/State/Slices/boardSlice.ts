@@ -68,7 +68,6 @@ const boardSlice = createSlice({
       }
     },
     loadObjects: (state: BoardState, action: PayloadAction<BoardObject[]>) => {
-      console.log('loading objects');
       for (const obj of action.payload) {
         state.objects.push(obj);
       }
