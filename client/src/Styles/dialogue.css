@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(50, 50, 50, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,11 +25,6 @@
   }
 }
 
-/* .EpilepsyWarning .dialogue-internal {
-  transform: translateY(250%);
-  animation: dialogueSlideUp 800ms 400ms ease forwards;
-} */
-
 @keyframes dialogueSlideUp {
   0% {
     opacity: 0;
@@ -49,7 +44,8 @@
 
 .dialogue-internal {
   position: relative;
-  border-radius: 20px;
+  border-radius: 0px;
+  transition: all 250ms ease;
 }
 
 .dialogue-content {
@@ -62,6 +58,10 @@
   gap: 1rem;
   z-index: 2;
   border-radius: inherit;
+}
+
+.EpilepsyWarning .dialogue-content {
+  padding: 4rem 4rem;
 }
 
 .dialogue-popout-shapes {

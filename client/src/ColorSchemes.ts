@@ -20,7 +20,7 @@ export const cyberpunk: ColorScheme = {
 };
 
 export const sunset_1: ColorScheme = {
-  name: '80s Sunset',
+  name: 'Colorado Sunset',
   colors: ['#003049', '#D62828', '#F77F00', '#FCBF49', '#EAE2B7'],
   id: uuid(),
 };
@@ -37,4 +37,25 @@ export const cozy_dragon: ColorScheme = {
   id: uuid(),
 };
 
-export const AllColorSchemes = [pastelRainbow, basicRainbow, cyberpunk, sunset_1, sunset_2, cozy_dragon];
+export const serene: ColorScheme = {
+  name: 'Serene Dream',
+  colors: ['#3a3462', '#4d5779', '#6e1e53', '#e7ab96', '#f3c2b9', '#eea8bb'],
+  id: uuid(),
+};
+
+export const nature: ColorScheme = {
+  name: 'Overgrown',
+  colors: ['#d5ce3b', '#aa7b08', '#9ab106', '#385802', '#3e3e07'],
+  id: uuid(),
+};
+
+export const AllColorSchemes = [
+  pastelRainbow,
+  sunset_1,
+  sunset_2,
+  cozy_dragon,
+  cyberpunk,
+  serene,
+  nature,
+  basicRainbow,
+];

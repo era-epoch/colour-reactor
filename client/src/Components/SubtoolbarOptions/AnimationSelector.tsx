@@ -17,8 +17,8 @@ import { RootState } from '../../State/rootReducer';
 
 export const AnimationIconMap = new Map<string, IconDefinition>([
   ['no-animation', faBan],
-  ['rotate3d-y', faEllipsisV],
-  ['rotate3d-x', faEllipsisH],
+  ['rotate3d-y', faEllipsisH],
+  ['rotate3d-x', faEllipsisV],
   ['tremble', faIndustry],
   ['scale-down', faMagnifyingGlassMinus],
   ['scale-up', faMagnifyingGlassPlus],

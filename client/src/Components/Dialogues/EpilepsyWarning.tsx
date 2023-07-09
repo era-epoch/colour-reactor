@@ -1,5 +1,6 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CSS from 'csstype';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
@@ -27,10 +28,13 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
 
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
+  const borderRadii = [20, 0, 100, 5, 200];
 
   const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
   const [popupJostle, setPopupJostle] = useState(false);
   const [hiding, setHiding] = useState(false);
+  const [radiusIndex, setRadiusIndex] = useState(1);
+  const lastRadius = useRef(1);
 
   useEffect(() => {
     setTimeout(() => {
@@ -64,12 +68,13 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
   const upperLeftPopupStyles: any[] = [];
   const upperRightPopupStyles: any[] = [];
   for (let i = 0; i < colorScheme.colors.length; i++) {
+    let baseOpacity = 0.9;
     const newLowerStyle: any = { ...defaultPopupStyle };
     newLowerStyle.backgroundColor = colorScheme.colors[i];
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.zIndex = `-${2 * (i + 1)}`;
-    newLowerStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newLowerStyle.opacity = `${baseOpacity - 0.05 * (i + 1)}`;
     newLowerStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newLowerStyle['--fly-in-origin'] = `100vw`;
     newLowerStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
@@ -80,7 +85,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newLowerLeftStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newLowerLeftStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerLeftStyle.zIndex = `-${2 * (i + 1) + 1}`;
-    newLowerLeftStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newLowerLeftStyle.opacity = `${baseOpacity - 0.05 * (i + 1)}`;
     newLowerLeftStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newLowerLeftStyle['--fly-in-origin'] = `100vw`;
     newLowerLeftStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
@@ -91,7 +96,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.zIndex = `-${2 * (i + 1)}`;
-    newUpperStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newUpperStyle.opacity = `${baseOpacity - 0.05 * (i + 1)}`;
     newUpperStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newUpperStyle['--fly-in-origin'] = `-100vw`;
     newUpperStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
@@ -102,12 +107,16 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newUpperRightStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newUpperRightStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperRightStyle.zIndex = `-${2 * (i + 1) + 1}`;
-    newUpperRightStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newUpperRightStyle.opacity = `${baseOpacity - 0.05 * (i + 1)}`;
     newUpperRightStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newUpperRightStyle['--fly-in-origin'] = `-100vw`;
     newUpperRightStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
     upperRightPopupStyles.push(newUpperRightStyle);
   }
+
+  const internalStyle: CSS.Properties = {
+    borderRadius: `${borderRadii[radiusIndex]}px`,
+  };
 
   const siteTitle: string = 'COLOUR REACTOR';
   const siteTitleArray = [];
@@ -119,21 +128,28 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     if (selectedValue) {
       dispatch(setColorScheme(selectedValue));
       setPopupJostle(true);
+      let newRadius = lastRadius.current;
+      while (newRadius === lastRadius.current) {
+        newRadius = Math.floor(Math.random() * borderRadii.length);
+      }
+      setRadiusIndex(newRadius);
+      lastRadius.current = newRadius;
     }
   };
 
   const handleDontShowToggle = (val: boolean) => {
-    console.log(val);
     localStorage.setItem('dont_show_warning', `${val}`);
   };
 
   return (
     <div
       className={`EpilepsyWarning dialogue ${hiding ? 'fade-out' : ''} ${shown ? '' : 'nodisplay'}`}
+      id={'intro-dialogue'}
       style={{ '--fade-duration': `${fadeOutDuration}ms` } as React.CSSProperties}
+      // onMouseOver={handleMouseOver}
     >
-      <div className="dialogue-internal">
-        <div className="dialogue-content">
+      <div className="dialogue-internal" style={internalStyle}>
+        <div className="dialogue-content" id="intro-dialogue-content">
           <div className="landing-title">
             {siteTitleArray.map((c, i) => {
               const space = c === ' ';
