@@ -1,7 +1,8 @@
 import { faFire, faHourglassStart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Color from 'colorjs.io';
 import CSS from 'csstype';
-import { ChangeEvent } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPause, setTimeDelta, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
 import { RootState } from '../../../State/rootReducer';
@@ -19,9 +20,6 @@ const TimeWidget = (props: Props): JSX.Element => {
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
 
-  // widgetWrapperStyle.color = widgetColor;
-  // widgetWrapperStyle.borderColor = widgetColor;
-
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
     borderRadius: widgetWrapperStyle.borderRadius,
@@ -31,12 +29,27 @@ const TimeWidget = (props: Props): JSX.Element => {
     widgetStyle.backgroundColor = 'lightgray';
   }
 
+  // Time input control
+  const [cold, setCold] = useState(new Color('#1170ed'));
+  const maxTimeDelta = 10000;
+  const [hot, setHot] = useState(new Color('#bd1816'));
+  const minTimeDelta = 10;
+  const raw_proportion = (timeDelta - minTimeDelta) / (maxTimeDelta - minTimeDelta);
+  const proportion = Math.sqrt(raw_proportion);
+
+  let interpolate = hot.range(cold);
+
+  const inputIconStyle: CSS.Properties = {
+    color: interpolate(proportion).toString(),
+  };
+
   const handleClick = () => {
     const pauseTarget = !paused;
     dispatch(setPause(pauseTarget));
   };
 
   const handleTimeDeltaChange = (newTime: number) => {
+    console.log('New Time Delta: ' + newTime);
     dispatch(setTimeDelta(newTime));
   };
 
@@ -44,7 +57,7 @@ const TimeWidget = (props: Props): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: 'Speed',
+        text: 'Time',
         direction: TooltipDirection.right,
         targetID: 'delta-time-widget',
       }),
@@ -53,11 +66,6 @@ const TimeWidget = (props: Props): JSX.Element => {
 
   const handleMouseLeave = () => {
     dispatch(unsetTooltip());
-  };
-
-  const handleDeltaTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    console.log('test');
   };
 
   return (
@@ -74,14 +82,14 @@ const TimeWidget = (props: Props): JSX.Element => {
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            {/* <SubtoolSlider
-              initValue={timeDelta}
-              minValue={10}
-              maxValue={2000}
-              selectionCallback={handleTimeDeltaChange}
-              steps={10}
-            /> */}
-            <NumberInput labelIcon={faFire} value={timeDelta} changeCallback={handleDeltaTimeChange} />
+            <NumberInput
+              labelIcon={faFire}
+              labelIconStyle={inputIconStyle}
+              value={timeDelta}
+              min={minTimeDelta}
+              max={maxTimeDelta}
+              changeCallback={handleTimeDeltaChange}
+            />
           </div>
         </div>
       </div>

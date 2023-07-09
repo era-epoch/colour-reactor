@@ -1,0 +1,8 @@
+.toggle {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 250ms ease;
+  color: var(--primary);
+}

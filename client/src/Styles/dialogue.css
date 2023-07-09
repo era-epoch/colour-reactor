@@ -13,7 +13,7 @@
 }
 
 .EpilepsyWarning {
-  animation: dialogueFadeIn 1000ms ease forwards;
+  animation: dialogueFadeIn 4000ms ease forwards;
 }
 
 @keyframes dialogueFadeIn {
@@ -25,10 +25,10 @@
   }
 }
 
-.EpilepsyWarning .dialogue-internal {
+/* .EpilepsyWarning .dialogue-internal {
   transform: translateY(250%);
   animation: dialogueSlideUp 800ms 400ms ease forwards;
-}
+} */
 
 @keyframes dialogueSlideUp {
   0% {
@@ -87,6 +87,21 @@
   text-align: justify;
   text-align-last: center;
   color: var(--contrast);
+  font-size: 0.75rem;
+}
+
+.warning-dont-show-again {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tagline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 }
 
 .dialogue-controls,

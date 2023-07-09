@@ -1,6 +1,6 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import uuid from 'react-uuid';
@@ -9,6 +9,7 @@ import { RootState } from '../../State/rootReducer';
 import { defaultPopupStyle } from '../../Styles/ComponentStyles';
 import { ColorScheme, Dialogue } from '../../types';
 import PopoutShape from '../PopoutShape';
+import Toggle from '../Toggle';
 
 interface Props {}
 
@@ -17,7 +18,12 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
   const allColorSchemes = useSelector((state: RootState) => state.app.availableColorSchemes);
   const activeDialogue = useSelector((state: RootState) => state.app.activeDialogue);
-  const shown = activeDialogue === Dialogue.epilepsyWarning;
+  let shown = activeDialogue === Dialogue.epilepsyWarning;
+  const checkedLocalStorage = useRef(false);
+  if (!checkedLocalStorage.current && localStorage.getItem('dont_show_warning') === 'true') {
+    shown = false;
+    checkedLocalStorage.current = true;
+  }
 
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
@@ -61,7 +67,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.zIndex = `-${i + 1}`;
-    newLowerStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
+    newLowerStyle.opacity = `${1 - 0.05 * (i + 1)}`;
     newLowerStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newLowerStyle['--fly-in-origin'] = `100vw`;
     newLowerStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
@@ -72,7 +78,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.zIndex = `-${i + 1}`;
-    newUpperStyle.opacity = `${1 - 0.05 * (i * (i / 2) + 1)}`;
+    newUpperStyle.opacity = `${1 - 0.05 * (i + 1)}`;
     newUpperStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newUpperStyle['--fly-in-origin'] = `-100vw`;
     newUpperStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
@@ -90,6 +96,11 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
       dispatch(setColorScheme(selectedValue));
       setPopupJostle(true);
     }
+  };
+
+  const handleDontShowToggle = (val: boolean) => {
+    console.log(val);
+    localStorage.setItem('dont_show_warning', `${val}`);
   };
 
   return (
@@ -112,7 +123,8 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
               );
             })}
           </div>
-          <div className="dialogue-subtitle">Select a colour palette ...</div>
+          <div className="tagline">A tool for playing with colour, created by Era.</div>
+          <div className="dialogue-subtitle">To get started, select a colour palette ...</div>
           <div className="dialogue-section">
             <Select
               options={allColorSchemes}
@@ -127,8 +139,10 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
             speed is set to high. If you have an epileptic condition or suffer from seizures, please use caution as it
             may not be safe for you to use this tool.
           </div>
+          <div className="warning-dont-show-again">
+            <Toggle initState={false} onChange={handleDontShowToggle} label={`Don't show this again`} />
+          </div>
           <div className="warning-controls">
-            <div className="warning-dont-show-again"></div>
             <div
               className="warning-accept ui-button round"
               onClick={accept}

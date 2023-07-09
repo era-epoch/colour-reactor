@@ -3,7 +3,7 @@ import { ColorScheme } from './types';
 
 export const basicRainbow: ColorScheme = {
   name: 'Basic Rainbow',
-  colors: ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'black', '#eeeeee'],
+  colors: ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'],
   id: uuid(),
 };
 
