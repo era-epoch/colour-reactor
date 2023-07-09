@@ -59,30 +59,54 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     setShapePositionOffset(100);
   };
 
-  const lowerPopupStyles: any[] = [];
-  const upperPopupStyles: any[] = [];
+  const lowerRightPopupStyles: any[] = [];
+  const lowerLeftPopupStyles: any[] = [];
+  const upperLeftPopupStyles: any[] = [];
+  const upperRightPopupStyles: any[] = [];
   for (let i = 0; i < colorScheme.colors.length; i++) {
     const newLowerStyle: any = { ...defaultPopupStyle };
     newLowerStyle.backgroundColor = colorScheme.colors[i];
     newLowerStyle.left = `${(i + 1) * shapePositionOffset}px`;
     newLowerStyle.top = `${(i + 1) * shapePositionOffset}px`;
-    newLowerStyle.zIndex = `-${i + 1}`;
+    newLowerStyle.zIndex = `-${2 * (i + 1)}`;
     newLowerStyle.opacity = `${1 - 0.05 * (i + 1)}`;
     newLowerStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newLowerStyle['--fly-in-origin'] = `100vw`;
     newLowerStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
-    lowerPopupStyles.push(newLowerStyle);
+    lowerRightPopupStyles.push(newLowerStyle);
+
+    const newLowerLeftStyle: any = { ...defaultPopupStyle };
+    newLowerLeftStyle.backgroundColor = colorScheme.colors[colorScheme.colors.length - 1 - i];
+    newLowerLeftStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
+    newLowerLeftStyle.top = `${(i + 1) * shapePositionOffset}px`;
+    newLowerLeftStyle.zIndex = `-${2 * (i + 1) + 1}`;
+    newLowerLeftStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newLowerLeftStyle.transitionDuration = `${(i + 1) * 100}ms`;
+    newLowerLeftStyle['--fly-in-origin'] = `100vw`;
+    newLowerLeftStyle['--fly-in-delay'] = `${200 + i * (i / 4) * 150}ms`;
+    lowerLeftPopupStyles.push(newLowerLeftStyle);
 
     const newUpperStyle: any = { ...defaultPopupStyle };
     newUpperStyle.backgroundColor = colorScheme.colors[i];
     newUpperStyle.left = `${-1 * (i + 1) * shapePositionOffset}px`;
     newUpperStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
-    newUpperStyle.zIndex = `-${i + 1}`;
+    newUpperStyle.zIndex = `-${2 * (i + 1)}`;
     newUpperStyle.opacity = `${1 - 0.05 * (i + 1)}`;
     newUpperStyle.transitionDuration = `${(i + 1) * 100}ms`;
     newUpperStyle['--fly-in-origin'] = `-100vw`;
     newUpperStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
-    upperPopupStyles.push(newUpperStyle);
+    upperLeftPopupStyles.push(newUpperStyle);
+
+    const newUpperRightStyle: any = { ...defaultPopupStyle };
+    newUpperRightStyle.backgroundColor = colorScheme.colors[colorScheme.colors.length - 1 - i];
+    newUpperRightStyle.left = `${(i + 1) * shapePositionOffset}px`;
+    newUpperRightStyle.top = `${-1 * (i + 1) * shapePositionOffset}px`;
+    newUpperRightStyle.zIndex = `-${2 * (i + 1) + 1}`;
+    newUpperRightStyle.opacity = `${1 - 0.05 * (i + 1)}`;
+    newUpperRightStyle.transitionDuration = `${(i + 1) * 100}ms`;
+    newUpperRightStyle['--fly-in-origin'] = `-100vw`;
+    newUpperRightStyle['--fly-in-delay'] = `${350 + i * (i / 4) * 150}ms`;
+    upperRightPopupStyles.push(newUpperRightStyle);
   }
 
   const siteTitle: string = 'COLOUR REACTOR';
@@ -160,10 +184,16 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
         </div>
         <div className="dialogue-popout-shapes">
           {colorScheme.colors.map((color, i) => {
-            return <PopoutShape style={upperPopupStyles[i]} jostle={popupJostle} />;
+            return <PopoutShape style={upperLeftPopupStyles[i]} jostle={popupJostle} />;
           })}
           {colorScheme.colors.map((color, i) => {
-            return <PopoutShape style={lowerPopupStyles[i]} jostle={popupJostle} />;
+            return <PopoutShape style={upperRightPopupStyles[i]} jostle={popupJostle} />;
+          })}
+          {colorScheme.colors.map((color, i) => {
+            return <PopoutShape style={lowerLeftPopupStyles[i]} jostle={popupJostle} />;
+          })}
+          {colorScheme.colors.map((color, i) => {
+            return <PopoutShape style={lowerRightPopupStyles[i]} jostle={popupJostle} />;
           })}
         </div>
       </div>
