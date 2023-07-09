@@ -154,31 +154,31 @@ const appSlice = createSlice({
     setSpawnOps: (state: AppState, action: PayloadAction<{ ops: BoardObjectSpawnOptions; target: SpawnWidget }>) => {
       const ops = action.payload.ops;
       let target: BoardObjectSpawnOptions = GetWidgetOptions(state, action.payload.target);
-      if (ops.touchdownAnimation) {
+      if (ops.touchdownAnimation !== undefined) {
         target.touchdownAnimation = ops.touchdownAnimation;
       }
-      if (ops.liftoffAnimation) {
+      if (ops.liftoffAnimation !== undefined) {
         target.liftoffAnimation = ops.liftoffAnimation;
       }
-      if (ops.ghostAnimation) {
+      if (ops.ghostAnimation !== undefined) {
         target.ghostAnimation = ops.ghostAnimation;
       }
-      if (ops.primary) {
+      if (ops.primary !== undefined) {
         target.primary = ops.primary;
       }
-      if (ops.secondary) {
+      if (ops.secondary !== undefined) {
         target.secondary = ops.secondary;
       }
-      if (ops.tertiary) {
+      if (ops.tertiary !== undefined) {
         target.tertiary = ops.tertiary;
       }
-      if (ops.direction) {
+      if (ops.direction !== undefined) {
         target.direction = ops.direction;
       }
-      if (ops.compassDirection) {
+      if (ops.compassDirection !== undefined) {
         target.compassDirection = ops.compassDirection;
       }
-      if (ops.morphColors) {
+      if (ops.morphColors !== undefined) {
         target.morphColors = ops.morphColors;
       }
     },

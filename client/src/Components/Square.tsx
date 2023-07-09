@@ -185,7 +185,6 @@ const Square = (props: Props): JSX.Element => {
   };
 
   const handleObjectSpawnOnClick = (e: MouseEvent) => {
-    console.log("spawning");
     switch (activeObject) {
       case SpawnWidget.mover:
         dispatch(
@@ -226,8 +225,7 @@ const Square = (props: Props): JSX.Element => {
     }
   };
 
-  const handleDragEnter = (e: MouseEvent) => {
-  }
+  const handleDragEnter = (e: MouseEvent) => {};
 
   const activateBrush = (e: MouseEvent) => {
     switch (cursorMode) {
@@ -244,7 +242,7 @@ const Square = (props: Props): JSX.Element => {
         }
         break;
     }
-  }
+  };
 
   const rotateSquareY = () => {
     setRotateY(!rotateY);

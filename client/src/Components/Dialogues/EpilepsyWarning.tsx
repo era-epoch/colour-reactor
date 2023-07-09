@@ -112,6 +112,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
         <div className="dialogue-content">
           <div className="landing-title">
             {siteTitleArray.map((c, i) => {
+              const space = c === ' ';
               return (
                 <div
                   className="site-title-char"
@@ -119,6 +120,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
                   style={{ color: colorScheme.colors[i % colorScheme.colors.length] }}
                 >
                   {c}
+                  {space ? <span>&nbsp;</span> : ''}
                 </div>
               );
             })}
