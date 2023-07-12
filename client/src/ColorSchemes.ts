@@ -38,7 +38,7 @@ export const cozy_dragon: ColorScheme = {
 };
 
 export const serene: ColorScheme = {
-  name: 'Serene Dream',
+  name: 'Detective Novel',
   colors: ['#3a3462', '#4d5779', '#6e1e53', '#e7ab96', '#f3c2b9', '#eea8bb'],
   id: uuid(),
 };

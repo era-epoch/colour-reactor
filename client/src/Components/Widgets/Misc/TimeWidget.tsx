@@ -49,7 +49,6 @@ const TimeWidget = (props: Props): JSX.Element => {
   };
 
   const handleTimeDeltaChange = (newTime: number) => {
-    console.log('New Time Delta: ' + newTime);
     dispatch(setTimeDelta(newTime));
   };
 
@@ -81,7 +80,7 @@ const TimeWidget = (props: Props): JSX.Element => {
           <FontAwesomeIcon icon={faHourglassStart} className={paused ? 'half-spin-up-once' : 'half-spin-down-once'} />
         </div>
         <div className="subtoolbar-wrapper">
-          <div className="subtoolbar-container">
+          <div className="subtoolbar-container keep-subtoolbar-open">
             <NumberInput
               labelIcon={faFire}
               labelIconStyle={inputIconStyle}
@@ -89,6 +88,7 @@ const TimeWidget = (props: Props): JSX.Element => {
               min={minTimeDelta}
               max={maxTimeDelta}
               changeCallback={handleTimeDeltaChange}
+              units="ms"
             />
           </div>
         </div>

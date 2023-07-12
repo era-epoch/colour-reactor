@@ -1,4 +1,4 @@
-import { faWater } from '@fortawesome/free-solid-svg-icons';
+import { faGhost, faWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { RootState } from '../../../State/rootReducer';
 import { BoardObject, SpawnWidget, TooltipDirection } from '../../../types';
 import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -62,7 +63,7 @@ const WaveWidget = (props: Props): JSX.Element => {
             posX: centerI - i,
             posY: j,
             tickDelay: 1,
-            ghostTicks: 3,
+            ghostTicks: waveOps.ghostTicks,
           }),
         ),
       );
@@ -95,7 +96,7 @@ const WaveWidget = (props: Props): JSX.Element => {
           posX: centerI + i,
           posY: j,
           tickDelay: 1,
-          ghostTicks: 3,
+          ghostTicks: waveOps.ghostTicks,
         }),
       );
       if (j_direction === 'down') {
@@ -125,17 +126,14 @@ const WaveWidget = (props: Props): JSX.Element => {
   const setTouchdownAnimation = (anim: string) => {
     dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.wave }));
   };
+  const setGhost = (ticks: number) => {
+    dispatch(setSpawnOps({ ops: { ghostTicks: ticks }, target: SpawnWidget.wave }));
+  };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="wave-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="wave-widget" onMouseLeave={handleMouseLeave}>
       <div className="relative-parent">
-        <div
-          className="toolbar-widget"
-          style={widgetStyle}
-          onClick={handleClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick} onMouseEnter={handleMouseEnter}>
           <FontAwesomeIcon icon={faWater} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
@@ -144,6 +142,14 @@ const WaveWidget = (props: Props): JSX.Element => {
             <AnimationSelector
               selectionCallback={setTouchdownAnimation}
               initAnimation={waveOps.touchdownAnimation as string}
+            />
+            <NumberInput
+              labelIcon={faGhost}
+              value={waveOps.ghostTicks !== undefined ? waveOps.ghostTicks : 0}
+              min={0}
+              max={99}
+              changeCallback={setGhost}
+              units="ticks"
             />
           </div>
         </div>

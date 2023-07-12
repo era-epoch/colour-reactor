@@ -1,4 +1,4 @@
-import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { faBug, faGhost } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { RootState } from '../../../State/rootReducer';
 import { SpawnWidget, TooltipDirection } from '../../../types';
 import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -73,20 +74,14 @@ const FireflyWidget = (props: Props): JSX.Element => {
     dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.firefly }));
   };
 
-  // const setDirection = (dir: Direction) => {
-  //   dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.firefly }));
-  // };
+  const setGhost = (ticks: number) => {
+    dispatch(setSpawnOps({ ops: { ghostTicks: ticks }, target: SpawnWidget.firefly }));
+  };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="firefly-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="firefly-widget" onMouseLeave={handleMouseLeave}>
       <div className="relative-parent">
-        <div
-          className="toolbar-widget"
-          style={widgetStyle}
-          onClick={handleClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick} onMouseEnter={handleMouseEnter}>
           <FontAwesomeIcon icon={faBug} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
@@ -96,11 +91,14 @@ const FireflyWidget = (props: Props): JSX.Element => {
               selectionCallback={setTouchdownAnimation}
               initAnimation={fireflyOps.touchdownAnimation as string}
             />
-            {/* <DirectionSelector
-              selectionCallback={setDirection}
-              directionOptions={directionOptions}
-              initDirection={fireflyOps.direction as Direction}
-            /> */}
+            <NumberInput
+              labelIcon={faGhost}
+              value={fireflyOps.ghostTicks !== undefined ? fireflyOps.ghostTicks : 0}
+              min={0}
+              max={99}
+              changeCallback={setGhost}
+              units="ticks"
+            />
           </div>
         </div>
       </div>

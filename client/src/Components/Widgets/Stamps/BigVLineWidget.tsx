@@ -1,4 +1,4 @@
-import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
+import { faGhost, faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { BoardObject, Direction, SpawnWidget, TooltipDirection } from '../../../
 import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 import DirectionSelector from '../../SubtoolbarOptions/DirectionSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -58,7 +59,7 @@ const BigVLineWidget = (props: Props): JSX.Element => {
           posX: 0,
           posY: i,
           tickDelay: 1,
-          ghostTicks: 8,
+          ghostTicks: bigVLineOps.ghostTicks,
         }),
       );
     }
@@ -77,16 +78,14 @@ const BigVLineWidget = (props: Props): JSX.Element => {
     dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.bigVLine }));
   };
 
+  const setGhost = (ticks: number) => {
+    dispatch(setSpawnOps({ ops: { ghostTicks: ticks }, target: SpawnWidget.bigVLine }));
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="big-vline-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="big-vline-widget" onMouseLeave={handleMouseLeave}>
       <div className="relative-parent">
-        <div
-          className="toolbar-widget"
-          style={widgetStyle}
-          onClick={handleClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick} onMouseEnter={handleMouseEnter}>
           <FontAwesomeIcon icon={faGripLinesVertical} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
@@ -100,6 +99,14 @@ const BigVLineWidget = (props: Props): JSX.Element => {
               selectionCallback={setDirection}
               directionOptions={directionOptions}
               initDirection={bigVLineOps.direction as Direction}
+            />
+            <NumberInput
+              labelIcon={faGhost}
+              value={bigVLineOps.ghostTicks !== undefined ? bigVLineOps.ghostTicks : 0}
+              min={0}
+              max={99}
+              changeCallback={setGhost}
+              units="ticks"
             />
           </div>
         </div>

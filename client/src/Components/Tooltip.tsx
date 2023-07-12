@@ -43,6 +43,11 @@ const Tooltip = (props: Props): JSX.Element => {
         const popup: CSS.Properties = { ...defaultPopupStyle };
         popup.width = `calc(100% - ${tooltipGapPixels}px)`;
         popup.backgroundColor = colorScheme[i];
+        // if (tooltipState.subtips !== undefined && tooltipState.subtips!.length > i) {
+        //   containerStyle.overflow = 'visible';
+        //   const subtarget = document.getElementById(tooltipState.subtips![i].target);
+        //   const subtargetRect = subtarget?.getBoundingClientRect();
+        // }
         popup.top = `${0}`;
         popup.zIndex = `${-i}`;
         popup.animationName = 'tooltipShapeSlideIn';

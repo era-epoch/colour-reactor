@@ -1,4 +1,4 @@
-import { faBugs } from '@fortawesome/free-solid-svg-icons';
+import { faBugs, faGhost } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { RootState } from '../../../State/rootReducer';
 import { BoardObject, SpawnWidget, TooltipDirection } from '../../../types';
 import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -58,6 +59,7 @@ const SwarmWidget = (props: Props): JSX.Element => {
               posX: j,
               posY: i,
               touchdownAnimation: swarmOps.touchdownAnimation,
+              ghostTicks: swarmOps.ghostTicks,
             }),
           );
         }
@@ -74,16 +76,14 @@ const SwarmWidget = (props: Props): JSX.Element => {
     dispatch(setSpawnOps({ ops: { touchdownAnimation: anim }, target: SpawnWidget.swarm }));
   };
 
+  const setGhost = (ticks: number) => {
+    dispatch(setSpawnOps({ ops: { ghostTicks: ticks }, target: SpawnWidget.swarm }));
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="swarm-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="swarm-widget" onMouseLeave={handleMouseLeave}>
       <div className="relative-parent">
-        <div
-          className="toolbar-widget"
-          style={widgetStyle}
-          onClick={handleClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick} onMouseEnter={handleMouseEnter}>
           <FontAwesomeIcon icon={faBugs} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
@@ -92,6 +92,14 @@ const SwarmWidget = (props: Props): JSX.Element => {
             <AnimationSelector
               selectionCallback={setTouchdownAnimation}
               initAnimation={swarmOps.touchdownAnimation as string}
+            />
+            <NumberInput
+              labelIcon={faGhost}
+              value={swarmOps.ghostTicks !== undefined ? swarmOps.ghostTicks : 0}
+              min={0}
+              max={99}
+              changeCallback={setGhost}
+              units="ticks"
             />
           </div>
         </div>

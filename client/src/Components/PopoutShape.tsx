@@ -4,6 +4,7 @@ import { useRef } from 'react';
 interface Props {
   style: CSS.Properties;
   jostle?: boolean;
+  content?: string;
 }
 
 const PopoutShape = (props: Props): JSX.Element => {
@@ -21,7 +22,11 @@ const PopoutShape = (props: Props): JSX.Element => {
     style[`--jostle-${i}`] = `${(Math.random() - 0.5) * (10 - i)}px`;
   }
 
-  return <div className={`popout-shape ${flyIn ? 'fly-in' : ''} ${props.jostle ? 'jostle' : ''}`} style={style}></div>;
+  return (
+    <div className={`popout-shape ${flyIn ? 'fly-in' : ''} ${props.jostle ? 'jostle' : ''}`} style={style}>
+      {props.content}
+    </div>
+  );
 };
 
 export default PopoutShape;

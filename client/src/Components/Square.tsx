@@ -195,6 +195,7 @@ const Square = (props: Props): JSX.Element => {
               primary: moverOps.primary,
               touchdownAnimation: moverOps.touchdownAnimation,
               direction: moverOps.direction,
+              ghostTicks: moverOps.ghostTicks,
             }),
           ]),
         );
@@ -208,6 +209,7 @@ const Square = (props: Props): JSX.Element => {
               primary: fireflyOps.primary,
               touchdownAnimation: fireflyOps.touchdownAnimation,
               compassDirection: CompassDirection.none,
+              ghostTicks: fireflyOps.ghostTicks,
             }),
           ]),
         );

@@ -15,6 +15,7 @@ import {
 import { fallbackColor } from '../Slices/appSlice';
 import { BoardState } from '../Slices/boardSlice';
 import { addObjectToSquare, removeObjectFromSquare } from '../Slices/helpers';
+import { Ghost, createGhost } from './Ghost';
 import { RenderMap, UpdateMap } from './Maps';
 
 export interface Firefly extends PositionalBoardObject {
@@ -23,11 +24,13 @@ export interface Firefly extends PositionalBoardObject {
   touchdownAnimation: string;
   direction: CompassDirection;
   determination: number;
+  ghostTicks: number;
   // ^ Tendency for the firefly to advance in its current direction.
   // 0 = All directions equally likly. 1 = Will maintain direction until unable to
 }
 
 export const createFirefly = (ops: BoardObjectSpawnOptions): Firefly => {
+  console.log('Creating firefly with ops: ', ops);
   const Firefly: Firefly = {
     id: uuid(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
@@ -35,6 +38,7 @@ export const createFirefly = (ops: BoardObjectSpawnOptions): Firefly => {
     posX: ops.posX !== undefined ? ops.posX : 0,
     posY: ops.posY !== undefined ? ops.posY : 0,
     tickDelay: ops.tickDelay !== undefined ? ops.tickDelay : 1,
+    ghostTicks: ops.ghostTicks !== undefined ? ops.ghostTicks : 0,
     ticksSinceUpdate: 0,
     touchdownAnimation: ops.touchdownAnimation !== undefined ? ops.touchdownAnimation : '',
     direction: ops.compassDirection !== undefined ? ops.compassDirection : CompassDirection.north,
@@ -49,6 +53,14 @@ export const advanceFirefly: UpdateFunction = (obj: BoardObject, state: BoardSta
   if (firefly.ticksSinceUpdate >= firefly.tickDelay) {
     firefly.ticksSinceUpdate = 0;
     removeObjectFromSquare(firefly, state.squares[firefly.posY][firefly.posX]);
+
+    // Spawn a ghost next tick
+    if (firefly.ghostTicks > 0) {
+      const ghost: Ghost = createGhost(firefly);
+      addObjectToSquare(ghost, state.squares[ghost.posY][ghost.posX]);
+      state.objectAdditionQueue.push(ghost);
+    }
+
     // Probability weights for each compass direction (center = stationary)
     let weights = [
       [1, 1, 1],

@@ -1,4 +1,4 @@
-import { faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faGhost, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { Direction, SpawnWidget, TooltipDirection } from '../../../types';
 import AnimationSelector from '../../SubtoolbarOptions/AnimationSelector';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
 import DirectionSelector from '../../SubtoolbarOptions/DirectionSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -78,16 +79,14 @@ const MoverWidget = (props: Props): JSX.Element => {
     dispatch(setSpawnOps({ ops: { direction: dir }, target: SpawnWidget.mover }));
   };
 
+  const setGhost = (ticks: number) => {
+    dispatch(setSpawnOps({ ops: { ghostTicks: ticks }, target: SpawnWidget.mover }));
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="mover-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="mover-widget" onMouseLeave={handleMouseLeave}>
       <div className="relative-parent">
-        <div
-          className="toolbar-widget"
-          style={widgetStyle}
-          onClick={handleClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className="toolbar-widget" style={widgetStyle} onClick={handleClick} onMouseEnter={handleMouseEnter}>
           <FontAwesomeIcon icon={faSquareCaretDown} style={iconStyle} />
         </div>
         <div className="subtoolbar-wrapper">
@@ -101,6 +100,14 @@ const MoverWidget = (props: Props): JSX.Element => {
               selectionCallback={setDirection}
               directionOptions={directionOptions}
               initDirection={moverOps.direction as Direction}
+            />
+            <NumberInput
+              labelIcon={faGhost}
+              value={moverOps.ghostTicks !== undefined ? moverOps.ghostTicks : 0}
+              min={0}
+              max={99}
+              changeCallback={setGhost}
+              units="ticks"
             />
           </div>
         </div>

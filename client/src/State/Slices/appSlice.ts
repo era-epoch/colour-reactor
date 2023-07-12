@@ -8,6 +8,7 @@ import {
   Dialogue,
   Direction,
   SpawnWidget,
+  SubTooltip,
   Toolbar,
   TooltipDirection,
   TooltipState,
@@ -32,6 +33,9 @@ export interface AppState {
   moverOps: BoardObjectSpawnOptions;
   fireflyOps: BoardObjectSpawnOptions;
 
+  // Tooltips
+  tooltipState: TooltipState;
+
   // Other
   colorScheme: ColorScheme;
   availableColorSchemes: ColorScheme[];
@@ -45,7 +49,6 @@ export interface AppState {
   cursorMode: CursorMode;
   activeObject: SpawnWidget;
   fillColor: string;
-  tooltipState: TooltipState;
   activeDialogue: Dialogue;
   activeToolbar: Toolbar;
 }
@@ -69,7 +72,12 @@ const initialAppState: AppState = {
 
   // Objects
   moverOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
-  fireflyOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', compassDirection: CompassDirection.none },
+  fireflyOps: {
+    primary: fallbackColor,
+    touchdownAnimation: 'no-animation',
+    compassDirection: CompassDirection.none,
+    ghostTicks: 5,
+  },
 
   // Other
   colorScheme: pastelRainbow,
@@ -91,7 +99,7 @@ const initialAppState: AppState = {
   cursorMode: CursorMode.default,
   activeObject: SpawnWidget.none,
   fillColor: fallbackColor,
-  tooltipState: { active: false, text: '', direction: TooltipDirection.above, targetID: '' },
+  tooltipState: { active: false, text: '', direction: TooltipDirection.above, targetID: '', subtips: [] },
   activeDialogue: Dialogue.epilepsyWarning,
   activeToolbar: Toolbar.none,
 };
@@ -163,6 +171,9 @@ const appSlice = createSlice({
       if (ops.ghostAnimation !== undefined) {
         target.ghostAnimation = ops.ghostAnimation;
       }
+      if (ops.ghostTicks !== undefined) {
+        target.ghostTicks = ops.ghostTicks;
+      }
       if (ops.primary !== undefined) {
         target.primary = ops.primary;
       }
@@ -214,6 +225,12 @@ const appSlice = createSlice({
     },
     setTooltipState: (state: AppState, action: PayloadAction<TooltipState>) => {
       state.tooltipState = action.payload;
+      if (action.payload.subtips === undefined) {
+        state.tooltipState.subtips = [];
+      }
+    },
+    pushSubTooltip: (state: AppState, action: PayloadAction<SubTooltip>) => {
+      state.tooltipState.subtips?.push(action.payload);
     },
     unsetTooltip: (state: AppState) => {
       state.tooltipState = {
@@ -221,6 +238,7 @@ const appSlice = createSlice({
         text: '',
         direction: TooltipDirection.above,
         targetID: '',
+        subtips: [],
       };
     },
     setActiveDialogue: (state: AppState, action: PayloadAction<Dialogue>) => {
@@ -265,4 +283,5 @@ export const {
   setColorScheme,
   setSpawnOps,
   setActiveObject,
+  pushSubTooltip,
 } = appSlice.actions;

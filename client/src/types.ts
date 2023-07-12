@@ -16,6 +16,7 @@ export interface BoardObject {
 export interface PositionalBoardObject extends BoardObject {
   posX: number;
   posY: number;
+  ghostTicks: number;
 }
 
 export type UpdateFunction = (obj: BoardObject, state: BoardState) => void;
@@ -105,11 +106,17 @@ export enum TooltipDirection {
   right,
 }
 
+export interface SubTooltip {
+  content: string;
+  target: string;
+}
+
 export interface TooltipState {
   active: boolean;
   text: string;
   direction: TooltipDirection;
   targetID: string;
+  subtips?: SubTooltip[];
 }
 
 export enum Dialogue {

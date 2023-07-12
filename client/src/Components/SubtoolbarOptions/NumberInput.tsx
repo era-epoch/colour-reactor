@@ -10,6 +10,7 @@ interface Props {
   min: number;
   max: number;
   changeCallback: Function;
+  units?: string;
 }
 
 const NumberInput = (props: Props): JSX.Element => {
@@ -22,19 +23,21 @@ const NumberInput = (props: Props): JSX.Element => {
       e.target.value = `${props.max}`;
     }
     setValue(parseInt(e.target.value));
-    props.changeCallback(e.target.value);
+    props.changeCallback(parseInt(e.target.value));
   };
   return (
     <div className="subtoolbar-option-wrapper number-input-wrapper">
       {props.labelIcon ? (
-        <div className="label-icon">
-          <FontAwesomeIcon icon={props.labelIcon} style={props.labelIconStyle} />
+        <div className="subtoolbar-button">
+          <div className="label-icon">
+            <FontAwesomeIcon icon={props.labelIcon} style={props.labelIconStyle} />
+          </div>
         </div>
       ) : null}
       <div className="input-container">
         <div className="input-with-text">
           <input type="number" value={value} onInput={handleInput}></input>
-          <span className="units">ms</span>
+          <div className="units">{props.units}</div>
         </div>
       </div>
     </div>
