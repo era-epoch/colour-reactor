@@ -9,7 +9,7 @@ interface Props {
   value: number;
   min: number;
   max: number;
-  changeCallback: Function;
+  changeCallback: (val: number) => any;
   units?: string;
 }
 

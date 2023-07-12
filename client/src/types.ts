@@ -68,8 +68,10 @@ export interface BoardObjectSpawnOptionsInternal {
 
 export enum CursorMode {
   default,
+  hover,
   painting,
   morphPainting,
+  erasing,
 }
 
 export enum MorphType {
@@ -123,6 +125,7 @@ export enum Dialogue {
   none,
   epilepsyWarning,
   palette,
+  savePattern,
 }
 
 export enum Toolbar {
@@ -151,4 +154,8 @@ export enum SpawnWidget {
   morphPaint,
   mover,
   firefly,
+}
+
+export interface EraserOps {
+  strength: number;
 }

@@ -54,8 +54,18 @@ const boardSlice = createSlice({
       }
       state.objectAdditionQueue = [];
 
-      // Remove all objects in removal queue
-      state.objects = state.objects.filter((obj) => !state.objectRemovalQueue.includes(obj));
+      // Remove all objects in removal queue from object list
+      state.objects = state.objects.filter((obj) => !state.objectRemovalQueue.some((removal) => removal.id === obj.id));
+
+      // Also remove from board (I don't like that this is necessary)
+      for (const obj of state.objectRemovalQueue) {
+        const _obj = obj as any;
+        if (_obj.posX !== undefined && _obj.posY !== undefined) {
+          state.squares[_obj.posY][_obj.posX].content = state.squares[_obj.posY][_obj.posX].content.filter(
+            (a) => a.id !== obj.id,
+          );
+        }
+      }
       state.objectRemovalQueue = [];
       state.ticksElapsed++;
     },
@@ -72,8 +82,18 @@ const boardSlice = createSlice({
         state.objects.push(obj);
       }
     },
+    eraseLocation: (state: BoardState, action: PayloadAction<{ x: number; y: number; strength: number }>) => {
+      for (let i = 0; i < state.squares[action.payload.y][action.payload.x].content.length; i++) {
+        const length = state.squares[action.payload.y][action.payload.x].content.length;
+        const obj = state.squares[action.payload.y][action.payload.x].content[length - 1 - i];
+        state.objectRemovalQueue.push(obj);
+        if (i >= action.payload.strength) {
+          return;
+        }
+      }
+    },
   },
 });
 
 export default boardSlice.reducer;
-export const { update, deleteAllObjects, loadObjects } = boardSlice.actions;
+export const { update, deleteAllObjects, loadObjects, eraseLocation } = boardSlice.actions;

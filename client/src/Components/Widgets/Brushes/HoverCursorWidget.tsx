@@ -1,13 +1,8 @@
-import { faPenFancy } from '@fortawesome/free-solid-svg-icons';
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setCursorMode,
-  setMorphPaintColorAtIndex,
-  setTooltipState,
-  unsetTooltip,
-} from '../../../State/Slices/appSlice';
+import { setCursorColor, setCursorMode, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
 import { RootState } from '../../../State/rootReducer';
 import { CursorMode, TooltipDirection } from '../../../types';
 import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
@@ -16,11 +11,11 @@ interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const MorphPaintWidget = (props: Props): JSX.Element => {
+const HoverCursorWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const morphPaintColors = useSelector((state: RootState) => state.app.morphPaintOps.morphColors);
+  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
-  const widgetColor = morphPaintColors![0];
+  const widgetColor = cursorColor;
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
 
@@ -32,22 +27,14 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  if (cursorMode === CursorMode.morphPainting) {
+  if (cursorMode === CursorMode.hover) {
     widgetStyle.backgroundColor = widgetColor;
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
   }
 
-  const handleSetMorphPaintColor1 = (color: string) => {
-    dispatch(setMorphPaintColorAtIndex({ index: 0, color: color }));
-  };
-
-  const handleSetMorphPaintColor2 = (color: string) => {
-    dispatch(setMorphPaintColorAtIndex({ index: 1, color: color }));
-  };
-
   const handleClick = () => {
-    if (cursorMode !== CursorMode.morphPainting) {
-      dispatch(setCursorMode(CursorMode.morphPainting));
+    if (cursorMode !== CursorMode.hover) {
+      dispatch(setCursorMode(CursorMode.hover));
       pushTooltip(true);
     } else {
       dispatch(setCursorMode(CursorMode.default));
@@ -55,19 +42,23 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
     }
   };
 
+  const handleSetCursorColor = (color: string) => {
+    dispatch(setCursorColor(color));
+  };
+
   const pushTooltip = (active: boolean) => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Colour-Changing Paint ${active ? '(Active - Left Click)' : ''}`,
+        text: `Hover Colour ${active ? '(Active)' : ''}`,
         direction: TooltipDirection.right,
-        targetID: 'morph-paint-widget',
+        targetID: 'cursor-widget',
       }),
     );
   };
 
   const handleMouseEnter = () => {
-    pushTooltip(cursorMode === CursorMode.morphPainting);
+    pushTooltip(cursorMode === CursorMode.hover);
   };
 
   const handleMouseLeave = () => {
@@ -75,7 +66,7 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="morph-paint-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="cursor-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
@@ -84,12 +75,11 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <FontAwesomeIcon icon={faPenFancy} />
+          <FontAwesomeIcon icon={faArrowPointer} />
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={handleSetMorphPaintColor1} initColor={morphPaintColors![0]} />
-            <ColorSelector setColorCallback={handleSetMorphPaintColor2} initColor={morphPaintColors![1]} />
+            <ColorSelector setColorCallback={handleSetCursorColor} initColor={cursorColor} />
           </div>
         </div>
       </div>
@@ -97,4 +87,4 @@ const MorphPaintWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default MorphPaintWidget;
+export default HoverCursorWidget;

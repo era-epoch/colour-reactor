@@ -2,8 +2,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
-import CursorWidget from '../Widgets/Brushes/CursorWidget';
+import EraserWidget from '../Widgets/Brushes/EraserWidget';
+import HoverCursorWidget from '../Widgets/Brushes/HoverCursorWidget';
 import MorphPaintWidget from '../Widgets/Brushes/MorphPaintWidget';
+import NeutralCursorWidget from '../Widgets/Brushes/NeutralCursorWidget';
 import PaintWidget from '../Widgets/Brushes/PaintWidget';
 
 const BrushToolbar = (): JSX.Element => {
@@ -11,6 +13,8 @@ const BrushToolbar = (): JSX.Element => {
   const open = activeToolbar === Toolbar.brushes;
 
   const widgetStyles = [
+    { ...defaultWidgetStyle },
+    { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
     { ...defaultWidgetStyle },
@@ -30,9 +34,11 @@ const BrushToolbar = (): JSX.Element => {
 
   return (
     <div className="toolbar" style={toolbarStyle}>
-      <CursorWidget widgetWrapperStyle={widgetStyles[0]} />
-      <PaintWidget widgetWrapperStyle={widgetStyles[1]} />
-      <MorphPaintWidget widgetWrapperStyle={widgetStyles[2]} />
+      <NeutralCursorWidget widgetWrapperStyle={widgetStyles[0]} />
+      <EraserWidget widgetWrapperStyle={widgetStyles[1]} />
+      <HoverCursorWidget widgetWrapperStyle={widgetStyles[2]} />
+      <PaintWidget widgetWrapperStyle={widgetStyles[3]} />
+      <MorphPaintWidget widgetWrapperStyle={widgetStyles[4]} />
     </div>
   );
 };

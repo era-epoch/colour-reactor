@@ -9,7 +9,7 @@ import { createMorphPaint } from '../State/BoardObjects/MorphPaint';
 import { createMover } from '../State/BoardObjects/Mover';
 import { createPaint } from '../State/BoardObjects/Paint';
 import { fallbackColor } from '../State/Slices/appSlice';
-import { loadObjects } from '../State/Slices/boardSlice';
+import { eraseLocation, loadObjects } from '../State/Slices/boardSlice';
 import { RootState } from '../State/rootReducer';
 import {
   BoardObjectCSSClass,
@@ -58,6 +58,7 @@ const Square = (props: Props): JSX.Element => {
   const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
   const paintOps = useSelector((state: RootState) => state.app.paintOps);
   const morphPaintOps = useSelector((state: RootState) => state.app.morphPaintOps);
+  const eraserOps = useSelector((state: RootState) => state.app.eraserOps);
 
   // This should only run on the very first render
   if (!GlobalSquareRenderingInfo.has(squareTag)) {
@@ -131,14 +132,9 @@ const Square = (props: Props): JSX.Element => {
   if (activeObject === SpawnWidget.none) {
     // If we're not spawning an object, hover style based on cursor mode
     switch (cursorMode) {
-      case CursorMode.default:
+      case CursorMode.hover:
         if (hovering) {
-          combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
-          // if (!previousColorRenderedFlag) {
-          //   combinedColor = new Color(cursorColor);
-          // } else {
-          //   combinedColor = Color.mix(combinedColor, new Color(cursorColor)) as unknown as Color;
-          // }
+          dispatch(loadObjects([createPaint({ primary: cursorColor, posX: props.x, posY: props.y, lifespan: 1 })]));
           style.cursor = 'default';
         }
         break;
@@ -153,6 +149,15 @@ const Square = (props: Props): JSX.Element => {
           style.outline = `2px dashed ${morphPaintOps.morphColors![0]}`;
           style.zIndex = 2;
         }
+        break;
+      case CursorMode.erasing:
+        if (hovering) {
+          style.outline = `2px dashed var(--contrast)`;
+          style.zIndex = 2;
+        }
+        break;
+      default:
+        style.cursor = 'default';
         break;
     }
   } else {
@@ -229,6 +234,10 @@ const Square = (props: Props): JSX.Element => {
 
   const handleDragEnter = (e: MouseEvent) => {};
 
+  const handleDragStart = (e: MouseEvent) => {
+    e.preventDefault();
+  };
+
   const activateBrush = (e: MouseEvent) => {
     switch (cursorMode) {
       case CursorMode.painting:
@@ -241,6 +250,11 @@ const Square = (props: Props): JSX.Element => {
           dispatch(
             loadObjects([createMorphPaint({ morphColors: morphPaintOps.morphColors, posX: props.x, posY: props.y })]),
           );
+        }
+        break;
+      case CursorMode.erasing:
+        if (e.buttons === 1) {
+          dispatch(eraseLocation({ x: props.x, y: props.y, strength: eraserOps.strength }));
         }
         break;
     }
@@ -264,6 +278,7 @@ const Square = (props: Props): JSX.Element => {
       onMouseUp={handleMouseUp}
       // onClick={handleClick}
       onDragEnter={handleDragEnter}
+      onDragStart={handleDragStart}
       onContextMenu={(e) => e.preventDefault()}
     ></div>
   );

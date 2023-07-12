@@ -1,67 +1,68 @@
-import { faArrowPointer } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownShortWide, faEraser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCursorColor, setCursorMode, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { setCursorMode, setEraserOps, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
 import { RootState } from '../../../State/rootReducer';
 import { CursorMode, TooltipDirection } from '../../../types';
-import ColorSelector from '../../SubtoolbarOptions/ColorSelector';
+import NumberInput from '../../SubtoolbarOptions/NumberInput';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
 }
 
-const CursorWidget = (props: Props): JSX.Element => {
+const EraserWidget = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const cursorColor = useSelector((state: RootState) => state.app.cursorColor);
+  const eraserOps = useSelector((state: RootState) => state.app.eraserOps);
   const cursorMode = useSelector((state: RootState) => state.app.cursorMode);
-  const widgetColor = cursorColor;
 
   const widgetWrapperStyle = { ...props.widgetWrapperStyle };
-
-  widgetWrapperStyle.color = widgetColor;
-  widgetWrapperStyle.borderColor = widgetColor;
 
   const widgetStyle: CSS.Properties = {
     backgroundColor: widgetWrapperStyle.backgroundColor,
     borderRadius: widgetWrapperStyle.borderRadius,
   };
 
-  if (cursorMode === CursorMode.default) {
-    widgetStyle.backgroundColor = widgetColor;
+  if (cursorMode === CursorMode.erasing) {
     widgetStyle.color = widgetWrapperStyle.backgroundColor;
+    widgetStyle.backgroundColor = 'var(--contrast)';
   }
 
   const handleClick = () => {
-    dispatch(setCursorMode(CursorMode.default));
-    pushTooltip(true);
-  };
-
-  const handleSetCursorColor = (color: string) => {
-    dispatch(setCursorColor(color));
+    if (cursorMode !== CursorMode.erasing) {
+      dispatch(setCursorMode(CursorMode.erasing));
+      pushTooltip(true);
+    } else {
+      dispatch(setCursorMode(CursorMode.default));
+      pushTooltip(false);
+    }
   };
 
   const pushTooltip = (active: boolean) => {
     dispatch(
       setTooltipState({
         active: true,
-        text: `Hover Colour ${active ? '(Active - Left Click)' : ''}`,
+        text: `Eraser ${active ? '(Active - Left Click)' : ''}`,
         direction: TooltipDirection.right,
-        targetID: 'cursor-widget',
+        targetID: 'eraser-widget',
       }),
     );
   };
 
   const handleMouseEnter = () => {
-    pushTooltip(cursorMode === CursorMode.default);
+    pushTooltip(cursorMode === CursorMode.erasing);
   };
 
   const handleMouseLeave = () => {
     dispatch(unsetTooltip());
   };
 
+  const setEraserStrength = (val: number) => {
+    dispatch(setEraserOps({ strength: val }));
+  };
+
   return (
-    <div className="widget-wrapper" style={widgetWrapperStyle} id="cursor-widget">
+    <div className="widget-wrapper" style={widgetWrapperStyle} id="eraser-widget">
       <div className="relative-parent">
         <div
           className="toolbar-widget"
@@ -70,11 +71,18 @@ const CursorWidget = (props: Props): JSX.Element => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <FontAwesomeIcon icon={faArrowPointer} />
+          <FontAwesomeIcon icon={faEraser} />
         </div>
         <div className="subtoolbar-wrapper">
           <div className="subtoolbar-container">
-            <ColorSelector setColorCallback={handleSetCursorColor} initColor={cursorColor} />
+            <NumberInput
+              labelIcon={faArrowDownShortWide}
+              value={eraserOps.strength}
+              min={1}
+              max={99}
+              changeCallback={setEraserStrength}
+              units="layers"
+            />
           </div>
         </div>
       </div>
@@ -82,4 +90,4 @@ const CursorWidget = (props: Props): JSX.Element => {
   );
 };
 
-export default CursorWidget;
+export default EraserWidget;

@@ -32,7 +32,7 @@ export const createPaint = (ops: BoardObjectSpawnOptions): Paint => {
     posX: ops.posX !== undefined ? ops.posX : 0,
     posY: ops.posY !== undefined ? ops.posY : 0,
     updateAnimation: '',
-    lifespan: Infinity,
+    lifespan: ops.lifespan !== undefined ? ops.lifespan : Infinity,
     age: 0,
   };
   return paint;

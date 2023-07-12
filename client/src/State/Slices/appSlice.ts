@@ -7,6 +7,7 @@ import {
   CursorMode,
   Dialogue,
   Direction,
+  EraserOps,
   SpawnWidget,
   SubTooltip,
   Toolbar,
@@ -25,9 +26,7 @@ export interface AppState {
   paintOps: BoardObjectSpawnOptions;
   morphPaintOps: BoardObjectSpawnOptions;
   cursorColor: string;
-  leftClickColor: string;
-  rightClickColor: string;
-  middleClickColor: string;
+  eraserOps: EraserOps;
 
   // Objects
   moverOps: BoardObjectSpawnOptions;
@@ -66,9 +65,7 @@ const initialAppState: AppState = {
   paintOps: { primary: fallbackColor },
   morphPaintOps: {},
   cursorColor: fallbackColor,
-  leftClickColor: fallbackColor,
-  rightClickColor: fallbackColor,
-  middleClickColor: fallbackColor,
+  eraserOps: { strength: 1 },
 
   // Objects
   moverOps: { primary: fallbackColor, touchdownAnimation: 'no-animation', direction: Direction.down },
@@ -196,15 +193,6 @@ const appSlice = createSlice({
     setCursorColor: (state: AppState, action: PayloadAction<string>) => {
       state.cursorColor = action.payload;
     },
-    setLeftClickColor: (state: AppState, action: PayloadAction<string>) => {
-      state.leftClickColor = action.payload;
-    },
-    setRightClickColor: (state: AppState, action: PayloadAction<string>) => {
-      state.rightClickColor = action.payload;
-    },
-    setMiddleClickColor: (state: AppState, action: PayloadAction<string>) => {
-      state.middleClickColor = action.payload;
-    },
     setPause: (state: AppState, action: PayloadAction<boolean>) => {
       state.paused = action.payload;
     },
@@ -262,6 +250,12 @@ const appSlice = createSlice({
       state.moverOps.primary = ChooseRandomColorInScheme(colors);
       state.fireflyOps.primary = ChooseRandomColorInScheme(colors);
     },
+    setEraserOps: (state: AppState, action: PayloadAction<Partial<EraserOps>>) => {
+      const ops = action.payload;
+      if (ops.strength !== undefined) {
+        state.eraserOps.strength = ops.strength;
+      }
+    },
   },
 });
 
@@ -269,9 +263,6 @@ export default appSlice.reducer;
 export const {
   setActiveToolbar,
   setCursorColor,
-  setLeftClickColor,
-  setMiddleClickColor,
-  setRightClickColor,
   setPause,
   setTimeDelta,
   setCursorMode,
@@ -284,4 +275,5 @@ export const {
   setSpawnOps,
   setActiveObject,
   pushSubTooltip,
+  setEraserOps,
 } = appSlice.actions;

@@ -1,8 +1,8 @@
 import {
   faFile,
-  faInfo,
   faMousePointer,
   faObjectGroup,
+  faQuestion,
   faToolbox,
   faVectorSquare,
 } from '@fortawesome/free-solid-svg-icons';
@@ -252,7 +252,7 @@ const ToolbarContainer = (): JSX.Element => {
           onMouseLeave={OnMouseLeave}
           id="about-toolbar-icon"
         >
-          <FontAwesomeIcon icon={faInfo} />
+          <FontAwesomeIcon icon={faQuestion} />
         </div>
       </div>
     </div>

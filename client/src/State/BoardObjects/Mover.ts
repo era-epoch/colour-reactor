@@ -29,7 +29,6 @@ export interface Mover extends PositionalBoardObject {
 }
 
 export const createMover = (ops: BoardObjectSpawnOptions): Mover => {
-  console.log(ops);
   const Mover: Mover = {
     id: uuidv4(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,
