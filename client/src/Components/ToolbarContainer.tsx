@@ -1,4 +1,11 @@
-import { faFile, faInfo, faMousePointer, faStamp, faToolbox, faVectorSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFile,
+  faInfo,
+  faMousePointer,
+  faObjectGroup,
+  faToolbox,
+  faVectorSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch, useSelector } from 'react-redux';
@@ -128,7 +135,7 @@ const ToolbarContainer = (): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: 'Motion Stamps',
+        text: 'Object Groups',
         direction: TooltipDirection.right,
         targetID: 'stamp-toolbar-icon',
       }),
@@ -158,7 +165,7 @@ const ToolbarContainer = (): JSX.Element => {
     dispatch(
       setTooltipState({
         active: true,
-        text: 'About',
+        text: 'Info',
         direction: TooltipDirection.right,
         targetID: 'about-toolbar-icon',
       }),
@@ -206,7 +213,7 @@ const ToolbarContainer = (): JSX.Element => {
           onMouseLeave={OnMouseLeave}
           id="stamp-toolbar-icon"
         >
-          <FontAwesomeIcon icon={faStamp} />
+          <FontAwesomeIcon icon={faObjectGroup} />
         </div>
       </div>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
