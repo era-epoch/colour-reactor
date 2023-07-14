@@ -165,3 +165,40 @@
     transform: translate(0, 0);
   }
 }
+
+.save-pattern-dialogeue .dialogue-content {
+  align-items: center;
+}
+
+.save-pattern {
+  width: 100%;
+  display: flex;
+  /* gap: 1rem; */
+  align-items: center;
+  border-radius: 1000px;
+  overflow: hidden;
+  border: 1px solid var(--contrast);
+  transition: all 200ms ease;
+}
+
+.save-pattern:hover,
+.save-pattern:focus-within {
+}
+
+.save-pattern input {
+  flex: 1;
+  padding: 0.5rem;
+  text-align: end;
+  outline: none;
+  border: none;
+}
+
+.save-pattern .save-button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  background-color: var(--contrast);
+  color: var(--background);
+}

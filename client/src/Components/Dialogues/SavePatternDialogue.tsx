@@ -1,12 +1,13 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import uuid from 'react-uuid';
 import { setActiveDialogue } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 import { defaultPopupStyle } from '../../Styles/ComponentStyles';
-import { Dialogue } from '../../types';
+import { Dialogue, Pattern } from '../../types';
 import PopoutShape from '../PopoutShape';
 
 interface Props {}
@@ -15,13 +16,24 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
   const activeDialogue = useSelector((state: RootState) => state.app.activeDialogue);
+  const boardState = useSelector((state: RootState) => state.board);
   let shown = activeDialogue === Dialogue.savePattern;
+
+  // This should be done somewhere else:
+  const checkedLocalStorage = useRef(false);
+  if (!checkedLocalStorage.current) {
+    if (localStorage.getItem('saved_patterns') === null) {
+      localStorage.setItem('saved_patterns', JSON.stringify([]));
+    }
+    checkedLocalStorage.current = true;
+  }
 
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
 
   const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
   const [hiding, setHiding] = useState(false);
+  const [patternName, setPatternName] = useState('');
 
   const leftPopupStyles: CSS.Properties[] = [];
   const rightPopupStyles: CSS.Properties[] = [];
@@ -66,6 +78,18 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
     setShapePositionOffset(100);
   };
 
+  const SavePatternOnClick = () => {
+    const patterns = JSON.parse(localStorage.getItem('saved_patterns') as string) as Pattern[];
+    const new_pattern: Pattern = {
+      id: uuid(),
+      board: boardState,
+      name: patternName,
+      time_created: Date.now(),
+    };
+    patterns.push(new_pattern);
+    localStorage.setItem('saved_patterns', JSON.stringify(patterns));
+  };
+
   return (
     <div
       className={`save-pattern-dialogeue dialogue ${hiding ? 'fade-out' : ''} ${shown ? '' : 'nodisplay'}`}
@@ -73,8 +97,33 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
     >
       <div className="dialogue-internal">
         <div className="dialogue-content">
-          <div className="dialogue-subtitle">Save Pattern</div>
-          <div className="dialogue-subtitle"></div>
+          <div className="dialogue-subtitle">Save Pattern to Local Storage</div>
+          <div className="dialogue-section">
+            <div className="save-pattern">
+              <input
+                type="text"
+                placeholder="Pattern Name"
+                value={patternName}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) => setPatternName(e.target.value)}
+              ></input>
+              <div
+                className="save-button"
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                onClick={SavePatternOnClick}
+              >
+                <FontAwesomeIcon icon={faSave} />
+              </div>
+            </div>
+          </div>
+          <div className="dialogue-subtitle">Download Pattern JSON</div>
+          <div className="dialoge-section">
+            <i>Under Construction</i>
+          </div>
+          <div className="dialogue-subtitle">Generate Pattern URL</div>
+          <div className="dialoge-section">
+            <i>Under Construction</i>
+          </div>
           <div className="dialogue-controls">
             <div
               className="dialogue-close ui-button round"

@@ -165,7 +165,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
               );
             })}
           </div>
-          <div className="tagline">A tool for playing with colour, created by Era.</div>
+          <div className="tagline">A tool for playing with colour.</div>
           <div className="dialogue-subtitle">To get started, select a colour palette ...</div>
           <div className="dialogue-section">
             <Select

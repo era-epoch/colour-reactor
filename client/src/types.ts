@@ -159,3 +159,10 @@ export enum SpawnWidget {
 export interface EraserOps {
   strength: number;
 }
+
+export interface Pattern {
+  id: string;
+  board: BoardState;
+  name: string;
+  time_created: number;
+}
