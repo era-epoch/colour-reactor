@@ -26,6 +26,11 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     checkedLocalStorage.current = true;
   }
 
+  let mobile = false;
+  if (window.innerWidth < 1000) {
+    mobile = true;
+  }
+
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
   const borderRadii = [20, 0, 100, 5, 200];
@@ -166,6 +171,12 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
             })}
           </div>
           <div className="tagline">A tool for playing with colour.</div>
+          {mobile ? (
+            <div className="dialogue-secttion">
+              Hello! It looks like you're accessing ColourReactor on a mobile device. Just a heads-up: this tool is
+              currently only designed for <b>desktop use</b>, so some things might not work properly here!
+            </div>
+          ) : null}
           <div className="dialogue-subtitle">To get started, select a colour palette ...</div>
           <div className="dialogue-section">
             <Select
