@@ -229,7 +229,6 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
               onMouseUp={buttonMouseUp}
             >
               <FontAwesomeIcon icon={faCheck} />
-              {/* Continue */}
             </div>
           </div>
         </div>

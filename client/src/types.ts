@@ -161,9 +161,23 @@ export interface EraserOps {
   strength: number;
 }
 
-export interface Pattern {
+export type Pattern = {
   id: string;
   board: BoardState;
   name: string;
   time_created: number;
+};
+
+export enum AlertStyle {
+  success = 'success',
+  info = 'info',
+  warning = 'warning',
+  error = 'error',
 }
+
+export type Alert = {
+  id: string;
+  content: string;
+  style: AlertStyle;
+  additionalStyles: string[];
+};

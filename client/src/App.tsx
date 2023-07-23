@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux';
+import AlertElement from './Components/Alerts';
 import Canvas from './Components/Canvas';
 import CreditsDialogue from './Components/Dialogues/CreditsDialogue';
 import EpilepsyWarning from './Components/Dialogues/EpilepsyWarning';
@@ -8,13 +10,14 @@ import Tooltip from './Components/Tooltip';
 import Updater from './Components/Updater';
 
 function App() {
+  const dispatch = useDispatch();
   return (
     <div className="App">
       <Canvas />
       <ToolbarContainer />
       <Updater />
-      {/* <MainMenu /> */}
       <Tooltip />
+      <AlertElement />
       {/* Dialogues */}
       <EpilepsyWarning />
       <PaletteDialogue />

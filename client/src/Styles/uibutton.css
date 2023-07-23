@@ -17,7 +17,7 @@
 
 .ui-button:hover {
   translate: -2px -2px;
-  box-shadow: 1px 1px 2px var(--button-primary);
+  box-shadow: 1px 1px 1px var(--button-primary);
   border-color: var(--button-primary);
 }
 

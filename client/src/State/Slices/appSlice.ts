@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AllColorSchemes, pastelRainbow } from '../../ColorSchemes';
 import {
+  Alert,
   BoardObjectSpawnOptions,
   ColorScheme,
   CompassDirection,
@@ -50,6 +51,7 @@ export interface AppState {
   fillColor: string;
   activeDialogue: Dialogue;
   activeToolbar: Toolbar;
+  alerts: Alert[];
 }
 
 export const fallbackColor = 'black';
@@ -99,6 +101,7 @@ const initialAppState: AppState = {
   tooltipState: { active: false, text: '', direction: TooltipDirection.above, targetID: '', subtips: [] },
   activeDialogue: Dialogue.epilepsyWarning,
   activeToolbar: Toolbar.none,
+  alerts: [],
 };
 
 const GetWidgetOptions = (state: AppState, widget: SpawnWidget): BoardObjectSpawnOptions => {
@@ -256,6 +259,12 @@ const appSlice = createSlice({
         state.eraserOps.strength = ops.strength;
       }
     },
+    pushAlert: (state: AppState, action: PayloadAction<Alert>) => {
+      state.alerts.push(action.payload);
+    },
+    deleteAlert: (state: AppState, action: PayloadAction<string>) => {
+      state.alerts = state.alerts.filter((a: Alert) => a.id !== action.payload);
+    },
   },
 });
 
@@ -276,4 +285,6 @@ export const {
   setActiveObject,
   pushSubTooltip,
   setEraserOps,
+  pushAlert,
+  deleteAlert,
 } = appSlice.actions;

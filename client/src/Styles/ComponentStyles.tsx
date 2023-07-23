@@ -33,3 +33,5 @@ export const defaultPopupStyle: CSS.Properties = {
   transitionTimingFunction: 'ease',
   transitionDuration: '300ms',
 };
+
+export const defaultAlertStyle: CSS.Properties = {};
