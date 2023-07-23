@@ -1,4 +1,5 @@
 import Canvas from './Components/Canvas';
+import CreditsDialogue from './Components/Dialogues/CreditsDialogue';
 import EpilepsyWarning from './Components/Dialogues/EpilepsyWarning';
 import PaletteDialogue from './Components/Dialogues/PaletteDialogue';
 import SavePatternDialogue from './Components/Dialogues/SavePatternDialogue';
@@ -18,6 +19,7 @@ function App() {
       <EpilepsyWarning />
       <PaletteDialogue />
       <SavePatternDialogue />
+      <CreditsDialogue />
     </div>
   );
 }

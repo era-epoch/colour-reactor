@@ -1,8 +1,9 @@
+import { faPatreon } from '@fortawesome/free-brands-svg-icons';
 import {
+  faCircleInfo,
   faFile,
   faMousePointer,
   faObjectGroup,
-  faQuestion,
   faToolbox,
   faVectorSquare,
 } from '@fortawesome/free-solid-svg-icons';
@@ -62,6 +63,7 @@ const ToolbarContainer = (): JSX.Element => {
   const opsIconStyle = { ...iconStyle };
   const fileIconStyle = { ...iconStyle };
   const aboutIconStyle = { ...iconStyle };
+  const supportIconStyle = { ...iconStyle };
 
   switch (activeToolbar) {
     case Toolbar.brushes:
@@ -171,10 +173,25 @@ const ToolbarContainer = (): JSX.Element => {
       }),
     );
   };
+  const OnSupportMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    dispatch(
+      setTooltipState({
+        active: true,
+        text: 'Support the Developer',
+        direction: TooltipDirection.right,
+        targetID: 'support-toolbar-icon',
+      }),
+    );
+  };
 
   const OnMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     dispatch(unsetTooltip());
   };
+
+  const handleSupportClick = () => {
+    window.open('https://www.patreon.com/eracodes', '_blank');
+  };
+
   return (
     <div className="toolbar-container" style={style}>
       <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
@@ -252,7 +269,19 @@ const ToolbarContainer = (): JSX.Element => {
           onMouseLeave={OnMouseLeave}
           id="about-toolbar-icon"
         >
-          <FontAwesomeIcon icon={faQuestion} />
+          <FontAwesomeIcon icon={faCircleInfo} />
+        </div>
+      </div>
+      <div className="toolbar-wrapper" style={toolbarWrapperStyle}>
+        <div
+          className="toolbar-icon"
+          style={supportIconStyle}
+          onClick={handleSupportClick}
+          onMouseEnter={OnSupportMouseEnter}
+          onMouseLeave={OnMouseLeave}
+          id="support-toolbar-icon"
+        >
+          <FontAwesomeIcon icon={faPatreon} />
         </div>
       </div>
     </div>

@@ -123,10 +123,14 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
     borderRadius: `${borderRadii[radiusIndex]}px`,
   };
 
-  const siteTitle: string = 'COLOUR REACTOR';
-  const siteTitleArray = [];
-  for (const c of siteTitle) {
-    siteTitleArray.push(c);
+  const siteTitleArray1 = [];
+  for (const c of 'COLOUR') {
+    siteTitleArray1.push(c);
+  }
+
+  const siteTitleArray2 = [];
+  for (const c of 'REACTOR') {
+    siteTitleArray2.push(c);
   }
 
   const handleColorSchemeSelectChange = (selectedValue: ColorScheme | null) => {
@@ -156,19 +160,39 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
       <div className="dialogue-internal" style={internalStyle}>
         <div className="dialogue-content" id="intro-dialogue-content">
           <div className="landing-title">
-            {siteTitleArray.map((c, i) => {
-              const space = c === ' ';
-              return (
-                <div
-                  className="site-title-char"
-                  key={uuid()}
-                  style={{ color: colorScheme.colors[i % colorScheme.colors.length] }}
-                >
-                  {c}
-                  {space ? <span>&nbsp;</span> : ''}
-                </div>
-              );
-            })}
+            <div>
+              {siteTitleArray1.map((c, i) => {
+                return (
+                  <span
+                    className="site-title-char"
+                    key={uuid()}
+                    style={{ color: colorScheme.colors[i % colorScheme.colors.length] }}
+                  >
+                    {c}
+                  </span>
+                );
+              })}
+            </div>
+            <div>
+              {siteTitleArray2.map((c, i) => {
+                return (
+                  <span
+                    className="site-title-char"
+                    key={uuid()}
+                    style={{
+                      color:
+                        colorScheme.colors[
+                          (((colorScheme.colors.length - 1 - i) % colorScheme.colors.length) +
+                            colorScheme.colors.length) %
+                            colorScheme.colors.length
+                        ],
+                    }}
+                  >
+                    {c}
+                  </span>
+                );
+              })}
+            </div>
           </div>
           <div className="tagline">A tool for playing with colour.</div>
           {mobile ? (
@@ -186,7 +210,7 @@ const EpilepsyWarning = (props: Props): JSX.Element => {
               onChange={handleColorSchemeSelectChange}
             />
           </div>
-          <div className="warning-title">WARNING: PHOTOSENSITIVITY/EPILEPSY SEIZURES</div>
+          <div className="warning-title">WARNING: PHOTOSENSITIVITY / EPILEPSY SEIZURES</div>
           <div className="warning-blurb">
             This tool can create rapidly flashing and/or <b>strobing bright colours</b>, especially when the application
             speed is set to high. If you have an epileptic condition or suffer from seizures, please use caution as it

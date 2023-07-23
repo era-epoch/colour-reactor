@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../State/rootReducer';
 import { defaultWidgetStyle, toolbarStyle } from '../../Styles/ComponentStyles';
 import { Toolbar } from '../../types';
+import CreditsWidget from '../Widgets/Info/CreditsWidget';
+import SourceCodeWidget from '../Widgets/Info/SourceCodeWidget';
 
 const AboutToolbar = (): JSX.Element => {
   const activeToolbar = useSelector((state: RootState) => state.app.activeToolbar);
@@ -25,7 +27,12 @@ const AboutToolbar = (): JSX.Element => {
     widgetStyles[i].zIndex = `-${i}`;
   }
 
-  return <div className="toolbar" style={toolbarStyle}></div>;
+  return (
+    <div className="toolbar" style={toolbarStyle}>
+      <SourceCodeWidget widgetWrapperStyle={widgetStyles[0]} />
+      <CreditsWidget widgetWrapperStyle={widgetStyles[1]} />
+    </div>
+  );
 };
 
 export default AboutToolbar;
