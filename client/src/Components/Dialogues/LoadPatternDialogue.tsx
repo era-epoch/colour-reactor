@@ -85,7 +85,7 @@ const LoadPatternDialogue = (props: Props): JSX.Element => {
   };
 
   const loadPattern = (pattern: Pattern) => {
-    console.log('loading pattern');
+    console.log('loading pattern:', pattern);
     dispatch(loadPatternNonAccumulative(pattern));
   };
 
