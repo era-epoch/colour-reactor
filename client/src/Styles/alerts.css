@@ -43,7 +43,65 @@
   gap: 1rem;
   box-shadow: 4px 4px 1px var(--contrast);
   border-radius: 10px;
-  border: 2px solid var(--contrast);
+  /* border: 2px solid var(--alertColor); */
+  --button-primary: var(--alertColor);
+}
+
+.alert {
+  background-color: var(--background);
+  --pattern-1: var(--alert-bg-1);
+  --pattern-2: var(--alert-bg-2);
+  /* opacity: 0.8; */
+  background-image: linear-gradient(
+      30deg,
+      var(--pattern-1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      var(--pattern-1) 87.5%,
+      var(--pattern-1)
+    ),
+    linear-gradient(
+      150deg,
+      var(--pattern-1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      var(--pattern-1) 87.5%,
+      var(--pattern-1)
+    ),
+    linear-gradient(
+      30deg,
+      var(--pattern-1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      var(--pattern-1) 87.5%,
+      var(--pattern-1)
+    ),
+    linear-gradient(
+      150deg,
+      var(--pattern-1) 12%,
+      transparent 12.5%,
+      transparent 87%,
+      var(--pattern-1) 87.5%,
+      var(--pattern-1)
+    ),
+    linear-gradient(
+      60deg,
+      var(--pattern-2) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      var(--pattern-2) 75%,
+      var(--pattern-2)
+    ),
+    linear-gradient(
+      60deg,
+      var(--pattern-2) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      var(--pattern-2) 75%,
+      var(--pattern-2)
+    );
+  background-size: 20px 35px;
+  background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
 }
 
 @keyframes alertIn {
@@ -75,4 +133,14 @@
   justify-content: center;
   align-items: center;
   padding-left: 1rem;
+  font-weight: bold;
+  color: var(--alertColor);
+}
+
+.alert-content p {
+  background-color: var(--background);
+}
+
+.alert .ui-button:hover {
+  background-color: var(--background);
 }

@@ -8,7 +8,7 @@ import { deleteAlert } from '../State/Slices/appSlice';
 import { RootState } from '../State/rootReducer';
 import { defaultAlertStyle } from '../Styles/ComponentStyles';
 import '../Styles/alerts.css';
-import { Alert } from '../types';
+import { Alert, AlertStyle } from '../types';
 
 interface Props {}
 
@@ -75,6 +75,29 @@ const AlertElement = (props: Props): JSX.Element => {
 
     const record = AlertRecords.get(alert.id) as AlertRecord;
     alertStyle.animation = record.anim;
+
+    switch (alert.style) {
+      case AlertStyle.error:
+        alertStyle['--alertColor'] = `var(--error)`;
+        alertStyle['--alert-bg-1'] = `var(--error-opacity-low)`;
+        alertStyle['--alert-bg-2'] = `var(--error-opacity-lowest)`;
+        break;
+      case AlertStyle.success:
+        alertStyle['--alertColor'] = `var(--success)`;
+        alertStyle['--alert-bg-1'] = `var(--success-opacity-low)`;
+        alertStyle['--alert-bg-2'] = `var(--success-opacity-lowest)`;
+        break;
+      case AlertStyle.info:
+        alertStyle['--alertColor'] = `var(--info)`;
+        alertStyle['--alert-bg-1'] = `var(--info-opacity-low)`;
+        alertStyle['--alert-bg-2'] = `var(--info-opacity-lowest)`;
+        break;
+      case AlertStyle.warning:
+        alertStyle['--alertColor'] = `var(--warning)`;
+        alertStyle['--alert-bg-1'] = `var(--warning-opacity-low)`;
+        alertStyle['--alert-bg-2'] = `var(--warning-opacity-lowest)`;
+        break;
+    }
 
     alertStyles.push(alertStyle);
   }

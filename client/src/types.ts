@@ -179,5 +179,5 @@ export type Alert = {
   id: string;
   content: string;
   style: AlertStyle;
-  additionalStyles: string[];
+  additionalStyles?: string[];
 };

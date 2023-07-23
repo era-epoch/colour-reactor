@@ -4,10 +4,10 @@ import CSS from 'csstype';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'react-uuid';
-import { setActiveDialogue } from '../../State/Slices/appSlice';
+import { pushAlert, setActiveDialogue } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 import { defaultPopupStyle } from '../../Styles/ComponentStyles';
-import { Dialogue, Pattern } from '../../types';
+import { AlertStyle, Dialogue, Pattern } from '../../types';
 import PopoutShape from '../PopoutShape';
 
 interface Props {}
@@ -79,6 +79,16 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
   };
 
   const SavePatternOnClick = () => {
+    if (patternName === '') {
+      dispatch(
+        pushAlert({
+          id: uuid(),
+          content: 'Please enter a name for this pattern',
+          style: AlertStyle.error,
+        }),
+      );
+      return;
+    }
     const patterns = JSON.parse(localStorage.getItem('saved_patterns') as string) as Pattern[];
     const new_pattern: Pattern = {
       id: uuid(),
@@ -88,6 +98,7 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
     };
     patterns.push(new_pattern);
     localStorage.setItem('saved_patterns', JSON.stringify(patterns));
+    dispatch(pushAlert({ id: uuid(), content: `Pattern "${patternName}" saved!`, style: AlertStyle.success }));
   };
 
   return (
