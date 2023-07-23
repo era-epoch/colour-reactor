@@ -93,12 +93,19 @@ const boardSlice = createSlice({
       }
     },
     loadPatternNonAccumulative: (state: BoardState, action: PayloadAction<Pattern>) => {
-      state.objects = action.payload.board.objects;
-      state.squares = action.payload.board.squares;
+      state.objects = [];
+      for (const object of action.payload.board.objects) {
+        state.objectAdditionQueue.push(object);
+      }
+      for (const row of state.squares) {
+        for (const square of row) {
+          square.content = [];
+        }
+      }
     },
     loadPatternAccumulative: (state: BoardState, action: PayloadAction<Pattern>) => {
       for (const object of action.payload.board.objects) {
-        state.objects.push(object);
+        state.objectAdditionQueue.push(object);
       }
     },
   },
