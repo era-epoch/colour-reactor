@@ -45,7 +45,7 @@ export const updatePaint: UpdateFunction = (obj: BoardObject, state: BoardState)
   }
   paint.age++;
   addObjectToSquare(paint, state.squares[paint.posY][paint.posX]);
-  if (paint.age > paint.lifespan) {
+  if (paint.lifespan !== null && paint.age > paint.lifespan) {
     removeObjectFromSquare(paint, state.squares[paint.posY][paint.posX]);
     state.objectRemovalQueue.push(paint);
   }

@@ -80,7 +80,7 @@ export const updateMorphPaint: UpdateFunction = (obj: BoardObject, state: BoardS
   morphPaint.primary = colorRange(p).toString();
   addObjectToSquare(morphPaint, state.squares[morphPaint.posY][morphPaint.posX]);
 
-  if (morphPaint.age > morphPaint.lifespan) {
+  if (morphPaint.lifespan !== null && morphPaint.age > morphPaint.lifespan) {
     removeObjectFromSquare(morphPaint, state.squares[morphPaint.posY][morphPaint.posX]);
     state.objectRemovalQueue.push(morphPaint);
   }
