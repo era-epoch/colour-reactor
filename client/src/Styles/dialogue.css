@@ -13,14 +13,18 @@
 }
 
 .EpilepsyWarning {
-  animation: dialogueFadeIn 4000ms ease forwards;
+  animation: fadeIn 4000ms ease forwards;
 }
 
-@keyframes dialogueFadeIn {
+.fade-in {
+  animation: fadeIn var(--fade-duration) ease forwards;
+}
+
+@keyframes fadeIn {
   0% {
     opacity: 0;
   }
-  100% {
+  75% {
     opacity: 1;
   }
 }
@@ -206,4 +210,31 @@
 
 .dialogue-subtitle {
   font-weight: bold;
+}
+
+.pattern-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.load-pattern {
+  cursor: pointer;
+  width: 100%;
+  padding: 0.5rem;
+  transition: all 100ms ease;
+}
+
+.load-pattern:hover {
+  background-color: var(--offset);
+}
+
+.dialogue-section {
+  width: 100%;
+}
+
+.load-pattern-dialogue .dialogue-content {
+  width: min(95vw, 600px);
 }

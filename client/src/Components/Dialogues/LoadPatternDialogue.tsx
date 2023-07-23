@@ -1,23 +1,33 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
-import { setActiveDialogue, setColorScheme } from '../../State/Slices/appSlice';
+import { setActiveDialogue } from '../../State/Slices/appSlice';
+import { loadPatternNonAccumulative } from '../../State/Slices/boardSlice';
 import { RootState } from '../../State/rootReducer';
 import { defaultPopupStyle } from '../../Styles/ComponentStyles';
-import { ColorScheme, Dialogue } from '../../types';
+import { Dialogue, Pattern } from '../../types';
 import PopoutShape from '../PopoutShape';
 
 interface Props {}
 
-const PaletteDialogue = (props: Props): JSX.Element => {
+const LoadPatternDialogue = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const colorScheme = useSelector((state: RootState) => state.app.colorScheme);
-  const allColorSchemes = useSelector((state: RootState) => state.app.availableColorSchemes);
   const activeDialogue = useSelector((state: RootState) => state.app.activeDialogue);
-  const shown = activeDialogue === Dialogue.palette;
+  let shown = activeDialogue === Dialogue.loadPattern;
+
+  // Set up saved pattern array in local storage
+  const checkedLocalStorage = useRef(false);
+  if (!checkedLocalStorage.current) {
+    if (localStorage.getItem('saved_patterns') === null) {
+      localStorage.setItem('saved_patterns', JSON.stringify([]));
+    }
+    checkedLocalStorage.current = true;
+  }
+
+  const patterns = JSON.parse(localStorage.getItem('saved_patterns') as string) as Pattern[];
 
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
@@ -74,31 +84,37 @@ const PaletteDialogue = (props: Props): JSX.Element => {
     setShapePositionOffset(100);
   };
 
-  const handleColorSchemeSelectChange = (selectedValue: ColorScheme | null) => {
-    if (selectedValue) dispatch(setColorScheme(selectedValue));
+  const loadPattern = (pattern: Pattern) => {
+    dispatch(loadPatternNonAccumulative(pattern));
   };
 
   return (
     <div
-      className={`palette-dialogeue dialogue ${fadingIn ? 'fade-in' : ''} ${hiding ? 'fade-out' : ''} ${
+      className={`load-pattern-dialogue dialogue ${fadingIn ? 'fade-in' : ''} ${hiding ? 'fade-out' : ''} ${
         shown ? '' : 'nodisplay'
       }`}
       style={{ '--fade-duration': `${fadeOutDuration}ms` } as React.CSSProperties}
     >
       <div className="dialogue-internal">
         <div className="dialogue-content">
-          <div className="dialogue-subtitle">Select Colour Palette</div>
-          <div className="dialogue-section" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <Select
-              options={allColorSchemes}
-              getOptionLabel={(scheme: ColorScheme) => scheme.name}
-              getOptionValue={(scheme: ColorScheme) => scheme.id}
-              onChange={handleColorSchemeSelectChange}
-            />
-          </div>
-          <div className="dialogue-subtitle">Customize</div>
+          <div className="dialogue-subtitle">Your saved patterns</div>
           <div className="dialogue-section">
-            <i>Under construction</i>
+            <div className="pattern-list">
+              {patterns.length === 0 ? <div>It's lonely here ... </div> : null}
+              {patterns.map((pattern: Pattern) => {
+                return (
+                  <div className="load-pattern" onClick={() => loadPattern(pattern)}>
+                    {pattern.name}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="dialogue-subtitle">Demo patterns</div>
+          <div className="dialogue-section">
+            <div className="pattern-list">
+              <i>Under Construction</i>
+            </div>
           </div>
           <div className="dialogue-controls">
             <div
@@ -109,7 +125,7 @@ const PaletteDialogue = (props: Props): JSX.Element => {
               onMouseDown={closeButtonOnMouseDown}
               onMouseUp={closeButtonOnMouseUp}
             >
-              <FontAwesomeIcon icon={faCheck} />
+              <FontAwesomeIcon icon={faXmark} />
             </div>
           </div>
         </div>
@@ -126,4 +142,4 @@ const PaletteDialogue = (props: Props): JSX.Element => {
   );
 };
 
-export default PaletteDialogue;
+export default LoadPatternDialogue;

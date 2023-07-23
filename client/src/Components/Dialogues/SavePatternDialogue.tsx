@@ -4,7 +4,7 @@ import CSS from 'csstype';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'react-uuid';
-import { pushAlert, setActiveDialogue } from '../../State/Slices/appSlice';
+import { pushAlert, setActiveDialogue, setPause } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 import { defaultPopupStyle } from '../../Styles/ComponentStyles';
 import { AlertStyle, Dialogue, Pattern } from '../../types';
@@ -19,20 +19,17 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
   const boardState = useSelector((state: RootState) => state.board);
   let shown = activeDialogue === Dialogue.savePattern;
 
-  // This should be done somewhere else:
-  const checkedLocalStorage = useRef(false);
-  if (!checkedLocalStorage.current) {
-    if (localStorage.getItem('saved_patterns') === null) {
-      localStorage.setItem('saved_patterns', JSON.stringify([]));
-    }
-    checkedLocalStorage.current = true;
-  }
-
   const initShapePositionOffset = 12;
   const fadeOutDuration = 2000;
 
   const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
   const [hiding, setHiding] = useState(false);
+
+  const fadingIn = useRef(false);
+  if (shown && !fadingIn.current) {
+    fadingIn.current = true;
+  }
+
   const [patternName, setPatternName] = useState('');
 
   const leftPopupStyles: CSS.Properties[] = [];
@@ -63,6 +60,8 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
       dispatch(setActiveDialogue(Dialogue.none));
       setHiding(false);
       setShapePositionOffset(initShapePositionOffset);
+      dispatch(setPause(false));
+      fadingIn.current = false;
     }, fadeOutDuration);
   };
   const onMouseEnter = () => {
@@ -90,6 +89,16 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
       return;
     }
     const patterns = JSON.parse(localStorage.getItem('saved_patterns') as string) as Pattern[];
+    if (patterns.some((pattern) => pattern.name === patternName)) {
+      dispatch(
+        pushAlert({
+          id: uuid(),
+          content: 'You already have a pattern saved with that name.',
+          style: AlertStyle.error,
+        }),
+      );
+      return;
+    }
     const new_pattern: Pattern = {
       id: uuid(),
       board: boardState,
@@ -103,7 +112,9 @@ const SavePatternDialogue = (props: Props): JSX.Element => {
 
   return (
     <div
-      className={`save-pattern-dialogeue dialogue ${hiding ? 'fade-out' : ''} ${shown ? '' : 'nodisplay'}`}
+      className={`save-pattern-dialogue dialogue ${fadingIn ? 'fade-in' : ''} ${hiding ? 'fade-out' : ''} ${
+        shown ? '' : 'nodisplay'
+      }`}
       style={{ '--fade-duration': `${fadeOutDuration}ms` } as React.CSSProperties}
     >
       <div className="dialogue-internal">

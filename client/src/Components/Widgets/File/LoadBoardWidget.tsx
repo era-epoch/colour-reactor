@@ -2,8 +2,8 @@ import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
-import { TooltipDirection } from '../../../types';
+import { setActiveDialogue, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { Dialogue, TooltipDirection } from '../../../types';
 
 interface Props {
   widgetWrapperStyle: CSS.Properties;
@@ -21,7 +21,7 @@ const LoadBoardWidget = (props: Props): JSX.Element => {
 
   const handleClick = () => {
     dispatch(unsetTooltip());
-    // dispatch(setActiveDialogue(Dialogue.palette));
+    dispatch(setActiveDialogue(Dialogue.loadPattern));
   };
 
   const handleMouseEnter = () => {

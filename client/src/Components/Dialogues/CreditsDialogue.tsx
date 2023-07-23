@@ -1,7 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveDialogue } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
@@ -22,6 +22,11 @@ const CreditsDialogue = (props: Props): JSX.Element => {
 
   const [shapePositionOffset, setShapePositionOffset] = useState(initShapePositionOffset);
   const [hiding, setHiding] = useState(false);
+
+  const fadingIn = useRef(false);
+  if (shown && !fadingIn.current) {
+    fadingIn.current = true;
+  }
 
   const leftPopupStyles: CSS.Properties[] = [];
   const rightPopupStyles: CSS.Properties[] = [];
@@ -51,6 +56,7 @@ const CreditsDialogue = (props: Props): JSX.Element => {
       dispatch(setActiveDialogue(Dialogue.none));
       setHiding(false);
       setShapePositionOffset(initShapePositionOffset);
+      fadingIn.current = false;
     }, fadeOutDuration);
   };
   const onMouseEnter = () => {
@@ -68,7 +74,9 @@ const CreditsDialogue = (props: Props): JSX.Element => {
 
   return (
     <div
-      className={`save-pattern-dialogeue dialogue ${hiding ? 'fade-out' : ''} ${shown ? '' : 'nodisplay'}`}
+      className={`save-pattern-dialogeue dialogue ${fadingIn ? 'fade-in' : ''} ${hiding ? 'fade-out' : ''} ${
+        shown ? '' : 'nodisplay'
+      }`}
       style={{ '--fade-duration': `${fadeOutDuration}ms` } as React.CSSProperties}
     >
       <div className="dialogue-internal">

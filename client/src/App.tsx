@@ -3,6 +3,7 @@ import AlertElement from './Components/Alerts';
 import Canvas from './Components/Canvas';
 import CreditsDialogue from './Components/Dialogues/CreditsDialogue';
 import EpilepsyWarning from './Components/Dialogues/EpilepsyWarning';
+import LoadPatternDialogue from './Components/Dialogues/LoadPatternDialogue';
 import PaletteDialogue from './Components/Dialogues/PaletteDialogue';
 import SavePatternDialogue from './Components/Dialogues/SavePatternDialogue';
 import ToolbarContainer from './Components/ToolbarContainer';
@@ -22,6 +23,7 @@ function App() {
       <EpilepsyWarning />
       <PaletteDialogue />
       <SavePatternDialogue />
+      <LoadPatternDialogue />
       <CreditsDialogue />
     </div>
   );

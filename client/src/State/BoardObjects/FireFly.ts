@@ -30,7 +30,6 @@ export interface Firefly extends PositionalBoardObject {
 }
 
 export const createFirefly = (ops: BoardObjectSpawnOptions): Firefly => {
-  console.log('Creating firefly with ops: ', ops);
   const Firefly: Firefly = {
     id: uuid(),
     primary: ops.primary !== undefined ? ops.primary : fallbackColor,

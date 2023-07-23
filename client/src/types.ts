@@ -126,6 +126,7 @@ export enum Dialogue {
   epilepsyWarning,
   palette,
   savePattern,
+  loadPattern,
   credits,
 }
 

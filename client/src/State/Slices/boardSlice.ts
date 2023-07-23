@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { BoardObject, SquareState } from '../../types';
+import { BoardObject, Pattern, SquareState } from '../../types';
 import { UpdateMap } from '../BoardObjects/Maps';
 
 export interface BoardState {
@@ -92,8 +92,24 @@ const boardSlice = createSlice({
         }
       }
     },
+    loadPatternNonAccumulative: (state: BoardState, action: PayloadAction<Pattern>) => {
+      state.objects = action.payload.board.objects;
+      state.squares = action.payload.board.squares;
+    },
+    loadPatternAccumulative: (state: BoardState, action: PayloadAction<Pattern>) => {
+      for (const object of action.payload.board.objects) {
+        state.objects.push(object);
+      }
+    },
   },
 });
 
 export default boardSlice.reducer;
-export const { update, deleteAllObjects, loadObjects, eraseLocation } = boardSlice.actions;
+export const {
+  update,
+  deleteAllObjects,
+  loadObjects,
+  eraseLocation,
+  loadPatternAccumulative,
+  loadPatternNonAccumulative,
+} = boardSlice.actions;

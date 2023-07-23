@@ -4,17 +4,17 @@ body {
   --contrast: #333;
   --button-primary: var(--contrast);
   --error: #840505;
-  --error-opacity-low: #84050512;
-  --error-opacity-lowest: #84050506;
+  --error-opacity-low: #84050542;
+  --error-opacity-lowest: #84050526;
   --success: #82c346;
-  --success-opacity-low: #82c34612;
-  --success-opacity-lowest: #82c34606;
+  --success-opacity-low: #82c34642;
+  --success-opacity-lowest: #82c34626;
   --info: #2b0584;
-  --info-opacity-low: #2b058412;
-  --info-opacity-lowest: #2b058406;
+  --info-opacity-low: #2b058442;
+  --info-opacity-lowest: #2b058426;
   --warning: #d6871f;
-  --warning-opacity-low: #d6871f12;
-  --warning-opacity-lowest: #d6871f06;
+  --warning-opacity-low: #d6871f42;
+  --warning-opacity-lowest: #d6871f26;
 }
 
 .App {

@@ -2,7 +2,7 @@ import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useDispatch } from 'react-redux';
-import { setActiveDialogue, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
+import { setActiveDialogue, setPause, setTooltipState, unsetTooltip } from '../../../State/Slices/appSlice';
 import { Dialogue, TooltipDirection } from '../../../types';
 
 interface Props {
@@ -22,6 +22,7 @@ const SaveBoardWidget = (props: Props): JSX.Element => {
   const handleClick = () => {
     dispatch(unsetTooltip());
     dispatch(setActiveDialogue(Dialogue.savePattern));
+    dispatch(setPause(true));
   };
 
   const handleMouseEnter = () => {
