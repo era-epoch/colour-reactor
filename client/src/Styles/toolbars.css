@@ -35,6 +35,10 @@
   animation: wobble 400ms ease;
 }
 
+.toolbar-icon:hover {
+  animation: wobble 400ms ease;
+}
+
 .subtoolbar-wrapper {
   width: 100%;
   max-height: 0;

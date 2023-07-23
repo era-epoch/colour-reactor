@@ -90,6 +90,11 @@ const CreditsDialogue = (props: Props): JSX.Element => {
           </div>
           <div className="dialogue-subtitle">Technologies</div>
           <div className="dialogue-section">
+            <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
+              Typescript
+            </a>
+          </div>
+          <div className="dialogue-section">
             <a href="https://colorjs.io/docs/" target="_blank" rel="noreferrer">
               Color.js
             </a>
@@ -97,6 +102,11 @@ const CreditsDialogue = (props: Props): JSX.Element => {
           <div className="dialogue-section">
             <a href="https://react.dev/" target="_blank" rel="noreferrer">
               React
+            </a>
+          </div>
+          <div className="dialogue-section">
+            <a href="https://create-react-app.dev/" target="_blank" rel="noreferrer">
+              Create React App
             </a>
           </div>
           <div className="dialogue-section">
