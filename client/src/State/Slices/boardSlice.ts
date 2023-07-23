@@ -93,6 +93,7 @@ const boardSlice = createSlice({
       }
     },
     loadPatternNonAccumulative: (state: BoardState, action: PayloadAction<Pattern>) => {
+      console.log('inside load');
       state.objects = action.payload.board.objects;
       state.squares = action.payload.board.squares;
     },
