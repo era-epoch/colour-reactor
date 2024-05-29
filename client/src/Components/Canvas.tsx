@@ -1,6 +1,6 @@
 import CSS from 'csstype';
 import { useSelector } from 'react-redux';
-import uuid from 'react-uuid';
+import { v4 as uuid } from 'uuid';
 import { RootState } from '../State/rootReducer';
 import Square from './Square';
 

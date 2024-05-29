@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CSS from 'csstype';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import uuid from 'react-uuid';
+import { v4 as uuid } from 'uuid';
 import { deleteAlert } from '../State/Slices/appSlice';
 import { RootState } from '../State/rootReducer';
 import { defaultAlertStyle } from '../Styles/ComponentStyles';

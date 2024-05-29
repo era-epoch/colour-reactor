@@ -1,7 +1,7 @@
 import CSS from 'csstype';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import uuid from 'react-uuid';
+import { v4 as uuid } from 'uuid';
 import { pushSubTooltip } from '../../State/Slices/appSlice';
 import { RootState } from '../../State/rootReducer';
 
