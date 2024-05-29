@@ -1,4 +1,4 @@
-import uuid from 'react-uuid';
+import { v4 as uuid } from 'uuid';
 import { ColorScheme } from './types';
 
 export const basicRainbow: ColorScheme = {
