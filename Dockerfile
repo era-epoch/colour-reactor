@@ -27,6 +27,12 @@ RUN npm ci --include=dev
 # Copy application code
 COPY . .
 
+# Build client
+RUN cd client
+RUN npm install
+RUN npm run build
+RUN cd ..
+
 # Build application
 RUN npm run build
 
